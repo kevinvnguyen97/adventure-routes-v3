@@ -9,9 +9,14 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.20.7",
+    "@chakra-ui/icons": "^2.1.1",
+    "@chakra-ui/react": "^2.8.2",
+    "@types/meteor": "^2.9.7",
+    "libphonenumber-js": "^1.10.51",
     "meteor-node-stubs": "^1.2.5",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.20.1"
   },
   "devDependencies": {
     "@types/mocha": "^8.2.3",
