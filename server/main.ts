@@ -1,37 +1,24 @@
-import { Meteor } from 'meteor/meteor';
-import { Link, LinksCollection } from '/imports/api/links';
-
-async function insertLink({ title, url }: Pick<Link, 'title' | 'url'>) {
-  await LinksCollection.insertAsync({ title, url, createdAt: new Date() });
-}
+import { Meteor } from "meteor/meteor";
+import { AdventureRoutesCollection } from "/imports/api/adventureRoutes";
 
 Meteor.startup(async () => {
-  // If the Links collection is empty, add some data.
-  if (await LinksCollection.find().countAsync() === 0) {
-    await insertLink({
-      title: 'Do the Tutorial',
-      url: 'https://www.meteor.com/tutorials/react/creating-an-app',
-    });
+  AdventureRoutesCollection.createIndex({ userId: -1 });
+});
 
-    await insertLink({
-      title: 'Follow the Guide',
-      url: 'https://guide.meteor.com',
-    });
-
-    await insertLink({
-      title: 'Read the Docs',
-      url: 'https://docs.meteor.com',
-    });
-
-    await insertLink({
-      title: 'Discussions',
-      url: 'https://forums.meteor.com',
-    });
+Meteor.publish("adventureRoutesForUser", () => {
+  const userId = Meteor.userId();
+  if (!userId) {
+    console.error("User is not logged in.");
+    throw new Meteor.Error("not-logged-in", "User is not logged in.");
   }
+  return AdventureRoutesCollection.find({ userId });
+});
 
-  // We publish the entire Links collection to all clients.
-  // In order to be fetched in real-time to the clients
-  Meteor.publish("links", function () {
-    return LinksCollection.find();
-  });
+Meteor.publish("adventureRouteById", (id: string) => {
+  const userId = Meteor.userId();
+  if (!userId) {
+    console.error("User is not logged in.");
+    throw new Meteor.Error("not-logged-in", "User is not logged in.");
+  }
+  return AdventureRoutesCollection.find({ _id: id, userId });
 });

@@ -20,7 +20,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
-import { useMeteorAuth } from "./Auth";
+import { useMeteorAuth } from "../providers/Auth";
 import { Meteor } from "meteor/meteor";
 import { useNavigate } from "react-router-dom";
 
