@@ -12,6 +12,7 @@
     "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@types/meteor": "^2.9.7",
     "libphonenumber-js": "^1.10.51",
     "meteor-node-stubs": "^1.2.5",
