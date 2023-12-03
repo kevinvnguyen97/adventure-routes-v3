@@ -114,7 +114,7 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
             </FormControl>
             {waypoints.map((waypoint, i) => {
               return (
-                <InputGroup>
+                <InputGroup key={`waypoint${i}`}>
                   <Input
                     placeholder={`Waypoint ${i + 1}`}
                     value={waypoint}
