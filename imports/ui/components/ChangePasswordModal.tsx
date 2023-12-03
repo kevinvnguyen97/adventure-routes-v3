@@ -44,8 +44,6 @@ export const ChangePasswordModal = (props: ChangePasswordModalProps) => {
     newPassword === newPasswordReentry,
   ].every((criteria) => !!criteria);
 
-  console.log("IS FORM VALID:", isFormValid);
-
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (isFormValid) {

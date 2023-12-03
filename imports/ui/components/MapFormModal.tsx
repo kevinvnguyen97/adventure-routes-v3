@@ -55,7 +55,7 @@ export const MapFormModal = () => {
         description,
         route: {
           origin,
-          waypoints,
+          waypoints: waypoints.filter((waypoint) => !!waypoint),
           destination,
         },
       };
@@ -141,7 +141,7 @@ export const MapFormModal = () => {
               </FormControl>
               {waypoints.map((waypoint, i) => {
                 return (
-                  <InputGroup>
+                  <InputGroup key={`waypoint${i}`}>
                     <Input
                       placeholder={`Waypoint ${i + 1}`}
                       value={waypoint}

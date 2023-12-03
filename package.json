@@ -2,7 +2,7 @@
   "name": "adventure-routes-v4",
   "private": true,
   "scripts": {
-    "start": "meteor run",
+    "start": "meteor run --settings .deploy/settings.json",
     "test": "meteor test --once --driver-package meteortesting:mocha",
     "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
     "visualize": "meteor --production --extra-packages bundle-visualizer"
@@ -13,6 +13,7 @@
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@react-google-maps/api": "^2.19.2",
     "@types/meteor": "^2.9.7",
     "chakra-multiselect": "^0.4.6",
     "framer-motion": "^10.16.12",

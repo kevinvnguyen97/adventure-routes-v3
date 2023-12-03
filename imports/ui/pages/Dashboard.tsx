@@ -71,7 +71,7 @@ export const Dashboard = () => {
           <CardBody>
             <Text>{adventureRoute.route.origin}</Text>
             {adventureRoute.route.waypoints?.map((waypoint) => (
-              <Text>{waypoint}</Text>
+              <Text key={waypoint}>{waypoint}</Text>
             ))}
             <Text>{adventureRoute.route.destination}</Text>
           </CardBody>

@@ -6,6 +6,7 @@ import { RequireNotAuth, RequireAuth } from "./providers/Auth";
 import { Login } from "/imports/ui/pages/Login";
 import { Dashboard } from "/imports/ui/pages/Dashboard";
 import { Register } from "/imports/ui/pages/Register";
+import { Map } from "/imports/ui/pages/Map";
 
 export const App = () => {
   useEffect(() => {
@@ -22,6 +23,14 @@ export const App = () => {
             element={
               <RequireAuth>
                 <Dashboard />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="map/:id"
+            element={
+              <RequireAuth>
+                <Map />
               </RequireAuth>
             }
           />
