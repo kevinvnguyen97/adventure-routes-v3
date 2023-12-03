@@ -52,7 +52,7 @@ export const Map = () => {
       console.log("STATUS:", status);
       if (
         status === google.maps.DirectionsStatus.OK &&
-        renderCount.current === 0 &&
+        renderCount.current === 0
       ) {
         renderCount.current++;
         setDirections(result);
