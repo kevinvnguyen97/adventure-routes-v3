@@ -4,14 +4,9 @@ import {
   Card,
   CardBody,
   CardHeader,
-  IconButton,
-  Input,
-  InputGroup,
   Text,
-  Image,
   CloseButton,
 } from "@chakra-ui/react";
-import { SearchIcon } from "@chakra-ui/icons";
 import { MapFormModal } from "../components/MapFormModal";
 import { useAdventureRoutesForUser } from "/imports/ui/providers/AdventureRoutes";
 import { useMeteorAuth } from "../providers/Auth";
@@ -37,20 +32,6 @@ export const Dashboard = () => {
       <Text color="white" fontWeight="bold" fontSize={40}>
         {username}'s Routes
       </Text>
-      <InputGroup>
-        <Input
-          backgroundColor="white"
-          placeholder="Search a route"
-          type="search"
-        />
-        <IconButton
-          aria-label="search"
-          size="md"
-          icon={<SearchIcon />}
-          colorScheme="orange"
-        />
-      </InputGroup>
-      <Text color="white">or</Text>
       <MapFormModal />
       {adventureRoutesForUser.map((adventureRoute) => (
         <Card

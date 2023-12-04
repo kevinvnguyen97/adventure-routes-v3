@@ -62,8 +62,8 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
         position="absolute"
         zIndex={1}
         backgroundColor="white"
-        left="176px"
-        top="74px"
+        left="190px"
+        top="84px"
         borderRadius={2}
         borderLeftRadius={0}
         onClick={onDrawerOpen}
