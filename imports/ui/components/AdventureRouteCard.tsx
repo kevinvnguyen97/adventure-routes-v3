@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 
 import { AdventureRoute } from "/imports/api/adventureRoutes";
 import { meteorMethodPromise } from "/imports/utils";
+import { TOAST_PRESET } from "/imports/constants/toast";
 
 type AdventureRouteCardProps = {
   adventureRoute: AdventureRoute;
@@ -29,20 +30,20 @@ export const AdventureRouteCard = (props: AdventureRouteCardProps) => {
       try {
         await meteorMethodPromise("deleteAdventureRoute", adventureRoute._id);
         toast({
+          ...TOAST_PRESET,
           title: "Success",
-          description: `Deleted route ${name}`,
+          description: `Deleted route ${adventureRoute.name}`,
           status: "success",
-          position: "top",
         });
       } catch (error) {
         if (error) {
           const meteorError = error as Meteor.Error;
           console.error(meteorError);
           toast({
+            ...TOAST_PRESET,
             title: meteorError.name,
             description: meteorError.message,
             status: "error",
-            position: "top",
           });
         }
       }

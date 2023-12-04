@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Text } from "@chakra-ui/react";
 import { MapFormModal } from "../components/MapFormModal";
 import { useAdventureRoutesForUser } from "/imports/ui/providers/AdventureRoutes";
@@ -9,6 +9,10 @@ export const Dashboard = () => {
   const { data: adventureRoutesForUser } = useAdventureRoutesForUser();
   const { user } = useMeteorAuth();
   const { username } = user || {};
+
+  useEffect(() => {
+    document.title = "Dashboard - Adventure Routes";
+  }, []);
 
   return (
     <Box

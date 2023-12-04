@@ -5,7 +5,13 @@ import {
   DirectionsRenderer,
 } from "@react-google-maps/api";
 import { Box, Spinner } from "@chakra-ui/react";
-import React, { useState, CSSProperties, useCallback, useRef } from "react";
+import React, {
+  useState,
+  CSSProperties,
+  useCallback,
+  useRef,
+  useEffect,
+} from "react";
 import { useParams } from "react-router-dom";
 import { useAdventureRoutesForUser } from "/imports/ui/providers/AdventureRoutes";
 import { AdventureRouteInfo } from "/imports/ui/components/AdventureRouteInfo";
@@ -84,6 +90,10 @@ export const Map = () => {
     },
     []
   );
+
+  useEffect(() => {
+    document.title = `${adventureRoute?.name} - Adventure Routes`;
+  }, [adventureRoute?.name]);
 
   if (!isLoaded) {
     return <Spinner />;

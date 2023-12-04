@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import {
   Box,
   Input,
@@ -13,6 +13,7 @@ import { Link as NavigationLink } from "react-router-dom";
 import { Accounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
 import { isValidPhoneNumber, parsePhoneNumber } from "libphonenumber-js";
+import { TOAST_PRESET } from "/imports/constants/toast";
 
 export const Register = () => {
   const [firstName, setFirstName] = useState("");
@@ -42,22 +43,26 @@ export const Register = () => {
         if (error) {
           console.error(error);
           toast({
+            ...TOAST_PRESET,
             title: error.name,
             description: error.message,
             status: "error",
-            position: "top",
           });
         } else {
           toast({
+            ...TOAST_PRESET,
             title: "Success",
-            description: "Successfully registered",
+            description: `${username} registered`,
             status: "success",
-            position: "top",
           });
         }
       }
     );
   };
+
+  useEffect(() => {
+    document.title = "Register - Adventure Routes";
+  }, []);
 
   return (
     <Box

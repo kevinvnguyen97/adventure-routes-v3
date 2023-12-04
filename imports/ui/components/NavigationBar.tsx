@@ -18,11 +18,13 @@ import {
   PopoverBody,
   PopoverFooter,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { useMeteorAuth } from "../providers/Auth";
 import { Meteor } from "meteor/meteor";
 import { useNavigate } from "react-router-dom";
+import { TOAST_PRESET } from "/imports/constants/toast";
 
 const LINKS = ["Dashboard"];
 
@@ -50,9 +52,32 @@ const NavLink = (props: NavLinkProps) => {
 
 export const NavigationBar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   const { user, loggedIn } = useMeteorAuth();
   const navigate = useNavigate();
+  const toast = useToast();
+
+  const onLogout = () => {
+    Meteor.logout((error: Error | Meteor.Error | undefined) => {
+      console.log("ERROR:", error);
+      if (error) {
+        const meteorError = error as Meteor.Error;
+        console.error(meteorError);
+        toast({
+          ...TOAST_PRESET,
+          title: meteorError.name,
+          description: meteorError.message,
+          status: "error",
+        });
+      } else {
+        toast({
+          ...TOAST_PRESET,
+          title: "Success",
+          description: `${user?.username} logged out`,
+          status: "success",
+        });
+      }
+    });
+  };
 
   return (
     <Box bg="#fe9800" px={4} color="white">
@@ -108,7 +133,7 @@ export const NavigationBar = () => {
                 <Button key="Settings" onClick={() => navigate("/settings")}>
                   Settings
                 </Button>
-                <Button key="Logout" onClick={() => Meteor.logout()}>
+                <Button key="Logout" onClick={onLogout} colorScheme="red">
                   Logout
                 </Button>
               </PopoverFooter>

@@ -1,13 +1,18 @@
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { Box, Input, Image, Button, Link, useToast } from "@chakra-ui/react";
 import { Link as NavigationLink } from "react-router-dom";
 import { Meteor } from "meteor/meteor";
+import { TOAST_PRESET } from "/imports/constants/toast";
 
 export const Login = () => {
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const toast = useToast();
+
+  useEffect(() => {
+    document.title = "Login - Adventure Routes";
+  }, []);
 
   const submitLogin = (e: FormEvent) => {
     e.preventDefault();
@@ -18,18 +23,18 @@ export const Login = () => {
         if (error) {
           console.error(error);
           toast({
+            ...TOAST_PRESET,
             title: error.name,
             description: error.message,
             status: "error",
-            position: "top",
           });
         } else {
           const { username = "" } = Meteor.user() || {};
           toast({
+            ...TOAST_PRESET,
             title: "Success",
-            description: `Successfully logged in as ${username}`,
+            description: `Logged in as ${username}`,
             status: "success",
-            position: "top",
           });
         }
       }

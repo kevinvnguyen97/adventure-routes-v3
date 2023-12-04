@@ -23,6 +23,7 @@ import { Meteor } from "meteor/meteor";
 import { MultiSelect, useMultiSelect } from "chakra-multiselect";
 import { AdventureRoute } from "/imports/api/adventureRoutes";
 import { meteorMethodPromise } from "/imports/utils";
+import { TOAST_PRESET } from "/imports/constants/toast";
 
 export const MapFormModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -64,10 +65,10 @@ export const MapFormModal = () => {
       try {
         await meteorMethodPromise("upsertAdventureRoute", adventureRoute);
         toast({
+          ...TOAST_PRESET,
           title: "Success",
-          description: `Successfully created route ${name}`,
+          description: `Created route ${name}`,
           status: "success",
-          position: "top",
         });
         onClose();
       } catch (error) {
@@ -75,10 +76,10 @@ export const MapFormModal = () => {
           const meteorError = error as Meteor.Error;
           console.error(meteorError);
           toast({
+            ...TOAST_PRESET,
             title: meteorError.name,
             description: meteorError.message,
             status: "error",
-            position: "top",
           });
         }
       }
