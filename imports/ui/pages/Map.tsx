@@ -4,7 +4,7 @@ import {
   DirectionsService,
   DirectionsRenderer,
 } from "@react-google-maps/api";
-import { Box, Spinner } from "@chakra-ui/react";
+import { Box, Spinner, Text } from "@chakra-ui/react";
 import React, {
   useState,
   CSSProperties,
@@ -92,15 +92,22 @@ export const Map = () => {
   );
 
   useEffect(() => {
-    document.title = `${adventureRoute?.name} - Adventure Routes`;
+    document.title = `${
+      adventureRoute?.name ?? "Adventure Route Not Found"
+    } - Adventure Routes`;
   }, [adventureRoute?.name]);
 
   if (!isLoaded) {
     return <Spinner />;
   }
+  if (!adventureRoute) {
+    return <Text>Adventure route not found.</Text>;
+  }
   return (
-    <Box>
-      <AdventureRouteInfo adventureRoute={adventureRoute} />
+    <Box position="relative">
+      <Box position="absolute" left="179px" top="10px">
+        <AdventureRouteInfo adventureRoute={adventureRoute} />
+      </Box>
       <GoogleMap
         mapContainerStyle={MAP_CONTAINER_STYLE}
         onLoad={onLoad}

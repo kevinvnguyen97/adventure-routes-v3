@@ -59,11 +59,8 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
     <Box>
       <Button
         ref={adventureRouteInfoButtonRef}
-        position="absolute"
         zIndex={1}
         backgroundColor="white"
-        left="190px"
-        top="84px"
         borderRadius={2}
         borderLeftRadius={0}
         onClick={onDrawerOpen}

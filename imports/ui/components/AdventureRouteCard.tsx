@@ -54,10 +54,21 @@ export const AdventureRouteCard = (props: AdventureRouteCardProps) => {
     <Card
       onClick={() => navigate(`/map/${adventureRoute._id}`)}
       key={adventureRoute._id}
+      width={200}
+      bgColor="#f09000"
+      color="white"
+      _hover={{ cursor: "pointer" }}
     >
-      <CardHeader>{adventureRoute.name}</CardHeader>
-      <CloseButton onClick={deleteAdventureRoute} />
+      <CardHeader fontWeight="bold">{adventureRoute.name}</CardHeader>
+      <CloseButton
+        onClick={deleteAdventureRoute}
+        position="absolute"
+        right={0}
+        colorScheme="red"
+      />
       <CardBody>
+        <Text>{adventureRoute.description}</Text>
+        <Text>{adventureRoute.priceCategory}</Text>
         <Text>{adventureRoute.route.origin}</Text>
         {adventureRoute.route.waypoints?.map((waypoint) => (
           <Text key={waypoint}>{waypoint}</Text>

@@ -17,7 +17,6 @@ export const Dashboard = () => {
   return (
     <Box
       margin="auto"
-      width={400}
       paddingTop={5}
       display="flex"
       flexDirection="column"
@@ -29,9 +28,17 @@ export const Dashboard = () => {
         {username}'s Routes
       </Text>
       <MapFormModal />
-      {adventureRoutesForUser.map((adventureRoute) => (
-        <AdventureRouteCard adventureRoute={adventureRoute} />
-      ))}
+      <Box
+        display="flex"
+        flexDirection="row"
+        gap={3}
+        alignItems="center"
+        justifyContent="center"
+      >
+        {adventureRoutesForUser.map((adventureRoute) => (
+          <AdventureRouteCard adventureRoute={adventureRoute} />
+        ))}
+      </Box>
     </Box>
   );
 };

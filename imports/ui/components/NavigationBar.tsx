@@ -19,6 +19,7 @@ import {
   PopoverFooter,
   Text,
   useToast,
+  Stack,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { useMeteorAuth } from "../providers/Auth";
@@ -80,7 +81,7 @@ export const NavigationBar = () => {
   };
 
   return (
-    <Box bg="#fe9800" px={4} color="white">
+    <Box bg="#f09000" px={4} color="white">
       <Flex h={16} alignItems="center" justifyContent="space-between">
         <IconButton
           size="md"
@@ -120,9 +121,9 @@ export const NavigationBar = () => {
           <Popover>
             <PopoverTrigger>
               <Avatar
-                _hover={{ cursor: "pointer" }}
+                _hover={{ cursor: "pointer", backgroundColor: "orange.600" }}
                 as={Button}
-                colorScheme="orange"
+                bgColor="orange.500"
               />
             </PopoverTrigger>
             <PopoverContent color="black" shadow="base">
@@ -141,6 +142,29 @@ export const NavigationBar = () => {
           </Popover>
         </Flex>
       </Flex>
+
+      {isOpen && (
+        <Box pb={4} display={{ md: "none" }}>
+          <Stack as={"nav"} spacing={4}>
+            {LINKS.map((link) => (
+              <NavLink
+                key={link}
+                onClick={() => {
+                  switch (link) {
+                    case "Dashboard":
+                      navigate("/");
+                      break;
+                    default:
+                      break;
+                  }
+                }}
+              >
+                <Text>{link}</Text>
+              </NavLink>
+            ))}
+          </Stack>
+        </Box>
+      )}
     </Box>
   );
 };
