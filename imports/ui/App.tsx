@@ -7,6 +7,7 @@ import { Login } from "/imports/ui/pages/Login";
 import { Dashboard } from "/imports/ui/pages/Dashboard";
 import { Register } from "/imports/ui/pages/Register";
 import { Map } from "/imports/ui/pages/Map";
+import { Box } from "@chakra-ui/react";
 
 export const App = () => {
   useEffect(() => {
@@ -14,7 +15,7 @@ export const App = () => {
   }, []);
 
   return (
-    <>
+    <Box padding="10px">
       <NavigationBar />
       <Routes>
         <Route path="/">
@@ -53,6 +54,6 @@ export const App = () => {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
-    </>
+    </Box>
   );
 };
