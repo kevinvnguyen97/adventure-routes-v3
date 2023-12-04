@@ -114,7 +114,7 @@ export const MapFormModal = () => {
                 />
                 <FormErrorMessage>Route name is required</FormErrorMessage>
               </FormControl>
-              <FormControl isRequired isInvalid={!description}>
+              <FormControl>
                 <Textarea
                   placeholder="Description"
                   value={description}
@@ -123,7 +123,6 @@ export const MapFormModal = () => {
                   textColor="black"
                   focusBorderColor="orange.400"
                   errorBorderColor="red.500"
-                  required
                   as="textarea"
                 />
               </FormControl>
