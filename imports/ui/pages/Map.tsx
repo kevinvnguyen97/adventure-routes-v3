@@ -13,7 +13,7 @@ import { GOOGLE_SECRETS } from "/imports/constants";
 
 const MAP_CONTAINER_STYLE: CSSProperties = {
   width: "100%",
-  height: "calc(100vh - 64px)",
+  height: "calc(100vh - 84px)",
 };
 
 export const Map = () => {

@@ -15,6 +15,7 @@ import {
   FormControl,
   FormErrorMessage,
   InputGroup,
+  Textarea,
   Box,
 } from "@chakra-ui/react";
 import { useMeteorAuth } from "../providers/Auth";
@@ -62,21 +63,21 @@ export const MapFormModal = () => {
 
       try {
         await meteorMethodPromise("upsertAdventureRoute", adventureRoute);
-      } catch (e: any) {
-        if (e) {
-          const meteorError = e as Meteor.Error;
+        toast({
+          title: "Success",
+          description: `Successfully created route ${name}`,
+          status: "success",
+          position: "top",
+        });
+        onClose();
+      } catch (error) {
+        if (error) {
+          const meteorError = error as Meteor.Error;
           console.error(meteorError);
           toast({
             title: meteorError.name,
             description: meteorError.message,
             status: "error",
-            position: "top",
-          });
-        } else {
-          toast({
-            title: "Success",
-            description: `Successfully created route ${name}`,
-            status: "success",
             position: "top",
           });
         }
@@ -112,6 +113,19 @@ export const MapFormModal = () => {
                   required
                 />
                 <FormErrorMessage>Route name is required</FormErrorMessage>
+              </FormControl>
+              <FormControl isRequired isInvalid={!description}>
+                <Textarea
+                  placeholder="Description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  bgColor="white"
+                  textColor="black"
+                  focusBorderColor="orange.400"
+                  errorBorderColor="red.500"
+                  required
+                  as="textarea"
+                />
               </FormControl>
               <Select
                 placeholder="Select Price Category"
