@@ -1,5 +1,5 @@
 {
-  "name": "adventure-routes-v4",
+  "name": "adventure-routes-v3",
   "private": true,
   "scripts": {
     "start": "meteor run --settings .deploy/settings.json",

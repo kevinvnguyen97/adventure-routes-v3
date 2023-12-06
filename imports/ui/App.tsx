@@ -8,6 +8,7 @@ import { Dashboard } from "/imports/ui/pages/Dashboard";
 import { Register } from "/imports/ui/pages/Register";
 import { Map } from "/imports/ui/pages/Map";
 import { Box } from "@chakra-ui/react";
+import { Settings } from "/imports/ui/pages/Settings";
 
 export const App = () => {
   useEffect(() => {
@@ -32,6 +33,14 @@ export const App = () => {
             element={
               <RequireAuth>
                 <Map />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="settings"
+            element={
+              <RequireAuth>
+                <Settings />
               </RequireAuth>
             }
           />

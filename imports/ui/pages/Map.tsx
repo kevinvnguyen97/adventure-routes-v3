@@ -4,7 +4,7 @@ import {
   DirectionsService,
   DirectionsRenderer,
 } from "@react-google-maps/api";
-import { Box, Spinner, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import React, {
   useState,
   CSSProperties,
@@ -15,6 +15,7 @@ import React, {
 import { useParams } from "react-router-dom";
 import { useAdventureRoutesForUser } from "/imports/ui/providers/AdventureRoutes";
 import { AdventureRouteInfo } from "/imports/ui/components/AdventureRouteInfo";
+import { LoadingScreen } from "/imports/ui/components/LoadingScreen";
 import { GOOGLE_SECRETS } from "/imports/constants";
 
 const MAP_CONTAINER_STYLE: CSSProperties = {
@@ -98,7 +99,7 @@ export const Map = () => {
   }, [adventureRoute?.name]);
 
   if (!isLoaded) {
-    return <Spinner />;
+    return <LoadingScreen />;
   }
   if (!adventureRoute) {
     return <Text>Adventure route not found.</Text>;
