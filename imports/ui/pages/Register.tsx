@@ -25,10 +25,10 @@ export const Register = () => {
 
   const toast = useToast();
 
-  const submitRegister = (e: FormEvent) => {
+  const submitRegister = async (e: FormEvent) => {
     e.preventDefault();
 
-    Accounts.createUser(
+    await Accounts.createUserAsync(
       {
         username,
         password,

@@ -21,11 +21,14 @@ export const AdventureRoutesCollection = new Mongo.Collection<AdventureRoute>(
 );
 
 Meteor.methods({
-  upsertAdventureRoute: (adventureRoute: AdventureRoute) => {
+  upsertAdventureRoute: async (adventureRoute: AdventureRoute) => {
     const { _id, ...adventureRouteFields } = adventureRoute;
-    AdventureRoutesCollection.upsert({ _id }, { $set: adventureRouteFields });
+    await AdventureRoutesCollection.upsertAsync(
+      { _id },
+      { $set: adventureRouteFields }
+    );
   },
-  deleteAdventureRoute: (adventureRouteId: string) => {
-    AdventureRoutesCollection.remove({ _id: adventureRouteId });
+  deleteAdventureRoute: async (adventureRouteId: string) => {
+    await AdventureRoutesCollection.removeAsync({ _id: adventureRouteId });
   },
 });

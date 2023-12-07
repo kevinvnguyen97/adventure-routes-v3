@@ -34,10 +34,6 @@ export const Settings = () => {
 
   const userId = Meteor.userId() ?? "";
 
-  const changeUsername = () => {
-    Accounts.setUsername(userId, newUsernameInput);
-  };
-
   const changePassword = () => {
     Accounts.changePassword(
       oldPasswordInput,
@@ -98,7 +94,7 @@ export const Settings = () => {
                 <ChangeUsernameModal
                   newUsername={newUsernameInput}
                   setNewUsername={setNewUsernameInput}
-                  applyUsernameChange={changeUsername}
+                  applyUsernameChange={() => {}}
                 />
               </Td>
             </Tr>
