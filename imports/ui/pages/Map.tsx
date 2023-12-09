@@ -13,9 +13,9 @@ import React, {
   useEffect,
 } from "react";
 import { useParams } from "react-router-dom";
-import { useAdventureRoutesForUser } from "/imports/ui/providers/AdventureRoutes";
-import { AdventureRouteInfo } from "/imports/ui/components/AdventureRouteInfo";
-import { LoadingScreen } from "/imports/ui/components/LoadingScreen";
+
+import { useAdventureRoutesForUser } from "/imports/ui/providers";
+import { AdventureRouteInfo, LoadingScreen } from "/imports/ui/components";
 import { GOOGLE_SECRETS } from "/imports/constants";
 
 const MAP_CONTAINER_STYLE: CSSProperties = {
@@ -107,7 +107,10 @@ export const Map = () => {
   return (
     <Box position="relative">
       <Box position="absolute" left="179px" top="10px">
-        <AdventureRouteInfo adventureRoute={adventureRoute} />
+        <AdventureRouteInfo
+          adventureRoute={adventureRoute}
+          directions={directions}
+        />
       </Box>
       <GoogleMap
         mapContainerStyle={MAP_CONTAINER_STYLE}

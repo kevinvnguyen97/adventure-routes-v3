@@ -1,14 +1,10 @@
 import React, { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-
-import { NavigationBar } from "/imports/ui/components/NavigationBar";
-import { RequireNotAuth, RequireAuth } from "./providers/Auth";
-import { Login } from "/imports/ui/pages/Login";
-import { Dashboard } from "/imports/ui/pages/Dashboard";
-import { Register } from "/imports/ui/pages/Register";
-import { Map } from "/imports/ui/pages/Map";
 import { Box } from "@chakra-ui/react";
-import { Settings } from "/imports/ui/pages/Settings";
+
+import { NavigationBar } from "/imports/ui/components";
+import { RequireNotAuth, RequireAuth } from "/imports/ui/providers";
+import { Login, Dashboard, Register, Map, Settings } from "/imports/ui/pages";
 
 export const App = () => {
   useEffect(() => {

@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
 import { Box, Text } from "@chakra-ui/react";
-import { MapFormModal } from "../components/MapFormModal";
-import { useAdventureRoutesForUser } from "/imports/ui/providers/AdventureRoutes";
-import { useMeteorAuth } from "../providers/Auth";
-import { AdventureRouteCard } from "/imports/ui/components/AdventureRouteCard";
+
+import {
+  useAdventureRoutesForUser,
+  useMeteorAuth,
+} from "/imports/ui/providers";
+import { AdventureRouteCard, MapFormModal } from "/imports/ui/components";
 
 export const Dashboard = () => {
   const { data: adventureRoutesForUser } = useAdventureRoutesForUser();

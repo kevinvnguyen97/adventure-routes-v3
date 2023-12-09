@@ -16,14 +16,16 @@ import {
   DrawerOverlay,
   Textarea,
   InputGroup,
+  Text,
 } from "@chakra-ui/react";
 import { AdventureRoute } from "/imports/api/adventureRoutes";
 
 type AdventureRouteInfoProps = {
   adventureRoute?: AdventureRoute;
+  directions: google.maps.DirectionsResult | null;
 };
 export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
-  const { adventureRoute } = props;
+  const { adventureRoute, directions } = props;
   const {
     name,
     description: loadedDescription,
@@ -80,6 +82,10 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
           <DrawerCloseButton color="white" />
           <DrawerHeader textColor="white">{name}</DrawerHeader>
           <DrawerBody display="flex" flexDirection="column" gap={2}>
+            <Text color="white">{description}</Text>
+            <Text color="white">{priceCategory}</Text>
+            <Text color="white">Origin: {origin}</Text>
+            <Text color="white">Destination: {destination}</Text>
             <Textarea
               bgColor="white"
               placeholder="Description"

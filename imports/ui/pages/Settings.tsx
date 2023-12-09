@@ -12,12 +12,14 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
-import { useMeteorAuth } from "/imports/ui/providers/Auth";
 import { Accounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
 
-import { ChangePasswordModal } from "/imports/ui/components/ChangePasswordModal";
-import { ChangeUsernameModal } from "/imports/ui/components/ChangeUsernameModal";
+import {
+  ChangePasswordModal,
+  ChangeUsernameModal,
+} from "/imports/ui/components";
+import { useMeteorAuth } from "/imports/ui/providers";
 
 export const Settings = () => {
   const toast = useToast();

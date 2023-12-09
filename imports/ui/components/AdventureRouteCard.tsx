@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { AdventureRoute } from "/imports/api/adventureRoutes";
 import { meteorMethodPromise } from "/imports/utils";
 import { TOAST_PRESET } from "/imports/constants/toast";
-import { DeleteRouteModal } from "/imports/ui/components/DeleteRouteModal";
+import { DeleteRouteModal } from "/imports/ui/components";
 
 type AdventureRouteCardProps = {
   adventureRoute: AdventureRoute;
