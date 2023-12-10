@@ -46,12 +46,13 @@ export const Login = () => {
       display="flex"
       flexDirection="column"
       gap={5}
-      width={400}
+      width="100%"
+      maxWidth={400}
       paddingTop={5}
       margin="auto"
       alignItems="center"
     >
-      <Image src="/large_logo.png" width={500} height="auto" />
+      <Image src="/large_logo.png" width="100%" height="auto" />
       <form
         onSubmit={submitLogin}
         style={{
