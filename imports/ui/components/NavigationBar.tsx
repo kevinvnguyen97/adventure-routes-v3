@@ -146,22 +146,26 @@ export const NavigationBar = () => {
       {isOpen && (
         <Box pb={4} display={{ md: "none" }}>
           <Stack as={"nav"} spacing={4}>
-            {LINKS.map((link) => (
-              <NavLink
-                key={link}
-                onClick={() => {
-                  switch (link) {
-                    case "Dashboard":
-                      navigate("/");
-                      break;
-                    default:
-                      break;
-                  }
-                }}
-              >
-                <Text>{link}</Text>
-              </NavLink>
-            ))}
+            {loggedIn && (
+              <>
+                {LINKS.map((link) => (
+                  <NavLink
+                    key={link}
+                    onClick={() => {
+                      switch (link) {
+                        case "Dashboard":
+                          navigate("/");
+                          break;
+                        default:
+                          break;
+                      }
+                    }}
+                  >
+                    <Text>{link}</Text>
+                  </NavLink>
+                ))}
+              </>
+            )}
           </Stack>
         </Box>
       )}
