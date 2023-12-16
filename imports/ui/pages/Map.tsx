@@ -13,6 +13,7 @@ import React, {
   useEffect,
 } from "react";
 import { useParams } from "react-router-dom";
+import { motion } from "framer-motion";
 
 import { useAdventureRoutesForUser } from "/imports/ui/providers";
 import { AdventureRouteInfo, LoadingScreen } from "/imports/ui/components";
@@ -105,35 +106,41 @@ export const Map = () => {
     return <Text>Adventure route not found.</Text>;
   }
   return (
-    <Box position="relative">
-      <Box position="absolute" left="179px" top="10px">
-        <AdventureRouteInfo
-          adventureRoute={adventureRoute}
-          directions={directions}
-        />
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <Box position="relative">
+        <Box position="absolute" left="179px" top="10px">
+          <AdventureRouteInfo
+            adventureRoute={adventureRoute}
+            directions={directions}
+          />
+        </Box>
+        <GoogleMap
+          mapContainerStyle={MAP_CONTAINER_STYLE}
+          onLoad={onLoad}
+          onUnmount={onUnmount}
+        >
+          <DirectionsService
+            callback={directionsCallback}
+            onLoad={directionsOnLoad}
+            onUnmount={directionsUnmount}
+            options={{
+              origin,
+              waypoints: formattedWaypoints,
+              destination,
+              travelMode: google.maps.TravelMode.DRIVING,
+            }}
+          />
+          <DirectionsRenderer
+            options={{ directions }}
+            onLoad={directionsRendererOnLoad}
+            onUnmount={directionsRendererOnUnmount}
+          />
+        </GoogleMap>
       </Box>
-      <GoogleMap
-        mapContainerStyle={MAP_CONTAINER_STYLE}
-        onLoad={onLoad}
-        onUnmount={onUnmount}
-      >
-        <DirectionsService
-          callback={directionsCallback}
-          onLoad={directionsOnLoad}
-          onUnmount={directionsUnmount}
-          options={{
-            origin,
-            waypoints: formattedWaypoints,
-            destination,
-            travelMode: google.maps.TravelMode.DRIVING,
-          }}
-        />
-        <DirectionsRenderer
-          options={{ directions }}
-          onLoad={directionsRendererOnLoad}
-          onUnmount={directionsRendererOnUnmount}
-        />
-      </GoogleMap>
-    </Box>
+    </motion.div>
   );
 };

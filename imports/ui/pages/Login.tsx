@@ -1,7 +1,9 @@
 import React, { FormEvent, useEffect, useState } from "react";
+import { Meteor } from "meteor/meteor";
 import { Box, Input, Image, Button, Link, useToast } from "@chakra-ui/react";
 import { Link as NavigationLink } from "react-router-dom";
-import { Meteor } from "meteor/meteor";
+import { motion } from "framer-motion";
+
 import { TOAST_PRESET } from "/imports/constants/toast";
 
 export const Login = () => {
@@ -42,46 +44,52 @@ export const Login = () => {
   };
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      gap={5}
-      width="100%"
-      maxWidth={400}
-      paddingTop={5}
-      margin="auto"
-      alignItems="center"
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
     >
-      <Image src="/large_logo.png" width="100%" height="auto" />
-      <form
-        onSubmit={submitLogin}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "10px",
-          width: "100%",
-        }}
+      <Box
+        display="flex"
+        flexDirection="column"
+        gap={5}
+        width="100%"
+        maxWidth={400}
+        paddingTop={5}
+        margin="auto"
+        alignItems="center"
       >
-        <Input
-          placeholder="Username or Email"
-          backgroundColor="white"
-          value={usernameOrEmail}
-          onChange={(e) => setUsernameOrEmail(e.target.value)}
-        />
-        <Input
-          placeholder="Password"
-          type="password"
-          backgroundColor="white"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <Button type="submit" colorScheme="orange">
-          Login
-        </Button>
-      </form>
-      <Link as={NavigationLink} to="/register">
-        Register Here
-      </Link>
-    </Box>
+        <Image src="/large_logo.png" width="100%" height="auto" />
+        <form
+          onSubmit={submitLogin}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "10px",
+            width: "100%",
+          }}
+        >
+          <Input
+            placeholder="Username or Email"
+            backgroundColor="white"
+            value={usernameOrEmail}
+            onChange={(e) => setUsernameOrEmail(e.target.value)}
+          />
+          <Input
+            placeholder="Password"
+            type="password"
+            backgroundColor="white"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Button type="submit" colorScheme="orange">
+            Login
+          </Button>
+        </form>
+        <Link as={NavigationLink} to="/register">
+          Register Here
+        </Link>
+      </Box>
+    </motion.div>
   );
 };

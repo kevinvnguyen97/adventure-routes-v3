@@ -13,6 +13,8 @@ import { Link as NavigationLink } from "react-router-dom";
 import { Accounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
 import { isValidPhoneNumber, parsePhoneNumber } from "libphonenumber-js";
+import { motion } from "framer-motion";
+
 import { TOAST_PRESET } from "/imports/constants/toast";
 
 export const Register = () => {
@@ -65,81 +67,87 @@ export const Register = () => {
   }, []);
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      gap={5}
-      width="100%"
-      maxWidth={400}
-      paddingTop={5}
-      margin="auto"
-      alignItems="center"
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
     >
-      <Image src="/large_logo.png" width="100%" height="auto" />
-      <form
-        onSubmit={submitRegister}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "10px",
-          width: "100%",
-        }}
+      <Box
+        display="flex"
+        flexDirection="column"
+        gap={5}
+        width="100%"
+        maxWidth={400}
+        paddingTop={5}
+        margin="auto"
+        alignItems="center"
       >
-        <VStack>
-          <InputGroup gap={2}>
+        <Image src="/large_logo.png" width="100%" height="auto" />
+        <form
+          onSubmit={submitRegister}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "10px",
+            width: "100%",
+          }}
+        >
+          <VStack>
+            <InputGroup gap={2}>
+              <Input
+                placeholder="First Name"
+                backgroundColor="white"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+              <Input
+                placeholder="Last Name"
+                backgroundColor="white"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+            </InputGroup>
             <Input
-              placeholder="First Name"
+              placeholder="Username"
               backgroundColor="white"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
             <Input
-              placeholder="Last Name"
+              placeholder="Phone Number"
+              type="tel"
               backgroundColor="white"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
             />
-          </InputGroup>
-          <Input
-            placeholder="Username"
-            backgroundColor="white"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <Input
-            placeholder="Phone Number"
-            type="tel"
-            backgroundColor="white"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-          />
-          <Input
-            placeholder="Email"
-            type="email"
-            backgroundColor="white"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <Input
-            placeholder="Password"
-            type="password"
-            backgroundColor="white"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <Input
-            placeholder="Re-enter Password"
-            type="Password"
-            backgroundColor="white"
-          />
-          <Button type="submit" colorScheme="orange">
-            Register
-          </Button>
-        </VStack>
-      </form>
-      <Link as={NavigationLink} to="/login">
-        Login Here
-      </Link>
-    </Box>
+            <Input
+              placeholder="Email"
+              type="email"
+              backgroundColor="white"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Input
+              placeholder="Password"
+              type="password"
+              backgroundColor="white"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Input
+              placeholder="Re-enter Password"
+              type="Password"
+              backgroundColor="white"
+            />
+            <Button type="submit" colorScheme="orange">
+              Register
+            </Button>
+          </VStack>
+        </form>
+        <Link as={NavigationLink} to="/login">
+          Login Here
+        </Link>
+      </Box>
+    </motion.div>
   );
 };

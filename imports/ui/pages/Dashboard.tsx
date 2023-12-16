@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Box, Text } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 
 import {
   useAdventureRoutesForUser,
@@ -17,30 +18,36 @@ export const Dashboard = () => {
   }, []);
 
   return (
-    <Box
-      margin="auto"
-      paddingTop={5}
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      textAlign="center"
-      gap={2}
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
     >
-      <Text color="white" fontWeight="bold" fontSize={40}>
-        {username}'s Routes
-      </Text>
-      <MapFormModal />
       <Box
+        margin="auto"
+        paddingTop={5}
         display="flex"
-        flexDirection="row"
-        gap={3}
-        alignItems="center"
+        flexDirection="column"
         justifyContent="center"
+        textAlign="center"
+        gap={2}
       >
-        {adventureRoutesForUser.map((adventureRoute) => (
-          <AdventureRouteCard adventureRoute={adventureRoute} />
-        ))}
+        <Text color="white" fontWeight="bold" fontSize={40}>
+          {username}'s Routes
+        </Text>
+        <MapFormModal />
+        <Box
+          display="flex"
+          flexDirection="row"
+          gap={3}
+          alignItems="center"
+          justifyContent="center"
+        >
+          {adventureRoutesForUser.map((adventureRoute) => (
+            <AdventureRouteCard adventureRoute={adventureRoute} />
+          ))}
+        </Box>
       </Box>
-    </Box>
+    </motion.div>
   );
 };
