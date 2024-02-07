@@ -1,6 +1,9 @@
 import { Meteor } from "meteor/meteor";
 import { AdventureRoute } from "/imports/api/adventureRoutes";
 
+const VALID_EMAIL_REGEX =
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
 export async function meteorMethodPromise(
   name: "upsertAdventureRoute",
   adventureRoute: AdventureRoute
@@ -23,3 +26,5 @@ export async function meteorMethodPromise<TReturn, TArgs extends any[]>(
     });
   });
 }
+
+export const isValidEmail = (email: string) => VALID_EMAIL_REGEX.test(email);

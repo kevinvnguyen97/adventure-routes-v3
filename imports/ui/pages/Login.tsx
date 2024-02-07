@@ -1,6 +1,15 @@
 import React, { FormEvent, useEffect, useState } from "react";
 import { Meteor } from "meteor/meteor";
-import { Box, Input, Image, Button, Link, useToast } from "@chakra-ui/react";
+import {
+  Box,
+  Input,
+  Image,
+  Button,
+  Link,
+  useToast,
+  FormControl,
+  FormErrorMessage,
+} from "@chakra-ui/react";
 import { Link as NavigationLink } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -9,6 +18,8 @@ import { TOAST_PRESET } from "/imports/constants/toast";
 export const Login = () => {
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const isFormValid = [usernameOrEmail, password].every((field) => !!field);
 
   const toast = useToast();
 
@@ -69,24 +80,30 @@ export const Login = () => {
             width: "100%",
           }}
         >
-          <Input
-            placeholder="Username or Email"
-            backgroundColor="white"
-            value={usernameOrEmail}
-            onChange={(e) => setUsernameOrEmail(e.target.value)}
-          />
-          <Input
-            placeholder="Password"
-            type="password"
-            backgroundColor="white"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <Button type="submit" colorScheme="orange">
+          <FormControl isInvalid={!usernameOrEmail}>
+            <Input
+              placeholder="Username or Email"
+              backgroundColor="white"
+              value={usernameOrEmail}
+              onChange={(e) => setUsernameOrEmail(e.target.value)}
+            />
+            <FormErrorMessage>Username or email required</FormErrorMessage>
+          </FormControl>
+          <FormControl isInvalid={!password}>
+            <Input
+              placeholder="Password"
+              type="password"
+              backgroundColor="white"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <FormErrorMessage>Password required</FormErrorMessage>
+          </FormControl>
+          <Button type="submit" colorScheme="orange" isDisabled={!isFormValid}>
             Login
           </Button>
         </form>
-        <Link as={NavigationLink} to="/register">
+        <Link as={NavigationLink} to="/register" color="red">
           Register Here
         </Link>
       </Box>
