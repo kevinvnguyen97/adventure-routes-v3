@@ -8,6 +8,8 @@ import {
   Text,
   useToast,
   useDisclosure,
+  Box,
+  Image,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
@@ -55,30 +57,39 @@ export const AdventureRouteCard = (props: AdventureRouteCardProps) => {
       <Card
         onClick={() => navigate(`/map/${adventureRoute._id}`)}
         key={adventureRoute._id}
-        width={200}
+        width="100%"
         bgColor="#f09000"
         color="white"
         _hover={{ cursor: "pointer" }}
+        flexDirection="row"
       >
-        <CardHeader fontWeight="bold">{adventureRoute.name}</CardHeader>
-        <CloseButton
-          onClick={(e) => {
-            e.stopPropagation();
-            onOpen();
-          }}
-          position="absolute"
-          right={0}
-          colorScheme="red"
-        />
-        <CardBody>
-          <Text>{adventureRoute.description}</Text>
-          <Text>{adventureRoute.priceCategory}</Text>
-          <Text>{adventureRoute.route.origin}</Text>
-          {adventureRoute.route.waypoints?.map((waypoint) => (
-            <Text key={waypoint}>{waypoint}</Text>
-          ))}
-          <Text>{adventureRoute.route.destination}</Text>
-        </CardBody>
+        <Box>
+          <Image src="/small_logo.png" />
+        </Box>
+        <Box>
+          <CardHeader fontWeight="bold" textAlign="start">
+            {adventureRoute.name}
+          </CardHeader>
+          <CloseButton
+            onClick={(e) => {
+              e.stopPropagation();
+              onOpen();
+            }}
+            position="absolute"
+            right={0}
+            top={0}
+            colorScheme="red"
+          />
+          <CardBody textAlign="start">
+            <Text>{adventureRoute.description}</Text>
+            <Text>{adventureRoute.priceCategory}</Text>
+            <Text>Start: {adventureRoute.route.origin}</Text>
+            {adventureRoute.route.waypoints?.map((waypoint) => (
+              <Text key={waypoint}>{waypoint}</Text>
+            ))}
+            <Text>End: {adventureRoute.route.destination}</Text>
+          </CardBody>
+        </Box>
       </Card>
       <DeleteRouteModal
         isOpen={isOpen}

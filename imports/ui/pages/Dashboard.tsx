@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text, SimpleGrid } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 
 import {
@@ -36,17 +36,11 @@ export const Dashboard = () => {
           {username}'s Routes
         </Text>
         <MapFormModal />
-        <Box
-          display="flex"
-          flexDirection="row"
-          gap={3}
-          alignItems="center"
-          justifyContent="center"
-        >
+        <SimpleGrid columnGap={3} rowGap={3} minChildWidth={350}>
           {adventureRoutesForUser.map((adventureRoute) => (
             <AdventureRouteCard adventureRoute={adventureRoute} />
           ))}
-        </Box>
+        </SimpleGrid>
       </Box>
     </motion.div>
   );
