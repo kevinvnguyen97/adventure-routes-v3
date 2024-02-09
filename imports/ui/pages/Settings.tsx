@@ -77,10 +77,10 @@ export const Settings = () => {
           });
         } else {
           toast({
+            ...TOAST_PRESET,
             title: "Success",
             description: "Password successfully changed",
             status: "success",
-            position: "top",
           });
         }
       }
