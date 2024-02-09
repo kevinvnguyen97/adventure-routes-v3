@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   FormControl,
+  FormErrorMessage,
   Input,
   Modal,
   ModalBody,
@@ -14,6 +15,8 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import React, { FormEvent } from "react";
+
+import { MINIMUM_PASSWORD_LENGTH } from "/imports/constants";
 
 type ChangePasswordModalProps = {
   oldPassword: string;
@@ -38,11 +41,22 @@ export const ChangePasswordModal = (props: ChangePasswordModalProps) => {
 
   const isFormValid = [
     !!oldPassword,
-    oldPassword.length > 8,
+    oldPassword.length >= MINIMUM_PASSWORD_LENGTH,
     !!newPassword,
-    newPassword.length > 8,
+    newPassword.length >= MINIMUM_PASSWORD_LENGTH,
     newPassword === newPasswordReentry,
+    oldPassword !== newPassword,
   ].every((criteria) => !!criteria);
+
+  const newPasswordMessage = () => {
+    if (!newPassword) {
+      return "New password required";
+    } else if (newPassword.length < MINIMUM_PASSWORD_LENGTH) {
+      return `Password must be at least ${MINIMUM_PASSWORD_LENGTH} characters long`;
+    } else if (oldPassword === newPassword) {
+      return "New password must be unique the old password";
+    }
+  };
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -82,8 +96,16 @@ export const ChangePasswordModal = (props: ChangePasswordModalProps) => {
                   errorBorderColor="red.500"
                   required
                 />
+                <FormErrorMessage>Old password required</FormErrorMessage>
               </FormControl>
-              <FormControl isRequired isInvalid={!newPassword}>
+              <FormControl
+                isRequired
+                isInvalid={
+                  !newPassword ||
+                  oldPassword === newPassword ||
+                  newPassword.length < MINIMUM_PASSWORD_LENGTH
+                }
+              >
                 <Input
                   placeholder="New Password"
                   type="password"
@@ -95,8 +117,14 @@ export const ChangePasswordModal = (props: ChangePasswordModalProps) => {
                   errorBorderColor="red.500"
                   required
                 />
+                <FormErrorMessage>{newPasswordMessage()}</FormErrorMessage>
               </FormControl>
-              <FormControl isRequired isInvalid={!newPasswordReentry}>
+              <FormControl
+                isRequired
+                isInvalid={
+                  !newPasswordReentry || newPassword !== newPasswordReentry
+                }
+              >
                 <Input
                   placeholder="Re-enter New Password"
                   type="password"
@@ -108,6 +136,11 @@ export const ChangePasswordModal = (props: ChangePasswordModalProps) => {
                   errorBorderColor="red.500"
                   required
                 />
+                <FormErrorMessage>
+                  {!newPasswordReentry
+                    ? "Password re-entry required"
+                    : "Password re-entry must match new password"}
+                </FormErrorMessage>
               </FormControl>
             </form>
           </ModalBody>

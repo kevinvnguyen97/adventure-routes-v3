@@ -18,10 +18,11 @@ import { isValidPhoneNumber, parsePhoneNumber } from "libphonenumber-js";
 import { motion } from "framer-motion";
 
 import { TOAST_PRESET } from "/imports/constants/toast";
+import {
+  MINIMUM_PASSWORD_LENGTH,
+  MINIMUM_USERNAME_LENGTH,
+} from "/imports/constants";
 import { isValidEmail } from "/imports/utils";
-
-const MINIMUM_PASSWORD_LENGTH = 8;
-const MINIMUM_USERNAME_LENGTH = 8;
 
 export const Register = () => {
   const [firstName, setFirstName] = useState("");
@@ -45,7 +46,7 @@ export const Register = () => {
     password === passwordReentry,
     phoneNumber,
     isValidPhoneNumber(phoneNumber, "US"),
-  ].every((field) => !!field);
+  ].every((criteria) => !!criteria);
 
   console.log(isFormValid);
 
@@ -53,6 +54,7 @@ export const Register = () => {
 
   const submitRegister = async (e: FormEvent) => {
     e.preventDefault();
+    e.stopPropagation();
 
     if (!isFormValid) {
       toast({
@@ -64,7 +66,7 @@ export const Register = () => {
       return;
     }
 
-    await Accounts.createUserAsync(
+    Accounts.createUser(
       {
         username,
         password,
@@ -233,7 +235,7 @@ export const Register = () => {
           </VStack>
         </form>
         <Link as={NavigationLink} to="/login" color="red">
-          Login Here
+          Already have an account? Login here
         </Link>
       </Box>
     </motion.div>

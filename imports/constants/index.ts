@@ -10,3 +10,5 @@ interface GoogleSecret {
   };
 }
 export const GOOGLE_SECRETS = Meteor.settings as unknown as GoogleSecret;
+export const MINIMUM_PASSWORD_LENGTH = 8;
+export const MINIMUM_USERNAME_LENGTH = 8;

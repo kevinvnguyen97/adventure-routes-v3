@@ -19,7 +19,9 @@ export const Login = () => {
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const isFormValid = [usernameOrEmail, password].every((field) => !!field);
+  const isFormValid = [usernameOrEmail, password].every(
+    (criteria) => !!criteria
+  );
 
   const toast = useToast();
 
@@ -104,7 +106,7 @@ export const Login = () => {
           </Button>
         </form>
         <Link as={NavigationLink} to="/register" color="red">
-          Register Here
+          Don't have an account? Register here
         </Link>
       </Box>
     </motion.div>

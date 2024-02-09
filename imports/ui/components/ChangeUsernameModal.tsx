@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   FormControl,
+  FormErrorMessage,
   IconButton,
   Input,
   Modal,
@@ -15,6 +16,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import React, { FormEvent } from "react";
+import { MINIMUM_USERNAME_LENGTH } from "/imports/constants";
 
 type ChangeUsernameModalProps = {
   newUsername: string;
@@ -47,15 +49,20 @@ export const ChangeUsernameModal = (props: ChangeUsernameModalProps) => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent backgroundColor="orange" textColor="white">
-          <ModalHeader>Change Password</ModalHeader>
+          <ModalHeader>Change Username</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <form
               onSubmit={handleFormSubmit}
-              id="change-password-form"
+              id="change-username-form"
               style={{ display: "flex", flexDirection: "column", gap: "10px" }}
             >
-              <FormControl isRequired isInvalid={!newUsername}>
+              <FormControl
+                isRequired
+                isInvalid={
+                  !newUsername || newUsername.length < MINIMUM_USERNAME_LENGTH
+                }
+              >
                 <Input
                   placeholder="New Username"
                   value={newUsername}
@@ -66,6 +73,11 @@ export const ChangeUsernameModal = (props: ChangeUsernameModalProps) => {
                   errorBorderColor="red.500"
                   required
                 />
+                <FormErrorMessage>
+                  {!newUsername
+                    ? "Username required"
+                    : `Username must be at least ${MINIMUM_USERNAME_LENGTH} characters long`}
+                </FormErrorMessage>
               </FormControl>
             </form>
           </ModalBody>
@@ -73,7 +85,7 @@ export const ChangeUsernameModal = (props: ChangeUsernameModalProps) => {
             <Button
               colorScheme="blue"
               type="submit"
-              form="change-password-form"
+              form="change-username-form"
               disabled={!isFormValid}
             >
               Apply Changes

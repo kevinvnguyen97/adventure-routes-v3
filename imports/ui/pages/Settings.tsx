@@ -21,6 +21,8 @@ import {
   ChangeUsernameModal,
 } from "/imports/ui/components";
 import { useMeteorAuth } from "/imports/ui/providers";
+import { meteorMethodPromise } from "/imports/utils";
+import { TOAST_PRESET } from "/imports/constants/toast";
 
 export const Settings = () => {
   const toast = useToast();
@@ -37,6 +39,29 @@ export const Settings = () => {
 
   const userId = Meteor.userId() ?? "";
 
+  const changeUsername = async () => {
+    try {
+      await meteorMethodPromise("changeUsername", newUsernameInput);
+      toast({
+        ...TOAST_PRESET,
+        title: "Success",
+        description: `Username changed successfully to ${newUsernameInput}`,
+        status: "success",
+      });
+    } catch (error) {
+      if (error) {
+        const meteorError = error as Meteor.Error;
+        console.error(meteorError);
+        toast({
+          ...TOAST_PRESET,
+          title: meteorError.name,
+          description: meteorError.message,
+          status: "error",
+        });
+      }
+    }
+  };
+
   const changePassword = () => {
     Accounts.changePassword(
       oldPasswordInput,
@@ -45,10 +70,10 @@ export const Settings = () => {
         if (error) {
           console.error(error);
           toast({
+            ...TOAST_PRESET,
             title: error.name,
             description: error.message,
             status: "error",
-            position: "top",
           });
         } else {
           toast({
@@ -102,7 +127,7 @@ export const Settings = () => {
                   <ChangeUsernameModal
                     newUsername={newUsernameInput}
                     setNewUsername={setNewUsernameInput}
-                    applyUsernameChange={() => {}}
+                    applyUsernameChange={changeUsername}
                   />
                 </Td>
               </Tr>

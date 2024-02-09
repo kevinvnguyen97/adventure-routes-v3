@@ -1,3 +1,4 @@
+import { Accounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
 import { Mongo } from "meteor/mongo";
 
@@ -30,5 +31,9 @@ Meteor.methods({
   },
   deleteAdventureRoute: async (adventureRouteId: string) => {
     await AdventureRoutesCollection.removeAsync({ _id: adventureRouteId });
+  },
+  changeUsername: (newUsername: string) => {
+    const userId = Meteor.userId() ?? "";
+    Accounts.setUsername(userId, newUsername);
   },
 });
