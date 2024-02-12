@@ -82,9 +82,17 @@ export const Map = () => {
               description: "Route cannot be rendered",
               status: "error",
             });
+            onTravelModeChange("DRIVING" as google.maps.TravelMode);
+            break;
+          case "NOT_FOUND":
+            toast({
+              ...TOAST_PRESET,
+              title: "Not found",
+              description: "At least one waypoint is not found",
+              status: "error",
+            });
             break;
         }
-        onTravelModeChange("DRIVING" as google.maps.TravelMode);
       }
       renderCount.current++;
     },

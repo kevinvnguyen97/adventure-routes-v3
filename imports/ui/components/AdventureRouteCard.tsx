@@ -10,20 +10,31 @@ import {
   useDisclosure,
   Box,
   Image,
+  IconButton,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 import { AdventureRoute } from "/imports/api/adventureRoutes";
 import { meteorMethodPromise } from "/imports/utils";
 import { TOAST_PRESET } from "/imports/constants/toast";
-import { DeleteRouteModal } from "/imports/ui/components";
+import { DeleteRouteModal, MapFormModal } from "/imports/ui/components";
+import { EditIcon } from "@chakra-ui/icons";
 
 type AdventureRouteCardProps = {
   adventureRoute: AdventureRoute;
 };
 export const AdventureRouteCard = (props: AdventureRouteCardProps) => {
   const { adventureRoute } = props;
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isDeleteRouteModalOpen,
+    onOpen: onDeleteRouteModalOpen,
+    onClose: onDeleteRouteModalClose,
+  } = useDisclosure();
+  const {
+    isOpen: isEditMapModalOpen,
+    onOpen: onEditMapModalOpen,
+    onClose: onEditMapModalClose,
+  } = useDisclosure();
   const navigate = useNavigate();
   const toast = useToast();
 
@@ -75,10 +86,24 @@ export const AdventureRouteCard = (props: AdventureRouteCardProps) => {
           <CardHeader fontWeight="bold" textAlign="start">
             {adventureRoute.name}
           </CardHeader>
+          <IconButton
+            aria-label="edit-adventure-route"
+            icon={<EditIcon />}
+            size="sm"
+            colorScheme="transparent"
+            _hover={{ bgColor: "orange.500" }}
+            position="absolute"
+            right={8}
+            top={0}
+            onClick={(e) => {
+              e.stopPropagation();
+              onEditMapModalOpen();
+            }}
+          />
           <CloseButton
             onClick={(e) => {
               e.stopPropagation();
-              onOpen();
+              onDeleteRouteModalOpen();
             }}
             position="absolute"
             right={0}
@@ -99,9 +124,14 @@ export const AdventureRouteCard = (props: AdventureRouteCardProps) => {
           </CardBody>
         </Box>
       </Card>
+      <MapFormModal
+        isOpen={isEditMapModalOpen}
+        onClose={onEditMapModalClose}
+        adventureRoute={adventureRoute}
+      />
       <DeleteRouteModal
-        isOpen={isOpen}
-        onClose={onClose}
+        isOpen={isDeleteRouteModalOpen}
+        onClose={onDeleteRouteModalClose}
         deleteAdventureRoute={deleteAdventureRoute}
       />
     </>
