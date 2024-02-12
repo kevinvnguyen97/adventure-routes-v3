@@ -4,7 +4,7 @@ import {
   DirectionsService,
   DirectionsRenderer,
 } from "@react-google-maps/api";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text, useToast } from "@chakra-ui/react";
 import React, {
   useState,
   CSSProperties,
@@ -18,6 +18,7 @@ import { motion } from "framer-motion";
 import { useAdventureRoutesForUser } from "/imports/ui/providers";
 import { AdventureRouteInfo, LoadingScreen } from "/imports/ui/components";
 import { GOOGLE_SECRETS } from "/imports/constants";
+import { TOAST_PRESET } from "/imports/constants/toast";
 
 const MAP_CONTAINER_STYLE: CSSProperties = {
   width: "100%",
@@ -29,6 +30,7 @@ export const Map = () => {
     id: "google-map-script",
     googleMapsApiKey: GOOGLE_SECRETS.public.oauth.googleMapsApiKey,
   });
+  const toast = useToast();
   const { id } = useParams();
   const { data: adventureRoutes } = useAdventureRoutesForUser();
   const adventureRoute = adventureRoutes.find(({ _id }) => id === _id);
@@ -44,6 +46,14 @@ export const Map = () => {
 
   const [directions, setDirections] =
     useState<google.maps.DirectionsResult | null>(null);
+  const [travelMode, setTravelMode] = useState<google.maps.TravelMode>(
+    "DRIVING" as google.maps.TravelMode
+  );
+
+  const onTravelModeChange = (newTravelMode: google.maps.TravelMode) => {
+    setTravelMode(newTravelMode);
+    renderCount.current = 0;
+  };
 
   const onLoad = useCallback((map: google.maps.Map) => {
     console.log("MAP:", map);
@@ -62,9 +72,21 @@ export const Map = () => {
         status === google.maps.DirectionsStatus.OK &&
         renderCount.current === 0
       ) {
-        renderCount.current++;
         setDirections(result);
+      } else {
+        switch (status) {
+          case "INVALID_REQUEST":
+            toast({
+              ...TOAST_PRESET,
+              title: "Invalid request",
+              description: "Route cannot be rendered",
+              status: "error",
+            });
+            break;
+        }
+        onTravelModeChange("DRIVING" as google.maps.TravelMode);
       }
+      renderCount.current++;
     },
     []
   );
@@ -103,7 +125,7 @@ export const Map = () => {
     return <LoadingScreen />;
   }
   if (!adventureRoute) {
-    return <Text>Adventure route not found.</Text>;
+    return <Text>Adventure route not found</Text>;
   }
   return (
     <motion.div
@@ -111,36 +133,36 @@ export const Map = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <Box position="relative">
+      <GoogleMap
+        mapContainerStyle={MAP_CONTAINER_STYLE}
+        onLoad={onLoad}
+        onUnmount={onUnmount}
+      >
         <Box position="absolute" left="179px" top="10px">
           <AdventureRouteInfo
             adventureRoute={adventureRoute}
             directions={directions}
+            travelMode={travelMode}
+            setTravelMode={onTravelModeChange}
           />
         </Box>
-        <GoogleMap
-          mapContainerStyle={MAP_CONTAINER_STYLE}
-          onLoad={onLoad}
-          onUnmount={onUnmount}
-        >
-          <DirectionsService
-            callback={directionsCallback}
-            onLoad={directionsOnLoad}
-            onUnmount={directionsUnmount}
-            options={{
-              origin,
-              waypoints: formattedWaypoints,
-              destination,
-              travelMode: google.maps.TravelMode.DRIVING,
-            }}
-          />
-          <DirectionsRenderer
-            options={{ directions }}
-            onLoad={directionsRendererOnLoad}
-            onUnmount={directionsRendererOnUnmount}
-          />
-        </GoogleMap>
-      </Box>
+        <DirectionsService
+          callback={directionsCallback}
+          onLoad={directionsOnLoad}
+          onUnmount={directionsUnmount}
+          options={{
+            origin,
+            waypoints: formattedWaypoints,
+            destination,
+            travelMode,
+          }}
+        />
+        <DirectionsRenderer
+          options={{ directions }}
+          onLoad={directionsRendererOnLoad}
+          onUnmount={directionsRendererOnUnmount}
+        />
+      </GoogleMap>
     </motion.div>
   );
 };

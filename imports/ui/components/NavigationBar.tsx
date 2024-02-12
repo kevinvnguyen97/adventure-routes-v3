@@ -15,7 +15,6 @@ import {
   PopoverContent,
   PopoverArrow,
   PopoverHeader,
-  PopoverBody,
   PopoverFooter,
   Text,
   useToast,
@@ -124,13 +123,14 @@ export const NavigationBar = () => {
                 _hover={{ cursor: "pointer", backgroundColor: "orange.600" }}
                 as={Button}
                 bgColor="orange.500"
+                isDisabled={!loggedIn}
               />
             </PopoverTrigger>
             <PopoverContent color="black" shadow="base">
               <PopoverArrow />
               <PopoverHeader fontWeight="bold">{user?.username}</PopoverHeader>
-              <PopoverBody></PopoverBody>
-              <PopoverFooter>
+              {/* <PopoverBody></PopoverBody> */}
+              <PopoverFooter display="flex" gap={3}>
                 <Button key="Settings" onClick={() => navigate("/settings")}>
                   Settings
                 </Button>

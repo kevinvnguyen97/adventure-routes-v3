@@ -64,7 +64,12 @@ export const AdventureRouteCard = (props: AdventureRouteCardProps) => {
         flexDirection="row"
       >
         <Box>
-          <Image src="/small_logo.png" />
+          <Image
+            src="/small_logo.png"
+            minWidth={100}
+            maxWidth={100}
+            height="auto"
+          />
         </Box>
         <Box>
           <CardHeader fontWeight="bold" textAlign="start">
@@ -82,7 +87,10 @@ export const AdventureRouteCard = (props: AdventureRouteCardProps) => {
           />
           <CardBody textAlign="start">
             <Text>{adventureRoute.description}</Text>
-            <Text>{adventureRoute.priceCategory}</Text>
+            <Text>_</Text>
+            <Text>
+              {[...Array(adventureRoute.priceCategory)].map(() => "$")}
+            </Text>
             <Text>Start: {adventureRoute.route.origin}</Text>
             {adventureRoute.route.waypoints?.map((waypoint) => (
               <Text key={waypoint}>{waypoint}</Text>

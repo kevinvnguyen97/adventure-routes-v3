@@ -28,7 +28,7 @@ export const Settings = () => {
   const toast = useToast();
   const { user } = useMeteorAuth();
 
-  const { username, emails = [], profile } = user || {};
+  const { username = "", emails = [], profile } = user || {};
   const { firstName, lastName, phoneNumber } = profile || {};
 
   const [oldPasswordInput, setOldPasswordInput] = useState("");
@@ -37,15 +37,13 @@ export const Settings = () => {
 
   const [newUsernameInput, setNewUsernameInput] = useState("");
 
-  const userId = Meteor.userId() ?? "";
-
   const changeUsername = async () => {
     try {
       await meteorMethodPromise("changeUsername", newUsernameInput);
       toast({
         ...TOAST_PRESET,
         title: "Success",
-        description: `Username changed successfully to ${newUsernameInput}`,
+        description: `Username successfully changed to ${newUsernameInput}`,
         status: "success",
       });
     } catch (error) {
@@ -125,6 +123,7 @@ export const Settings = () => {
                 <Td display="flex" justifyContent="space-between">
                   <Text>{username}</Text>
                   <ChangeUsernameModal
+                    oldUsername={username}
                     newUsername={newUsernameInput}
                     setNewUsername={setNewUsernameInput}
                     applyUsernameChange={changeUsername}

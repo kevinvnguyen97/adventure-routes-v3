@@ -19,15 +19,21 @@ import React, { FormEvent } from "react";
 import { MINIMUM_USERNAME_LENGTH } from "/imports/constants";
 
 type ChangeUsernameModalProps = {
+  oldUsername: string;
   newUsername: string;
   setNewUsername: (newUsername: string) => void;
   applyUsernameChange: () => void;
 };
 export const ChangeUsernameModal = (props: ChangeUsernameModalProps) => {
-  const { newUsername, setNewUsername, applyUsernameChange } = props;
+  const { oldUsername, newUsername, setNewUsername, applyUsernameChange } =
+    props;
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const isFormValid = [!!newUsername].every((criteria) => !!criteria);
+  const isFormValid = [
+    !!newUsername,
+    newUsername.length >= MINIMUM_USERNAME_LENGTH,
+    oldUsername !== newUsername,
+  ].every((criteria) => !!criteria);
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -35,6 +41,16 @@ export const ChangeUsernameModal = (props: ChangeUsernameModalProps) => {
       applyUsernameChange();
       setNewUsername("");
       onClose();
+    }
+  };
+
+  const usernameErrorMessage = () => {
+    if (!newUsername) {
+      return "Username required";
+    } else if (newUsername.length < MINIMUM_USERNAME_LENGTH) {
+      return `Username must be at least ${MINIMUM_USERNAME_LENGTH} characters long`;
+    } else if (oldUsername === newUsername) {
+      return "Username input must not be the current username";
     }
   };
 
@@ -60,7 +76,9 @@ export const ChangeUsernameModal = (props: ChangeUsernameModalProps) => {
               <FormControl
                 isRequired
                 isInvalid={
-                  !newUsername || newUsername.length < MINIMUM_USERNAME_LENGTH
+                  !newUsername ||
+                  newUsername.length < MINIMUM_USERNAME_LENGTH ||
+                  oldUsername === newUsername
                 }
               >
                 <Input
@@ -73,11 +91,7 @@ export const ChangeUsernameModal = (props: ChangeUsernameModalProps) => {
                   errorBorderColor="red.500"
                   required
                 />
-                <FormErrorMessage>
-                  {!newUsername
-                    ? "Username required"
-                    : `Username must be at least ${MINIMUM_USERNAME_LENGTH} characters long`}
-                </FormErrorMessage>
+                <FormErrorMessage>{usernameErrorMessage()}</FormErrorMessage>
               </FormControl>
             </form>
           </ModalBody>
@@ -86,7 +100,7 @@ export const ChangeUsernameModal = (props: ChangeUsernameModalProps) => {
               colorScheme="blue"
               type="submit"
               form="change-username-form"
-              disabled={!isFormValid}
+              isDisabled={!isFormValid}
             >
               Apply Changes
             </Button>

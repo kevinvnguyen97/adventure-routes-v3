@@ -6,16 +6,25 @@ import {
   useAdventureRoutesForUser,
   useMeteorAuth,
 } from "/imports/ui/providers";
-import { AdventureRouteCard, MapFormModal } from "/imports/ui/components";
+import {
+  AdventureRouteCard,
+  LoadingScreen,
+  MapFormModal,
+} from "/imports/ui/components";
 
 export const Dashboard = () => {
-  const { data: adventureRoutesForUser } = useAdventureRoutesForUser();
+  const { data: adventureRoutesForUser, isLoading } =
+    useAdventureRoutesForUser();
   const { user } = useMeteorAuth();
   const { username } = user || {};
 
   useEffect(() => {
     document.title = "Dashboard - Adventure Routes";
   }, []);
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <motion.div
@@ -38,7 +47,10 @@ export const Dashboard = () => {
         <MapFormModal />
         <SimpleGrid columnGap={3} rowGap={3} minChildWidth={350}>
           {adventureRoutesForUser.map((adventureRoute) => (
-            <AdventureRouteCard adventureRoute={adventureRoute} />
+            <AdventureRouteCard
+              adventureRoute={adventureRoute}
+              key={adventureRoute._id}
+            />
           ))}
         </SimpleGrid>
       </Box>

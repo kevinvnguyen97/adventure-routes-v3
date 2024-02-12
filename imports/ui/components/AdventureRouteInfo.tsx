@@ -1,4 +1,4 @@
-import React, { createRef, useEffect, useState } from "react";
+import React, { createRef } from "react";
 import {
   Button,
   Drawer,
@@ -9,34 +9,34 @@ import {
   DrawerFooter,
   Box,
   useDisclosure,
-  Select,
-  FormControl,
-  Input,
-  FormErrorMessage,
   DrawerOverlay,
-  Textarea,
-  InputGroup,
+  Tabs,
+  Tab,
+  TabList,
+  TabPanels,
+  TabPanel,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  Select,
   Text,
 } from "@chakra-ui/react";
 import { AdventureRoute } from "/imports/api/adventureRoutes";
+import { Color, humanReadableTravelMode } from "/imports/constants";
 
 type AdventureRouteInfoProps = {
   adventureRoute?: AdventureRoute;
   directions: google.maps.DirectionsResult | null;
+  travelMode: google.maps.TravelMode;
+  setTravelMode: (travelMode: google.maps.TravelMode) => void;
 };
 export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
-  const { adventureRoute, directions } = props;
-  const {
-    name,
-    description: loadedDescription,
-    priceCategory: loadedPriceCategory,
-    route,
-  } = adventureRoute || {};
-  const {
-    origin: loadedOrigin = "",
-    waypoints: loadedWaypoints = [],
-    destination: loadedDestination = "",
-  } = route || {};
+  const { adventureRoute, directions, travelMode, setTravelMode } = props;
+  const { name } = adventureRoute || {};
+  const { routes } = directions || {};
+  const generatedPath = routes?.[0];
+  const { legs } = generatedPath || {};
   const adventureRouteInfoButtonRef = createRef<HTMLButtonElement>();
   const {
     isOpen: isDrawerOpen,
@@ -44,19 +44,6 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
     onClose: onDrawerClose,
   } = useDisclosure();
 
-  const [description, setDescription] = useState("");
-  const [priceCategory, setPriceCategory] = useState(0);
-  const [origin, setOrigin] = useState("");
-  const [waypoints, setWaypoints] = useState<string[]>([""]);
-  const [destination, setDestination] = useState("");
-
-  useEffect(() => {
-    setDescription(loadedDescription ?? "");
-    setPriceCategory(loadedPriceCategory ?? 0);
-    setOrigin(loadedOrigin ?? "");
-    setWaypoints(loadedWaypoints.length > 0 ? loadedWaypoints : [""]);
-    setDestination(loadedDestination ?? "");
-  }, [adventureRoute]);
   return (
     <Box>
       <Button
@@ -81,91 +68,92 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
         <DrawerContent bgColor="orange" color="black">
           <DrawerCloseButton color="white" />
           <DrawerHeader textColor="white">{name}</DrawerHeader>
-          <DrawerBody display="flex" flexDirection="column" gap={2}>
-            <Text color="white">{description}</Text>
-            <Text color="white">{priceCategory}</Text>
-            <Text color="white">Origin: {origin}</Text>
-            <Text color="white">Destination: {destination}</Text>
-            <Textarea
-              bgColor="white"
-              placeholder="Description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-            <Select
-              placeholder="Select Price Category"
-              value={priceCategory}
-              onChange={(e) => setPriceCategory(parseInt(e.target.value))}
-              bgColor="white"
-            >
-              <option value={0}>Free</option>
-              <option value={1}>$</option>
-              <option value={2}>$$</option>
-              <option value={3}>$$$</option>
-            </Select>
-            <FormControl isRequired isInvalid={!origin}>
-              <Input
-                placeholder="Origin"
-                value={origin}
-                onChange={(e) => setOrigin(e.target.value)}
-                backgroundColor="white"
-                textColor="black"
-                focusBorderColor="orange.400"
-                errorBorderColor="red.500"
-              />
-              <FormErrorMessage>Origin is required</FormErrorMessage>
-            </FormControl>
-            {waypoints.map((waypoint, i) => {
-              return (
-                <InputGroup key={`waypoint${i}`}>
-                  <Input
-                    placeholder={`Waypoint ${i + 1}`}
-                    value={waypoint}
-                    onChange={(e) => {
-                      const updatedWaypoints = waypoints.map(
-                        (existingWaypoint, waypointIndexToUpdate) =>
-                          i === waypointIndexToUpdate
-                            ? e.target.value
-                            : existingWaypoint
-                      );
-                      setWaypoints(updatedWaypoints);
-                    }}
-                    backgroundColor="white"
-                    textColor="black"
+          <DrawerBody>
+            <Tabs variant="solid-rounded" colorScheme="orange" defaultIndex={1}>
+              <TabList>
+                <Tab color="white">Journal</Tab>
+                <Tab color="white">Directions</Tab>
+                <Tab color="white">Settings</Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel></TabPanel>
+                <TabPanel>
+                  <Accordion allowMultiple>
+                    <AccordionItem defaultChecked>
+                      <AccordionButton color="white" fontWeight="bold">
+                        Overview
+                      </AccordionButton>
+                      <AccordionPanel>
+                        <Box></Box>
+                      </AccordionPanel>
+                    </AccordionItem>
+                    {legs?.map((leg, i) => (
+                      <AccordionItem>
+                        <AccordionButton color="white" fontWeight="bold">
+                          Leg {String.fromCharCode(i + 65)} to{" "}
+                          {String.fromCharCode(i + 66)} ({leg.distance?.text},{" "}
+                          {leg.duration?.text})
+                        </AccordionButton>
+                        <AccordionPanel>
+                          <Box display="flex" flexDirection="column" gap={1}>
+                            {leg.steps.map((step) => (
+                              <Box
+                                display="flex"
+                                justifyContent="space-between"
+                                color={Color.WHITE}
+                                backgroundColor={Color.MUTCD_GREEN}
+                                borderColor={Color.WHITE}
+                                borderWidth={2}
+                                borderRadius={10}
+                                padding={2}
+                                letterSpacing={1}
+                                fontFamily="Highway Gothic"
+                              >
+                                <Text
+                                  dangerouslySetInnerHTML={{
+                                    __html: `${step.instructions}`,
+                                  }}
+                                />
+                                <Text minWidth={150} textAlign="end">
+                                  <Text>{step.distance?.text}</Text>
+                                  <Text>{step.duration?.text}</Text>
+                                </Text>
+                              </Box>
+                            ))}
+                          </Box>
+                        </AccordionPanel>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                </TabPanel>
+                <TabPanel>
+                  <Select
+                    placeholder="Select Transportation Mode"
+                    bgColor="white"
+                    color="black"
                     focusBorderColor="orange.400"
                     errorBorderColor="red.500"
-                  />
-                  {waypoints.length > 1 && (
-                    <Button
-                      onClick={() => {
-                        const updatedWaypoints = waypoints.filter(
-                          (_, waypointIndexToRemove) =>
-                            i !== waypointIndexToRemove
-                        );
-                        setWaypoints(updatedWaypoints);
-                      }}
-                    >
-                      -
-                    </Button>
-                  )}
-                  <Button onClick={() => setWaypoints([...waypoints, ""])}>
-                    +
-                  </Button>
-                </InputGroup>
-              );
-            })}
-            <FormControl isRequired isInvalid={!destination}>
-              <Input
-                placeholder="Destination"
-                value={destination}
-                onChange={(e) => setDestination(e.target.value)}
-                backgroundColor="white"
-                textColor="black"
-                focusBorderColor="orange.400"
-                errorBorderColor="red.500"
-              />
-              <FormErrorMessage>Destination is required</FormErrorMessage>
-            </FormControl>
+                    value={travelMode}
+                    onChange={(e) =>
+                      setTravelMode(e.target.value as google.maps.TravelMode)
+                    }
+                  >
+                    {Object.keys(google.maps.TravelMode).map(
+                      (mode) =>
+                        mode !== "TWO_WHEELER" && (
+                          <option value={mode}>
+                            {
+                              humanReadableTravelMode[
+                                mode as google.maps.TravelMode
+                              ]
+                            }
+                          </option>
+                        )
+                    )}
+                  </Select>
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
           </DrawerBody>
           <DrawerFooter></DrawerFooter>
         </DrawerContent>
