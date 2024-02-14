@@ -7,7 +7,13 @@ import {
   TransitLayer,
 } from "@react-google-maps/api";
 import { Box, Text, useToast } from "@chakra-ui/react";
-import React, { useState, CSSProperties, useCallback, useEffect } from "react";
+import React, {
+  useState,
+  CSSProperties,
+  useCallback,
+  useRef,
+  useEffect,
+} from "react";
 import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -31,6 +37,8 @@ export const Map = () => {
   const { data: adventureRoutes } = useAdventureRoutesForUser();
   const adventureRoute = adventureRoutes.find(({ _id }) => id === _id);
 
+  const renderCount = useRef(0);
+
   const { route } = adventureRoute || {};
   const { origin = "", waypoints = [], destination = "" } = route || {};
 
@@ -38,7 +46,6 @@ export const Map = () => {
     (waypoint) => ({ location: waypoint, stopover: true })
   );
 
-  const [isMapRendered, setIsMapRendered] = useState(false);
   const [directions, setDirections] =
     useState<google.maps.DirectionsResult | null>(null);
   const [travelMode, setTravelMode] = useState<google.maps.TravelMode>(
@@ -50,12 +57,12 @@ export const Map = () => {
 
   const onUnitSystemChange = (newUnitSystem: google.maps.UnitSystem) => {
     setUnitSystem(newUnitSystem);
-    setIsMapRendered(false);
+    renderCount.current = 0;
   };
 
   const onTravelModeChange = (newTravelMode: google.maps.TravelMode) => {
     setTravelMode(newTravelMode);
-    setIsMapRendered(false);
+    renderCount.current = 0;
   };
 
   const onLoad = useCallback((map: google.maps.Map) => {
@@ -74,7 +81,7 @@ export const Map = () => {
       if (
         result &&
         status === google.maps.DirectionsStatus.OK &&
-        !isMapRendered
+        renderCount.current === 0
       ) {
         setDirections(result);
       } else {
@@ -97,7 +104,7 @@ export const Map = () => {
             break;
         }
       }
-      setIsMapRendered(true);
+      renderCount.current++;
     },
     []
   );
