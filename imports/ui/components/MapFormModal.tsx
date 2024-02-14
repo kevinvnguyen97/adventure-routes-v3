@@ -179,6 +179,8 @@ export const MapFormModal = (props: MapFormModalProps) => {
               <FormErrorMessage>Origin is required</FormErrorMessage>
             </FormControl>
             {waypoints.map((waypoint, i) => {
+              console.log(i);
+              console.log(i < 23);
               return (
                 <InputGroup key={`waypoint${i}`}>
                   <Input
@@ -212,12 +214,14 @@ export const MapFormModal = (props: MapFormModalProps) => {
                       -
                     </Button>
                   )}
-                  <Button
-                    onClick={() => setWaypoints([...waypoints, ""])}
-                    colorScheme="blue"
-                  >
-                    +
-                  </Button>
+                  {waypoints.length < 25 && (
+                    <Button
+                      onClick={() => setWaypoints([...waypoints, ""])}
+                      colorScheme="blue"
+                    >
+                      +
+                    </Button>
+                  )}
                 </InputGroup>
               );
             })}

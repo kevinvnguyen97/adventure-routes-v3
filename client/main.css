@@ -7,3 +7,9 @@ body {
   src: local("HighwayGothicWide"),
     url("/public/fonts/HighwayGothic/HWYGWDE.TTF") format("TTF");
 }
+
+@font-face {
+  font-family: "Clearview";
+  src: local("Clearview"),
+    url("/public/fonts/Clearview/CLEARVIEW.TTF") format("TTF");
+}

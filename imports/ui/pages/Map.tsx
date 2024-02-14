@@ -3,15 +3,11 @@ import {
   useJsApiLoader,
   DirectionsService,
   DirectionsRenderer,
+  TrafficLayer,
+  TransitLayer,
 } from "@react-google-maps/api";
 import { Box, Text, useToast } from "@chakra-ui/react";
-import React, {
-  useState,
-  CSSProperties,
-  useCallback,
-  useRef,
-  useEffect,
-} from "react";
+import React, { useState, CSSProperties, useCallback, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -35,8 +31,6 @@ export const Map = () => {
   const { data: adventureRoutes } = useAdventureRoutesForUser();
   const adventureRoute = adventureRoutes.find(({ _id }) => id === _id);
 
-  const renderCount = useRef(0);
-
   const { route } = adventureRoute || {};
   const { origin = "", waypoints = [], destination = "" } = route || {};
 
@@ -44,15 +38,24 @@ export const Map = () => {
     (waypoint) => ({ location: waypoint, stopover: true })
   );
 
+  const [isMapRendered, setIsMapRendered] = useState(false);
   const [directions, setDirections] =
     useState<google.maps.DirectionsResult | null>(null);
   const [travelMode, setTravelMode] = useState<google.maps.TravelMode>(
     "DRIVING" as google.maps.TravelMode
   );
+  const [isTrafficLayerVisible, setIsTrafficLayerVisible] = useState(false);
+  const [isTransitLayerVisible, setIsTransitLayerVisible] = useState(false);
+  const [unitSystem, setUnitSystem] = useState<google.maps.UnitSystem>(1);
+
+  const onUnitSystemChange = (newUnitSystem: google.maps.UnitSystem) => {
+    setUnitSystem(newUnitSystem);
+    setIsMapRendered(false);
+  };
 
   const onTravelModeChange = (newTravelMode: google.maps.TravelMode) => {
     setTravelMode(newTravelMode);
-    renderCount.current = 0;
+    setIsMapRendered(false);
   };
 
   const onLoad = useCallback((map: google.maps.Map) => {
@@ -69,8 +72,9 @@ export const Map = () => {
       console.log("RESULT:", result);
       console.log("STATUS:", status);
       if (
+        result &&
         status === google.maps.DirectionsStatus.OK &&
-        renderCount.current === 0
+        !isMapRendered
       ) {
         setDirections(result);
       } else {
@@ -82,7 +86,6 @@ export const Map = () => {
               description: "Route cannot be rendered",
               status: "error",
             });
-            onTravelModeChange("DRIVING" as google.maps.TravelMode);
             break;
           case "NOT_FOUND":
             toast({
@@ -94,7 +97,7 @@ export const Map = () => {
             break;
         }
       }
-      renderCount.current++;
+      setIsMapRendered(true);
     },
     []
   );
@@ -152,8 +155,16 @@ export const Map = () => {
             directions={directions}
             travelMode={travelMode}
             setTravelMode={onTravelModeChange}
+            isTrafficLayerVisible={isTrafficLayerVisible}
+            setIsTrafficLayerVisible={setIsTrafficLayerVisible}
+            isTransitLayerVisible={isTransitLayerVisible}
+            setIsTransitLayerVisible={setIsTransitLayerVisible}
+            unitSystem={unitSystem}
+            setUnitSystem={onUnitSystemChange}
           />
         </Box>
+        {isTrafficLayerVisible && <TrafficLayer />}
+        {isTransitLayerVisible && <TransitLayer />}
         <DirectionsService
           callback={directionsCallback}
           onLoad={directionsOnLoad}
@@ -163,6 +174,7 @@ export const Map = () => {
             waypoints: formattedWaypoints,
             destination,
             travelMode,
+            unitSystem,
           }}
         />
         <DirectionsRenderer

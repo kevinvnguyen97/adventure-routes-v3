@@ -51,7 +51,16 @@ const NavLink = (props: NavLinkProps) => {
 };
 
 export const NavigationBar = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isHamburgerMenuOpen,
+    onOpen: onHamburgerMenuOpen,
+    onClose: onHamburgerMenuClose,
+  } = useDisclosure();
+  const {
+    isOpen: isUserMenuOpen,
+    onOpen: onUserMenuOpen,
+    onClose: onUserMenuClose,
+  } = useDisclosure();
   const { user, loggedIn } = useMeteorAuth();
   const navigate = useNavigate();
   const toast = useToast();
@@ -84,12 +93,15 @@ export const NavigationBar = () => {
       <Flex h={16} alignItems="center" justifyContent="space-between">
         <IconButton
           size="md"
-          icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+          icon={isHamburgerMenuOpen ? <CloseIcon /> : <HamburgerIcon />}
           aria-label="Open Menu"
           display={{ md: "none" }}
-          onClick={isOpen ? onClose : onOpen}
+          onClick={
+            isHamburgerMenuOpen ? onHamburgerMenuClose : onHamburgerMenuOpen
+          }
           colorScheme="orange"
           backgroundColor="transparent"
+          isDisabled={!loggedIn}
         />
         <HStack spacing={8} alignItems="center">
           <Image src="/small_logo.png" width={50} height={50} />
@@ -117,7 +129,12 @@ export const NavigationBar = () => {
           </HStack>
         </HStack>
         <Flex alignItems="center">
-          <Popover>
+          <Popover
+            isOpen={isUserMenuOpen}
+            onOpen={onUserMenuOpen}
+            closeOnBlur
+            onClose={onUserMenuClose}
+          >
             <PopoverTrigger>
               <Avatar
                 _hover={{ cursor: "pointer", backgroundColor: "orange.600" }}
@@ -131,10 +148,23 @@ export const NavigationBar = () => {
               <PopoverHeader fontWeight="bold">{user?.username}</PopoverHeader>
               {/* <PopoverBody></PopoverBody> */}
               <PopoverFooter display="flex" gap={3}>
-                <Button key="Settings" onClick={() => navigate("/settings")}>
+                <Button
+                  key="Settings"
+                  onClick={() => {
+                    onUserMenuClose();
+                    navigate("/settings");
+                  }}
+                >
                   Settings
                 </Button>
-                <Button key="Logout" onClick={onLogout} colorScheme="red">
+                <Button
+                  key="Logout"
+                  onClick={() => {
+                    onUserMenuClose();
+                    onLogout();
+                  }}
+                  colorScheme="red"
+                >
                   Logout
                 </Button>
               </PopoverFooter>
@@ -143,7 +173,7 @@ export const NavigationBar = () => {
         </Flex>
       </Flex>
 
-      {isOpen && (
+      {isHamburgerMenuOpen && (
         <Box pb={4} display={{ md: "none" }}>
           <Stack as={"nav"} spacing={4}>
             {loggedIn && (
@@ -155,8 +185,8 @@ export const NavigationBar = () => {
                       switch (link) {
                         case "Dashboard":
                           navigate("/");
-                          break;
                         default:
+                          onHamburgerMenuClose();
                           break;
                       }
                     }}
