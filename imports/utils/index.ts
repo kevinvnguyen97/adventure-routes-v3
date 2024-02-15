@@ -34,20 +34,29 @@ export async function meteorMethodPromise<TReturn, TArgs extends any[]>(
 export const isValidEmail = (email: string) => VALID_EMAIL_REGEX.test(email);
 
 export const formatDuration = (numberOfSeconds: number) => {
-  const numberOfHours = numberOfSeconds / 60 / 60;
+  const numberOfDays = numberOfSeconds / 60 / 60 / 24;
+  const numberOfHours = (numberOfDays % 1) * 24;
   const numberOfMinutes = Math.round((numberOfHours % 1) * 60);
 
-  const formattedHours =
-    Math.trunc(numberOfHours) > 0
-      ? `${Math.trunc(numberOfHours)} ${
-          Math.trunc(numberOfHours) === 1 ? "hour" : "hours"
+  const formattedDays =
+    Math.trunc(numberOfDays) > 0
+      ? `${Math.trunc(numberOfDays)} ${
+          Math.trunc(numberOfDays) === 1 ? "day" : "days"
         }`
       : "";
+  const formattedHours =
+    Math.trunc(numberOfHours) > 0
+      ? `${
+          Math.trunc(numberOfDays) < 1
+            ? Math.trunc(numberOfHours)
+            : Math.round(numberOfHours)
+        } ${Math.trunc(numberOfHours) === 1 ? "hour" : "hours"}`
+      : "";
   const formattedMinutes =
-    numberOfMinutes > 0
+    numberOfMinutes > 0 && numberOfDays < 1
       ? `${numberOfMinutes} ${numberOfMinutes === 1 ? "min" : "mins"}`
       : "";
-  const formattedDuration = [formattedHours, formattedMinutes]
+  const formattedDuration = [formattedDays, formattedHours, formattedMinutes]
     .filter(Boolean)
     .join(" ");
 

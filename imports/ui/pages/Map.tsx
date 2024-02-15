@@ -62,6 +62,18 @@ export const Map = () => {
   const [isAvoidTollsEnabled, setIsAvoidTollsEnabled] = useState(false);
   const [mutcdFont, setMutcdFont] = useState<MUTCDFont>(MUTCDFont.HWYGOTHIC);
 
+  const onTrafficLayerChange = () => {
+    setIsTrafficLayerVisible(!isTrafficLayerVisible);
+  };
+
+  const onTransitLayerChange = () => {
+    setIsTransitLayerVisible(!isTransitLayerVisible);
+  };
+
+  const onKmlLayerChange = () => {
+    setIsKmlLayerVisible(!isKmlLayerVisible);
+  };
+
   const onUnitSystemChange = (newUnitSystem: google.maps.UnitSystem) => {
     setUnitSystem(newUnitSystem);
     renderCount.current = 0;
@@ -72,8 +84,13 @@ export const Map = () => {
     renderCount.current = 0;
   };
 
-  const onAvoidHighwayChange = (isAvoidHighwayOptionEnabled: boolean) => {
-    setIsAvoidHighwaysEnabled(isAvoidHighwayOptionEnabled);
+  const onAvoidHighwayChange = () => {
+    setIsAvoidHighwaysEnabled(!isAvoidHighwaysEnabled);
+    renderCount.current = 0;
+  };
+
+  const onAvoidTollChange = () => {
+    setIsAvoidTollsEnabled(!isAvoidTollsEnabled);
     renderCount.current = 0;
   };
 
@@ -175,13 +192,15 @@ export const Map = () => {
             travelMode={travelMode}
             setTravelMode={onTravelModeChange}
             isTrafficLayerVisible={isTrafficLayerVisible}
-            setIsTrafficLayerVisible={setIsTrafficLayerVisible}
+            setIsTrafficLayerVisible={onTrafficLayerChange}
             isTransitLayerVisible={isTransitLayerVisible}
-            setIsTransitLayerVisible={setIsTransitLayerVisible}
+            setIsTransitLayerVisible={onTransitLayerChange}
             isKmlLayerVisible={isKmlLayerVisible}
-            setIsKmlLayerVisible={setIsKmlLayerVisible}
+            setIsKmlLayerVisible={onKmlLayerChange}
             isAvoidHighwaysEnabled={isAvoidHighwaysEnabled}
             setIsAvoidHighwaysEnabled={onAvoidHighwayChange}
+            isAvoidTollsEnabled={isAvoidTollsEnabled}
+            setIsAvoidTollsEnabled={onAvoidTollChange}
             unitSystem={unitSystem}
             setUnitSystem={onUnitSystemChange}
             mutcdFont={mutcdFont}
@@ -202,6 +221,7 @@ export const Map = () => {
             travelMode,
             unitSystem,
             avoidHighways: isAvoidHighwaysEnabled,
+            avoidTolls: isAvoidTollsEnabled,
           }}
         />
         <DirectionsRenderer
