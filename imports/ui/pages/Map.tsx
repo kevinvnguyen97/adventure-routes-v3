@@ -59,6 +59,7 @@ export const Map = () => {
   const [isTransitLayerVisible, setIsTransitLayerVisible] = useState(false);
   const [isKmlLayerVisible, setIsKmlLayerVisible] = useState(false);
   const [isAvoidHighwaysEnabled, setIsAvoidHighwaysEnabled] = useState(false);
+  const [isAvoidTollsEnabled, setIsAvoidTollsEnabled] = useState(false);
   const [mutcdFont, setMutcdFont] = useState<MUTCDFont>(MUTCDFont.HWYGOTHIC);
 
   const onUnitSystemChange = (newUnitSystem: google.maps.UnitSystem) => {

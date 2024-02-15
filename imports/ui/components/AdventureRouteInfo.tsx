@@ -343,8 +343,26 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
                   >
                     <HStack justifyContent="space-between" color="white">
                       <Text fontWeight="bold">MUTCD Font</Text>
-                      <Radio value={MUTCDFont.HWYGOTHIC}>Highway Gothic</Radio>
-                      <Radio value={MUTCDFont.CLEARVIEW}>Clearview</Radio>
+                      <Radio
+                        value={MUTCDFont.HWYGOTHIC}
+                        fontFamily={MUTCDFont.HWYGOTHIC}
+                      >
+                        <Text
+                          fontFamily={MUTCDFont.HWYGOTHIC}
+                          letterSpacing={1.5}
+                        >
+                          Highway Gothic
+                        </Text>
+                      </Radio>
+                      <Radio value={MUTCDFont.CLEARVIEW}>
+                        <Text
+                          fontFamily={MUTCDFont.CLEARVIEW}
+                          letterSpacing={1.5}
+                          fontWeight={500}
+                        >
+                          Clearview
+                        </Text>
+                      </Radio>
                     </HStack>
                   </RadioGroup>
                 </TabPanel>

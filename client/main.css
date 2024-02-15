@@ -11,5 +11,5 @@ body {
 @font-face {
   font-family: "Clearview 4W";
   src: local("ClearviewHwy4W"),
-    url("/public/fonts/Clearview/ClearviewHwy5W.ttf") format("TTF");
+    url("/public/fonts/Clearview/ClearviewHwy1W.ttf") format("TTF");
 }
