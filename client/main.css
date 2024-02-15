@@ -9,7 +9,7 @@ body {
 }
 
 @font-face {
-  font-family: "Clearview";
-  src: local("Clearview"),
-    url("/public/fonts/Clearview/CLEARVIEW.TTF") format("TTF");
+  font-family: "Clearview 4W";
+  src: local("ClearviewHwy4W"),
+    url("/public/fonts/Clearview/ClearviewHwy5W.ttf") format("TTF");
 }

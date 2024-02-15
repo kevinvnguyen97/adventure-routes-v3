@@ -5,6 +5,9 @@ import {
   DirectionsRenderer,
   TrafficLayer,
   TransitLayer,
+  KmlLayer,
+  InfoWindow,
+  Marker,
 } from "@react-google-maps/api";
 import { Box, Text, useToast } from "@chakra-ui/react";
 import React, {
@@ -19,7 +22,7 @@ import { motion } from "framer-motion";
 
 import { useAdventureRoutesForUser } from "/imports/ui/providers";
 import { AdventureRouteInfo, LoadingScreen } from "/imports/ui/components";
-import { GOOGLE_SECRETS } from "/imports/constants";
+import { GOOGLE_SECRETS, MUTCDFont } from "/imports/constants";
 import { TOAST_PRESET } from "/imports/constants/toast";
 
 const MAP_CONTAINER_STYLE: CSSProperties = {
@@ -51,9 +54,12 @@ export const Map = () => {
   const [travelMode, setTravelMode] = useState<google.maps.TravelMode>(
     "DRIVING" as google.maps.TravelMode
   );
+  const [unitSystem, setUnitSystem] = useState<google.maps.UnitSystem>(1);
   const [isTrafficLayerVisible, setIsTrafficLayerVisible] = useState(false);
   const [isTransitLayerVisible, setIsTransitLayerVisible] = useState(false);
-  const [unitSystem, setUnitSystem] = useState<google.maps.UnitSystem>(1);
+  const [isKmlLayerVisible, setIsKmlLayerVisible] = useState(false);
+  const [isAvoidHighwaysEnabled, setIsAvoidHighwaysEnabled] = useState(false);
+  const [mutcdFont, setMutcdFont] = useState<MUTCDFont>(MUTCDFont.HWYGOTHIC);
 
   const onUnitSystemChange = (newUnitSystem: google.maps.UnitSystem) => {
     setUnitSystem(newUnitSystem);
@@ -62,6 +68,11 @@ export const Map = () => {
 
   const onTravelModeChange = (newTravelMode: google.maps.TravelMode) => {
     setTravelMode(newTravelMode);
+    renderCount.current = 0;
+  };
+
+  const onAvoidHighwayChange = (isAvoidHighwayOptionEnabled: boolean) => {
+    setIsAvoidHighwaysEnabled(isAvoidHighwayOptionEnabled);
     renderCount.current = 0;
   };
 
@@ -166,12 +177,19 @@ export const Map = () => {
             setIsTrafficLayerVisible={setIsTrafficLayerVisible}
             isTransitLayerVisible={isTransitLayerVisible}
             setIsTransitLayerVisible={setIsTransitLayerVisible}
+            isKmlLayerVisible={isKmlLayerVisible}
+            setIsKmlLayerVisible={setIsKmlLayerVisible}
+            isAvoidHighwaysEnabled={isAvoidHighwaysEnabled}
+            setIsAvoidHighwaysEnabled={onAvoidHighwayChange}
             unitSystem={unitSystem}
             setUnitSystem={onUnitSystemChange}
+            mutcdFont={mutcdFont}
+            setMutcdFont={setMutcdFont}
           />
         </Box>
         {isTrafficLayerVisible && <TrafficLayer />}
         {isTransitLayerVisible && <TransitLayer />}
+        {isKmlLayerVisible && <KmlLayer />}
         <DirectionsService
           callback={directionsCallback}
           onLoad={directionsOnLoad}
@@ -182,10 +200,13 @@ export const Map = () => {
             destination,
             travelMode,
             unitSystem,
+            avoidHighways: isAvoidHighwaysEnabled,
           }}
         />
         <DirectionsRenderer
-          options={{ directions }}
+          options={{
+            directions,
+          }}
           onLoad={directionsRendererOnLoad}
           onUnmount={directionsRendererOnUnmount}
         />

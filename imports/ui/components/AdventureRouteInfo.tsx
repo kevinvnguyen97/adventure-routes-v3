@@ -30,12 +30,13 @@ import {
 } from "@chakra-ui/react";
 
 import { AdventureRoute } from "/imports/api/adventureRoutes";
-import { Color, humanReadableTravelMode } from "/imports/constants";
+import { Color, MUTCDFont, humanReadableTravelMode } from "/imports/constants";
 import {
   formatDuration,
   formatImperialDistance,
   formatMetricDistance,
 } from "/imports/utils";
+import { MUTCDRectangleSign } from "/imports/ui/components";
 
 type AdventureRouteInfoProps = {
   adventureRoute?: AdventureRoute;
@@ -46,8 +47,14 @@ type AdventureRouteInfoProps = {
   setIsTrafficLayerVisible: (isTrafficLayerVisible: boolean) => void;
   isTransitLayerVisible: boolean;
   setIsTransitLayerVisible: (isTransitLayerVisible: boolean) => void;
+  isKmlLayerVisible: boolean;
+  setIsKmlLayerVisible: (isKmlLayerVisible: boolean) => void;
+  isAvoidHighwaysEnabled: boolean;
+  setIsAvoidHighwaysEnabled: (isAvoidHighwaysEnabled: boolean) => void;
   unitSystem: google.maps.UnitSystem;
   setUnitSystem: (unitSystem: google.maps.UnitSystem) => void;
+  mutcdFont: MUTCDFont;
+  setMutcdFont: (mutcdFont: MUTCDFont) => void;
 };
 export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
   const {
@@ -59,10 +66,16 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
     setIsTrafficLayerVisible,
     isTransitLayerVisible,
     setIsTransitLayerVisible,
+    isKmlLayerVisible,
+    setIsKmlLayerVisible,
+    isAvoidHighwaysEnabled,
+    setIsAvoidHighwaysEnabled,
     unitSystem,
     setUnitSystem,
+    mutcdFont,
+    setMutcdFont,
   } = props;
-  const { name } = adventureRoute || {};
+  const { name, description } = adventureRoute || {};
   const { routes } = directions || {};
   const generatedPath = routes?.[0];
   const { legs } = generatedPath || {};
@@ -126,46 +139,42 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
                 <Tab color="white">Settings</Tab>
               </TabList>
               <TabPanels>
-                <TabPanel></TabPanel>
+                <TabPanel color="white">
+                  <Text>{description}</Text>
+                </TabPanel>
                 <TabPanel>
                   <Accordion allowToggle defaultIndex={0}>
-                    <AccordionItem tabIndex={0} isFocusable>
+                    <AccordionItem tabIndex={0}>
                       <AccordionButton color="white" fontWeight="bold">
                         Overview
                       </AccordionButton>
                       <AccordionPanel>
-                        <Box
-                          backgroundColor={Color.MUTCD_GREEN}
-                          color={Color.WHITE}
-                          letterSpacing={1}
-                          padding={0.5}
-                          borderRadius={10}
-                        >
+                        <MUTCDRectangleSign fontFamily={mutcdFont}>
                           <Box
-                            fontFamily="Highway Gothic"
-                            padding={2}
-                            borderWidth={2}
-                            borderRadius={10}
-                            borderColor={Color.WHITE}
+                            display="flex"
+                            flexDirection="row"
+                            justifyContent="space-between"
                           >
-                            <Box
-                              display="flex"
-                              flexDirection="row"
-                              justifyContent="space-between"
-                            >
-                              <Text>Total Distance</Text>
-                              <Text>{formattedDistance}</Text>
-                            </Box>
-                            <Box
-                              display="flex"
-                              flexDirection="row"
-                              justifyContent="space-between"
-                            >
-                              <Text>Total Duration (without traffic)</Text>
-                              <Text>{formattedDuration}</Text>
-                            </Box>
+                            <Text>Total Distance</Text>
+                            <Text>{formattedDistance}</Text>
                           </Box>
-                        </Box>
+                          <Box
+                            display="flex"
+                            flexDirection="row"
+                            justifyContent="space-between"
+                          >
+                            <Text
+                              display="flex"
+                              flexDirection="row"
+                              gap={2}
+                              alignItems="baseline"
+                            >
+                              Total Duration{" "}
+                              <Text fontSize="smaller">(without traffic)</Text>
+                            </Text>
+                            <Text>{formattedDuration}</Text>
+                          </Box>
+                        </MUTCDRectangleSign>
                       </AccordionPanel>
                     </AccordionItem>
                     {legs?.map((leg, i) => {
@@ -175,7 +184,6 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
                       return (
                         <AccordionItem
                           key={`Leg${stepBeginningLabel}to${stepEndLabel}`}
-                          isFocusable
                           tabIndex={i + 1}
                         >
                           <AccordionButton color="white" fontWeight="bold">
@@ -185,36 +193,26 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
                           <AccordionPanel>
                             <Box display="flex" flexDirection="column" gap={1}>
                               {leg.steps.map((step, i) => (
-                                <Box
-                                  key={`Step${i}`}
-                                  backgroundColor={Color.MUTCD_GREEN}
-                                  color={Color.WHITE}
-                                  padding={0.5}
-                                  borderRadius={10}
+                                <MUTCDRectangleSign
+                                  key={`step${i}`}
+                                  fontFamily={mutcdFont}
                                 >
                                   <Box
                                     display="flex"
                                     justifyContent="space-between"
                                     alignItems="center"
-                                    borderColor={Color.WHITE}
-                                    borderWidth={2}
-                                    borderRadius={10}
-                                    padding={2}
-                                    letterSpacing={1}
-                                    fontFamily="Highway Gothic"
                                   >
                                     <Text
                                       dangerouslySetInnerHTML={{
                                         __html: `${step.instructions}`,
                                       }}
                                     />
-
                                     <Box minWidth={140} textAlign="end">
                                       <Text>{step.distance?.text}</Text>
                                       <Text>{step.duration?.text}</Text>
                                     </Box>
                                   </Box>
-                                </Box>
+                                </MUTCDRectangleSign>
                               ))}
                             </Box>
                           </AccordionPanel>
@@ -256,7 +254,7 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
                     paddingTop={3}
                     paddingBottom={3}
                   >
-                    <FormLabel htmlFor="traffic-layer-switch">
+                    <FormLabel htmlFor="traffic-layer-switch" fontWeight="bold">
                       Traffic Layer
                     </FormLabel>
                     <Switch
@@ -275,7 +273,7 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
                     color={Color.WHITE}
                     paddingBottom={3}
                   >
-                    <FormLabel htmlFor="transit-layer-switch">
+                    <FormLabel htmlFor="transit-layer-switch" fontWeight="bold">
                       Transit Layer
                     </FormLabel>
                     <Switch
@@ -287,15 +285,66 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
                       colorScheme="orange"
                     />
                   </FormControl>
+                  <FormControl
+                    width="100%"
+                    display="flex"
+                    justifyContent="space-between"
+                    color={Color.WHITE}
+                    paddingBottom={3}
+                  >
+                    <FormLabel htmlFor="kml-layer-switch" fontWeight="bold">
+                      KML Layer
+                    </FormLabel>
+                    <Switch
+                      id="kml-layer-switch"
+                      isChecked={isKmlLayerVisible}
+                      onChange={() => setIsKmlLayerVisible(!isKmlLayerVisible)}
+                      colorScheme="orange"
+                    />
+                  </FormControl>
+                  <FormControl
+                    width="100%"
+                    display="flex"
+                    justifyContent="space-between"
+                    color={Color.WHITE}
+                    paddingBottom={3}
+                  >
+                    <FormLabel
+                      htmlFor="avoid-highways-switch"
+                      fontWeight="bold"
+                    >
+                      Avoid Highways
+                    </FormLabel>
+                    <Switch
+                      id="avoid-highways-switch"
+                      isChecked={isAvoidHighwaysEnabled}
+                      onChange={() =>
+                        setIsAvoidHighwaysEnabled(!isAvoidHighwaysEnabled)
+                      }
+                      colorScheme="orange"
+                    />
+                  </FormControl>
                   <RadioGroup
                     colorScheme="orange"
                     value={unitSystem.toString()}
                     onChange={(e) => setUnitSystem(parseInt(e))}
+                    paddingBottom={5}
                   >
                     <HStack justifyContent="space-between" color="white">
-                      <Text>Unit of Measurement</Text>
+                      <Text fontWeight="bold">Unit of Measurement</Text>
                       <Radio value="1">Imperial</Radio>
                       <Radio value="0">Metric</Radio>
+                    </HStack>
+                  </RadioGroup>
+                  <RadioGroup
+                    colorScheme="orange"
+                    value={mutcdFont}
+                    onChange={(e) => setMutcdFont(e as MUTCDFont)}
+                  >
+                    <HStack justifyContent="space-between" color="white">
+                      <Text fontWeight="bold">MUTCD Font</Text>
+                      <Radio value={MUTCDFont.HWYGOTHIC}>Highway Gothic</Radio>
+                      <Radio value={MUTCDFont.CLEARVIEW}>Clearview</Radio>
                     </HStack>
                   </RadioGroup>
                 </TabPanel>

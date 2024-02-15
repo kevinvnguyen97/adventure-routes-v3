@@ -39,7 +39,9 @@ export const formatDuration = (numberOfSeconds: number) => {
 
   const formattedHours =
     Math.trunc(numberOfHours) > 0
-      ? `${Math.trunc(numberOfHours)} ${numberOfHours === 1 ? "hour" : "hours"}`
+      ? `${Math.trunc(numberOfHours)} ${
+          Math.trunc(numberOfHours) === 1 ? "hour" : "hours"
+        }`
       : "";
   const formattedMinutes =
     numberOfMinutes > 0
