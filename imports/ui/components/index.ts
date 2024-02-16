@@ -8,5 +8,7 @@ export { MapFormModal } from "./MapFormModal";
 export { NavigationBar } from "./NavigationBar";
 export { MUTCDRectangleSign } from "./MUTCDRectangleSign";
 export { InterstateShield } from "./InterstateShield";
+export { IllinoisRouteShield } from "./IllinoisRouteShield";
+export { USRouteShield } from "./USRouteShield";
 export { MapSettings } from "./MapSettings";
 export { MapDirections } from "./MapDirections";

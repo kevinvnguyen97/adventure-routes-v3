@@ -6,8 +6,6 @@ import {
   TrafficLayer,
   TransitLayer,
   KmlLayer,
-  InfoWindow,
-  Marker,
 } from "@react-google-maps/api";
 import { Box, Text, useToast } from "@chakra-ui/react";
 import React, {

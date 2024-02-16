@@ -8,7 +8,11 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { InterstateShield } from "./InterstateShield";
+import {
+  InterstateShield,
+  IllinoisRouteShield,
+  USRouteShield,
+} from "/imports/ui/components";
 import { MUTCDRectangleSign } from "./MUTCDRectangleSign";
 import {
   formatDuration,
@@ -95,51 +99,231 @@ export const MapDirections = (props: MapDirectionsProps) => {
             <AccordionPanel>
               <Box display="flex" flexDirection="column" gap={1}>
                 {leg.steps.map((step, i) => {
-                  // Split up words by
+                  /** Instructions split up by spaces */
                   const splitInstructions = step.instructions.split(" ");
                   const formattedInstructions = splitInstructions
                     .map((word) => {
-                      if (word.includes("/")) {
-                        const subcontents = word.split("/");
-                        const formattedSubcontents = subcontents.map(
-                          (subcontent) => {
-                            if (subcontent.includes("I-")) {
-                              let hasTag = false;
-                              if (subcontent.includes("/b")) {
-                                hasTag = true;
-                              }
-                              const interstateString = word.replaceAll(
-                                /\D/g,
+                      if (word.includes("US-")) {
+                        // If there are slashes / to denote multiple routes, split it up
+                        if (word.includes("/")) {
+                          // Strip unnecessary tags
+                          const cleanedWord = word
+                            .replaceAll("<wbr/>", "")
+                            .replaceAll("<b>", "")
+                            .replaceAll("</b>", "");
+                          const splitText = cleanedWord.split("/");
+                          // Iterate through each term that was split by /
+                          const formattedSplitText = splitText.map((text) => {
+                            if (text.includes("US-")) {
+                              const interstateNumber = text.replaceAll(
+                                "US-",
                                 ""
                               );
-                              const formattedInterstate = renderToStaticMarkup(
-                                <span>
-                                  <InterstateShield
-                                    interstateNumber={interstateString}
+                              if (interstateNumber.includes("<div")) {
+                                const cleanedInterstateNumber =
+                                  interstateNumber.replaceAll("<div", "");
+                                return `${renderToStaticMarkup(
+                                  <USRouteShield
+                                    usRouteNumber={cleanedInterstateNumber}
                                   />
-                                </span>
-                              );
-                              if (hasTag) {
-                                return `${formattedInterstate}<`;
-                              } else {
-                                return `${formattedInterstate}`;
+                                )}`;
                               }
+                              if (interstateNumber.includes(",")) {
+                                const cleanedInterstateNumber =
+                                  interstateNumber.replaceAll(",", "");
+                                return `${renderToStaticMarkup(
+                                  <USRouteShield
+                                    usRouteNumber={cleanedInterstateNumber}
+                                  />
+                                )},`;
+                              }
+                              return renderToStaticMarkup(
+                                <USRouteShield
+                                  usRouteNumber={interstateNumber}
+                                />
+                              );
                             } else {
-                              return subcontent;
+                              return text;
                             }
+                          });
+                          return formattedSplitText.join("/");
+                          return word;
+                        } else {
+                          if (word.includes("<b>")) {
+                            const fixedInterstateString = word
+                              .replaceAll("<b>", "")
+                              .replaceAll(/\D/g, "");
+                            return `<b>${renderToStaticMarkup(
+                              <USRouteShield
+                                usRouteNumber={fixedInterstateString}
+                              />
+                            )}`;
+                          } else if (word.includes(",")) {
+                            const fixedInterstateString = word
+                              .replaceAll(",", "")
+                              .replaceAll(/\D/g, "");
+                            return `${renderToStaticMarkup(
+                              <USRouteShield
+                                usRouteNumber={fixedInterstateString}
+                              />
+                            )},`;
+                          } else {
+                            const cleanedWord = word.replaceAll(/\D/g, "");
+                            return renderToStaticMarkup(
+                              <USRouteShield usRouteNumber={cleanedWord} />
+                            );
                           }
-                        );
-                        return formattedSubcontents
-                          .join("/")
-                          .replaceAll("<,b>", "</b>");
-                      } else if (word.includes("I-")) {
-                        const interstateString = word.replaceAll(/\D/g, "");
-                        const formattedInterstate = renderToStaticMarkup(
-                          <InterstateShield
-                            interstateNumber={interstateString}
-                          />
-                        );
-                        return formattedInterstate;
+                        }
+                      } else if (word.includes("IL-")) {
+                        // If there are slashes / to denote multiple routes, split it up
+                        if (word.includes("/")) {
+                          // Strip unnecessary tags
+                          const cleanedWord = word
+                            .replaceAll("<wbr/>", "")
+                            .replaceAll("<b>", "")
+                            .replaceAll("</b>", "");
+                          const splitText = cleanedWord.split("/");
+                          // Iterate through each term that was split by /
+                          const formattedSplitText = splitText.map((text) => {
+                            if (text.includes("IL-")) {
+                              const interstateNumber = text.replaceAll(
+                                "IL-",
+                                ""
+                              );
+                              if (interstateNumber.includes("<div")) {
+                                const cleanedInterstateNumber =
+                                  interstateNumber.replaceAll("<div", "");
+                                return `${renderToStaticMarkup(
+                                  <IllinoisRouteShield
+                                    illinoisRouteNumber={
+                                      cleanedInterstateNumber
+                                    }
+                                  />
+                                )}`;
+                              }
+                              if (interstateNumber.includes(",")) {
+                                const cleanedInterstateNumber =
+                                  interstateNumber.replaceAll(",", "");
+                                return `${renderToStaticMarkup(
+                                  <IllinoisRouteShield
+                                    illinoisRouteNumber={
+                                      cleanedInterstateNumber
+                                    }
+                                  />
+                                )},`;
+                              }
+                              return renderToStaticMarkup(
+                                <IllinoisRouteShield
+                                  illinoisRouteNumber={interstateNumber}
+                                />
+                              );
+                            } else {
+                              return text;
+                            }
+                          });
+                          return formattedSplitText.join("/");
+                        } else {
+                          if (word.includes("<b>")) {
+                            const fixedInterstateString = word
+                              .replaceAll("<b>", "")
+                              .replaceAll(/\D/g, "");
+                            return `<b>${renderToStaticMarkup(
+                              <IllinoisRouteShield
+                                illinoisRouteNumber={fixedInterstateString}
+                              />
+                            )}`;
+                          } else if (word.includes(",")) {
+                            const fixedInterstateString = word
+                              .replaceAll(",", "")
+                              .replaceAll(/\D/g, "");
+                            return `${renderToStaticMarkup(
+                              <IllinoisRouteShield
+                                illinoisRouteNumber={fixedInterstateString}
+                              />
+                            )},`;
+                          } else {
+                            const cleanedWord = word.replaceAll(/\D/g, "");
+                            return renderToStaticMarkup(
+                              <IllinoisRouteShield
+                                illinoisRouteNumber={cleanedWord}
+                              />
+                            );
+                          }
+                        }
+                      }
+                      // Search for any term that includes I-, the interstate prefix
+                      else if (word.includes("I-") && !word.includes("RI-")) {
+                        // If there are slashes / to denote multiple routes, split it up
+                        if (word.includes("/")) {
+                          // Strip unnecessary tags
+                          const cleanedWord = word
+                            .replaceAll("<wbr/>", "")
+                            .replaceAll("<b>", "")
+                            .replaceAll("</b>", "");
+                          const splitText = cleanedWord.split("/");
+                          // Iterate through each term that was split by /
+                          const formattedSplitText = splitText.map((text) => {
+                            if (text.includes("I-")) {
+                              const interstateNumber = text.replaceAll(
+                                "I-",
+                                ""
+                              );
+                              if (interstateNumber.includes("<div")) {
+                                const cleanedInterstateNumber =
+                                  interstateNumber.replaceAll("<div", "");
+                                return `${renderToStaticMarkup(
+                                  <InterstateShield
+                                    interstateNumber={cleanedInterstateNumber}
+                                  />
+                                )}`;
+                              }
+                              if (interstateNumber.includes(",")) {
+                                const cleanedInterstateNumber =
+                                  interstateNumber.replaceAll(",", "");
+                                return `${renderToStaticMarkup(
+                                  <InterstateShield
+                                    interstateNumber={cleanedInterstateNumber}
+                                  />
+                                )},`;
+                              }
+                              return renderToStaticMarkup(
+                                <InterstateShield
+                                  interstateNumber={interstateNumber}
+                                />
+                              );
+                            } else {
+                              return text;
+                            }
+                          });
+                          return formattedSplitText.join("/");
+                        } else {
+                          if (word.includes("<b>")) {
+                            const fixedInterstateString = word
+                              .replaceAll("<b>", "")
+                              .replaceAll(/\D/g, "");
+                            return `<b>${renderToStaticMarkup(
+                              <InterstateShield
+                                interstateNumber={fixedInterstateString}
+                              />
+                            )}`;
+                          } else if (word.includes(",")) {
+                            const fixedInterstateString = word
+                              .replaceAll(",", "")
+                              .replaceAll(/\D/g, "");
+                            return `${renderToStaticMarkup(
+                              <InterstateShield
+                                interstateNumber={fixedInterstateString}
+                              />
+                            )},`;
+                          } else {
+                            const cleanedWord = word.replaceAll(/\D/g, "");
+                            return renderToStaticMarkup(
+                              <InterstateShield
+                                interstateNumber={cleanedWord}
+                              />
+                            );
+                          }
+                        }
                       } else {
                         return word;
                       }

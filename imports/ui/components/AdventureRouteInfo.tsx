@@ -1,5 +1,4 @@
 import React, { createRef } from "react";
-import { renderToStaticMarkup } from "react-dom/server";
 import {
   Button,
   Drawer,
@@ -16,26 +15,12 @@ import {
   TabList,
   TabPanels,
   TabPanel,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
   Text,
 } from "@chakra-ui/react";
 
 import { AdventureRoute } from "/imports/api/adventureRoutes";
 import { MUTCDFont } from "/imports/constants";
-import {
-  formatDuration,
-  formatImperialDistance,
-  formatMetricDistance,
-} from "/imports/utils";
-import {
-  InterstateShield,
-  MUTCDRectangleSign,
-  MapDirections,
-  MapSettings,
-} from "/imports/ui/components";
+import { MapDirections, MapSettings } from "/imports/ui/components";
 
 type AdventureRouteInfoProps = {
   adventureRoute?: AdventureRoute;
