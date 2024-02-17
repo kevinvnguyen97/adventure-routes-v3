@@ -1,7 +1,3 @@
-body {
-  font-family: sans-serif;
-}
-
 @font-face {
   font-family: "Highway Gothic Wide";
   src: local("HighwayGothicWide"),
@@ -24,4 +20,8 @@ body {
   font-family: "Clearview 4W";
   src: local("ClearviewHwy4W"),
     url("../public/fonts/Clearview/ClearviewHwy1W.ttf") format("TTF");
+}
+
+body {
+  font-family: sans-serif;
 }

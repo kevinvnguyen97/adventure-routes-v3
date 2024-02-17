@@ -344,6 +344,7 @@ export const MapDirections = (props: MapDirectionsProps) => {
                             width: "110px",
                             textAlign: "center",
                             borderRadius: "5px",
+                            fontWeight: "bold",
                           }}
                         >
                           TOLL ROAD
