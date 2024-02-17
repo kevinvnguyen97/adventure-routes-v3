@@ -56,7 +56,7 @@ export const MapDirections = (props: MapDirectionsProps) => {
         <AccordionButton color="white" fontWeight="bold">
           Overview
         </AccordionButton>
-        <AccordionPanel padding={0} margin={0}>
+        <AccordionPanel paddingLeft={0} paddingRight={0}>
           <MUTCDRectangleSign fontFamily={mutcdFont}>
             <Box
               display="flex"
@@ -252,7 +252,11 @@ export const MapDirections = (props: MapDirectionsProps) => {
                         }
                       }
                       // Search for any term that includes I-, the interstate prefix
-                      else if (word.includes("I-") && !word.includes("RI-")) {
+                      else if (
+                        word.includes("I-") &&
+                        !word.includes("RI-") &&
+                        !word.includes("MI-")
+                      ) {
                         // If there are slashes / to denote multiple routes, split it up
                         if (word.includes("/")) {
                           // Strip unnecessary tags
@@ -328,7 +332,24 @@ export const MapDirections = (props: MapDirectionsProps) => {
                         return word;
                       }
                     })
-                    .join(" ");
+                    .join(" ")
+                    .replaceAll(
+                      "Toll road",
+                      renderToStaticMarkup(
+                        <div
+                          style={{
+                            color: "black",
+                            padding: "1px",
+                            backgroundColor: "#FFCC00",
+                            width: "110px",
+                            textAlign: "center",
+                            borderRadius: "5px",
+                          }}
+                        >
+                          TOLL ROAD
+                        </div>
+                      )
+                    );
                   return (
                     <MUTCDRectangleSign key={`step${i}`} fontFamily={mutcdFont}>
                       <Box

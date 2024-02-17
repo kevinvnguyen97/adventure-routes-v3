@@ -6,6 +6,7 @@ import {
   TrafficLayer,
   TransitLayer,
   KmlLayer,
+  HeatmapLayer,
 } from "@react-google-maps/api";
 import { Box, Text, useToast } from "@chakra-ui/react";
 import React, {
@@ -32,6 +33,7 @@ export const Map = () => {
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: GOOGLE_SECRETS.public.oauth.googleMapsApiKey,
+    libraries: ["visualization"],
   });
   const toast = useToast();
   const { id } = useParams();

@@ -12,7 +12,7 @@ export const MUTCDRectangleSign = (props: MUTCDRectangleProps) => {
     <Box
       backgroundColor={Color.MUTCD_GREEN}
       color={Color.WHITE}
-      letterSpacing={2}
+      letterSpacing={fontFamily === MUTCDFont.CLEARVIEW ? 1.5 : 2}
       padding={0.5}
       borderRadius={10}
     >

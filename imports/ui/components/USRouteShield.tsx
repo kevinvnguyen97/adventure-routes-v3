@@ -13,6 +13,7 @@ export const USRouteShield = (props: USRouteShieldProps) => {
         height: "30px",
         verticalAlign: "middle",
         width: `${usRouteNumber.length > 2 ? "40" : "30"}px`,
+        userSelect: "none",
       }}
     >
       <img

@@ -177,7 +177,7 @@ export const MapSettings = (props: MapSettingsProps) => {
         <HStack justifyContent="space-between" color="white">
           <Text fontWeight="bold">MUTCD Font</Text>
           <Radio value={MUTCDFont.HWYGOTHIC} fontFamily={MUTCDFont.HWYGOTHIC}>
-            <Text fontFamily={MUTCDFont.HWYGOTHIC} letterSpacing={1.5}>
+            <Text fontFamily={MUTCDFont.HWYGOTHIC} letterSpacing={2}>
               Highway Gothic
             </Text>
           </Radio>

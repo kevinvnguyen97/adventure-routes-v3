@@ -13,6 +13,7 @@ export const InterstateShield = (props: InterstateShieldProps) => {
         height: "30px",
         verticalAlign: "middle",
         width: `${interstateNumber.length > 2 ? "40" : "30"}px`,
+        userSelect: "none",
       }}
     >
       <img

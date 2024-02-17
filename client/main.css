@@ -5,23 +5,23 @@ body {
 @font-face {
   font-family: "Highway Gothic Wide";
   src: local("HighwayGothicWide"),
-    url("/public/fonts/HighwayGothic/HWYGWDE.TTF") format("TTF");
+    url("../public/fonts/HighwayGothic/HWYGWDE.TTF") format("TTF");
 }
 
 @font-face {
   font-family: "Highway Gothic";
   src: local("HighwayGothic"),
-    url("/public/fonts/HighwayGothic/HWYGOTH") format("TTF");
+    url("../public/fonts/HighwayGothic/HWYGOTH") format("TTF");
 }
 
 @font-face {
   font-family: "Highway Gothic Narrow";
   src: local("HighwayGothicNarrow"),
-    url("/public/fonts/HighwayGothic/HWYGNRRW.TTF") format("TTF");
+    url("../public/fonts/HighwayGothic/HWYGNRRW.TTF") format("TTF");
 }
 
 @font-face {
   font-family: "Clearview 4W";
   src: local("ClearviewHwy4W"),
-    url("/public/fonts/Clearview/ClearviewHwy1W.ttf") format("TTF");
+    url("../public/fonts/Clearview/ClearviewHwy1W.ttf") format("TTF");
 }
