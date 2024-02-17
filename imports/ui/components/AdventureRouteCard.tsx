@@ -117,9 +117,9 @@ export const AdventureRouteCard = (props: AdventureRouteCardProps) => {
               {[...Array(adventureRoute.priceCategory)].map(() => "$")}
             </Text>
             <Text>Start: {adventureRoute.route.origin}</Text>
-            {adventureRoute.route.waypoints?.map((waypoint) => (
-              <Text key={waypoint}>{waypoint}</Text>
-            ))}
+            <Text>
+              {(adventureRoute.route.waypoints?.length ?? 0) > 0 && "..."}
+            </Text>
             <Text>End: {adventureRoute.route.destination}</Text>
           </CardBody>
         </Box>

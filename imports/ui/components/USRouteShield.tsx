@@ -30,10 +30,11 @@ export const USRouteShield = (props: USRouteShieldProps) => {
           top: "50%",
           transform: "translate(-50%, -50%)",
           color: "black",
-          fontFamily:
+          fontFamily: `${
             usRouteNumber.length > 2
               ? "Highway Gothic Narrow"
-              : "Highway Gothic",
+              : "Highway Gothic"
+          } !important`,
           fontSize: "24px",
           letterSpacing: "0.5px",
           textAlign: "center",

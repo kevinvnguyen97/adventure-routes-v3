@@ -96,7 +96,7 @@ export const MapDirections = (props: MapDirectionsProps) => {
               Leg {stepBeginningLabel} to {stepEndLabel} ({leg.distance?.text},{" "}
               {leg.duration?.text})
             </AccordionButton>
-            <AccordionPanel>
+            <AccordionPanel paddingLeft={0} paddingRight={0}>
               <Box display="flex" flexDirection="column" gap={1}>
                 {leg.steps.map((step, i) => {
                   /** Instructions split up by spaces */
@@ -358,12 +358,15 @@ export const MapDirections = (props: MapDirectionsProps) => {
                         alignSelf={
                           step.instructions.includes("I-") ? "start" : "center"
                         }
+                        alignItems="center"
                       >
-                        <Box
-                          dangerouslySetInnerHTML={{
-                            __html: formattedInstructions,
-                          }}
-                        />
+                        <Box>
+                          <Box
+                            dangerouslySetInnerHTML={{
+                              __html: formattedInstructions,
+                            }}
+                          />
+                        </Box>
                         <Box minWidth={140} textAlign="end" alignSelf="center">
                           <Text>{step.distance?.text}</Text>
                           <Text>{step.duration?.text}</Text>
