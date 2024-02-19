@@ -7,6 +7,8 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { App } from "/imports/ui/App";
 import { AuthProvider } from "/imports/ui/providers";
 
+import "./main.css";
+
 Meteor.startup(() => {
   const container = document.getElementById("react-target");
   const root = createRoot(container!);
