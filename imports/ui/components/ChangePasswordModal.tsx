@@ -44,6 +44,7 @@ export const ChangePasswordModal = (props: ChangePasswordModalProps) => {
     oldPassword.length >= MINIMUM_PASSWORD_LENGTH,
     !!newPassword,
     newPassword.length >= MINIMUM_PASSWORD_LENGTH,
+    !!newPasswordReentry,
     newPassword === newPasswordReentry,
     oldPassword !== newPassword,
   ].every((criteria) => !!criteria);
@@ -54,7 +55,7 @@ export const ChangePasswordModal = (props: ChangePasswordModalProps) => {
     } else if (newPassword.length < MINIMUM_PASSWORD_LENGTH) {
       return `Password must be at least ${MINIMUM_PASSWORD_LENGTH} characters long`;
     } else if (oldPassword === newPassword) {
-      return "New password must be unique the old password";
+      return "New password cannot be the current password";
     }
   };
 
@@ -149,7 +150,7 @@ export const ChangePasswordModal = (props: ChangePasswordModalProps) => {
               colorScheme="blue"
               type="submit"
               form="change-password-form"
-              disabled={!isFormValid}
+              isDisabled={!isFormValid}
             >
               Apply Changes
             </Button>

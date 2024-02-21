@@ -21,5 +21,5 @@ export const useAdventureRoute = (id: string) => {
       ? AdventureRoutesCollection.find({ _id: id }).fetch()
       : [];
     return { data: adventureRoute[0], isLoading: !subscription.ready() };
-  });
+  }, []);
 };
