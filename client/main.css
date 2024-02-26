@@ -1,17 +1,17 @@
 @font-face {
-  font-family: "Highway Gothic Wide";
+  font-family: "Highway Gothic Wide, sans-serif";
   src: local("HighwayGothicWide"),
     url("../public/fonts/HighwayGothic/HWYGWDE.TTF") format("TTF");
 }
 
 @font-face {
-  font-family: "Highway Gothic";
+  font-family: "Highway Gothic, sans-serif";
   src: local("HighwayGothic"),
-    url("../public/fonts/HighwayGothic/HWYGOTH") format("TTF");
+    url("../public/fonts/HighwayGothic/HWYGOTH.TTF") format("TTF");
 }
 
 @font-face {
-  font-family: "Highway Gothic Narrow";
+  font-family: "Highway Gothic Narrow, sans-serif";
   src: local("HighwayGothicNarrow"),
     url("../public/fonts/HighwayGothic/HWYGNRRW.TTF") format("TTF");
 }
