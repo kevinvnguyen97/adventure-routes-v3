@@ -1,5 +1,5 @@
 @font-face {
-  font-family: "Highway Gothic Wide, sans-serif";
+  font-family: "HighwayGothicWide";
   src: local("HighwayGothicWide"),
     url("/public/fonts/HighwayGothic/HighwayGothicWide.ttf") format("truetype"),
     url("/public/fonts/HighwayGothic/HighwayGothicWide.eot")
@@ -10,13 +10,13 @@
 }
 
 @font-face {
-  font-family: "Highway Gothic, sans-serif";
+  font-family: "HighwayGothic";
   src: local("HighwayGothic"),
     url("/public/fonts/HighwayGothic/HWYGOTH.TTF") format("ttf");
 }
 
 @font-face {
-  font-family: "Highway Gothic Narrow, sans-serif";
+  font-family: "HighwayGothicNarrow";
   src: local("HighwayGothicNarrow"),
     url("/public/fonts/HighwayGothic/HWYGNRRW.TTF") format("ttf");
 }

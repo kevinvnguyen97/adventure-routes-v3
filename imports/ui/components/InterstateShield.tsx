@@ -34,8 +34,8 @@ export const InterstateShield = (props: InterstateShieldProps) => {
           color: "white",
           fontFamily: `${
             interstateNumber.length > 2
-              ? "Highway Gothic Narrow"
-              : "Highway Gothic"
+              ? "HighwayGothicNarrow"
+              : "HighwayGothic"
           } !important`,
           fontSize: "20px",
           letterSpacing: "0.5px",

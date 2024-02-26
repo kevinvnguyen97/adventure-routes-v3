@@ -27,5 +27,5 @@ export const humanReadableTravelMode: Record<google.maps.TravelMode, string> = {
 
 export enum MUTCDFont {
   CLEARVIEW = "Clearview 4W",
-  HWYGOTHIC = "Highway Gothic Wide",
+  HWYGOTHIC = "HighwayGothicWide",
 }
