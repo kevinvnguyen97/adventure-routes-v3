@@ -1,12 +1,13 @@
 @font-face {
-  font-family: "HighwayGothicWide";
-  src: local("HighwayGothicWide"),
+  font-family: "Highway Gothic Wide, Clearview 1W";
+  src: local("Highway Gothic Wide"),
     url("/public/fonts/HighwayGothic/HighwayGothicWide.ttf") format("truetype"),
     url("/public/fonts/HighwayGothic/HighwayGothicWide.eot")
       format("embedded-opentype"),
     url("/public/fonts/HighwayGothic/HighwayGothicWide.svg") format("svg"),
     url("/public/fonts/HighwayGothic/HighwayGothicWide.woff") format("woff"),
     url("/public/fonts/HighwayGothic/HighwayGothicWide.woff2") format("woff2");
+  font-display: swap;
 }
 
 @font-face {
@@ -22,8 +23,8 @@
 }
 
 @font-face {
-  font-family: "Clearview 4W";
-  src: local("ClearviewHwy4W"),
+  font-family: "Clearview 1W";
+  src: local("ClearviewHwy1W"),
     url("/public/fonts/Clearview/ClearviewHwy1W.ttf") format("ttf");
 }
 
