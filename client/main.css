@@ -1,7 +1,7 @@
 @font-face {
   font-family: "Highway Gothic Wide, Clearview 1W";
-  src: local("Highway Gothic Wide"),
-    url("/public/fonts/HighwayGothic/HighwayGothicWide.ttf") format("truetype"),
+  src: url("/public/fonts/HighwayGothic/HighwayGothicWide.ttf")
+      format("truetype"),
     url("/public/fonts/HighwayGothic/HighwayGothicWide.eot")
       format("embedded-opentype"),
     url("/public/fonts/HighwayGothic/HighwayGothicWide.svg") format("svg"),
