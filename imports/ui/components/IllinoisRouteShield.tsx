@@ -32,7 +32,7 @@ export const IllinoisRouteShield = (props: IllinoisRouteShieldProps) => {
           top: "50%",
           transform: `translate(-50%, -35%)`,
           color: "black",
-          fontFamily: "HighwayGothic !important",
+          fontFamily: "Highway Gothic",
           fontSize: "20px",
           letterSpacing: "0.5px",
           textAlign: "center",
