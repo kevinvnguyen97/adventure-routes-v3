@@ -253,7 +253,7 @@ export const MapDirections = (props: MapDirectionsProps) => {
                       }
                       // Search for any term that includes I-, the interstate prefix
                       else if (
-                        word.includes("I-") &&
+                        (word.includes("I-") || word.includes("Interstate ")) &&
                         !word.includes("RI-") &&
                         !word.includes("MI-")
                       ) {
@@ -267,11 +267,13 @@ export const MapDirections = (props: MapDirectionsProps) => {
                           const splitText = cleanedWord.split("/");
                           // Iterate through each term that was split by /
                           const formattedSplitText = splitText.map((text) => {
-                            if (text.includes("I-")) {
-                              const interstateNumber = text.replaceAll(
-                                "I-",
-                                ""
-                              );
+                            if (
+                              text.includes("I-") ||
+                              text.includes("Interstate ")
+                            ) {
+                              const interstateNumber = text
+                                .replaceAll("I-", "")
+                                .replaceAll("Interstate ", "");
                               if (interstateNumber.includes("<div")) {
                                 const cleanedInterstateNumber =
                                   interstateNumber.replaceAll("<div", "");
@@ -356,9 +358,6 @@ export const MapDirections = (props: MapDirectionsProps) => {
                       <Box
                         display="flex"
                         justifyContent="space-between"
-                        alignSelf={
-                          step.instructions.includes("I-") ? "start" : "center"
-                        }
                         alignItems="center"
                       >
                         <Box>
