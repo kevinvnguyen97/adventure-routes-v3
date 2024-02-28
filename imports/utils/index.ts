@@ -72,7 +72,7 @@ export const formatMetricDistance = (numberOfMeters: number) => {
   if (numberOfKilometers < 100) {
     return `${numberOfKilometers.toFixed(1)} km`;
   } else {
-    return `${Math.round(numberOfKilometers)} km`;
+    return `${Math.round(numberOfKilometers).toLocaleString("en-US")} km`;
   }
 };
 
