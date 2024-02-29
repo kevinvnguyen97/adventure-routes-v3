@@ -19,7 +19,7 @@ import {
   formatImperialDistance,
   formatMetricDistance,
 } from "/imports/utils";
-import { MUTCDFont } from "/imports/constants";
+import { Color, MUTCDFont } from "/imports/constants";
 
 type MapDirectionsProps = {
   legs: google.maps.DirectionsLeg[] | undefined;
@@ -98,6 +98,13 @@ export const MapDirections = (props: MapDirectionsProps) => {
             </AccordionButton>
             <AccordionPanel paddingLeft={0} paddingRight={0}>
               <Box display="flex" flexDirection="column" gap={1}>
+                {leg.steps.some((step) =>
+                  step.instructions.includes("Toll road")
+                ) && (
+                  <MUTCDRectangleSign signColor={Color.MUTCD_YELLOW}>
+                    <Box textAlign="center">THIS ROUTE HAS TOLLS</Box>
+                  </MUTCDRectangleSign>
+                )}
                 {leg.steps.map((step, i) => {
                   /** Instructions split up by spaces */
                   const splitInstructions = step.instructions.split(" ");

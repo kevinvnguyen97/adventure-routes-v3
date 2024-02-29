@@ -16,6 +16,7 @@ export const MINIMUM_USERNAME_LENGTH = 8;
 export enum Color {
   WHITE = "#FFFFFF",
   MUTCD_GREEN = "#006B54",
+  MUTCD_YELLOW = "#FFCC00",
 }
 
 export const humanReadableTravelMode: Record<google.maps.TravelMode, string> = {

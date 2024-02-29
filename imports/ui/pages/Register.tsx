@@ -48,8 +48,6 @@ export const Register = () => {
     isValidPhoneNumber(phoneNumber, "US"),
   ].every((criteria) => !!criteria);
 
-  console.log(isFormValid);
-
   const toast = useToast();
 
   const submitRegister = async (e: FormEvent) => {

@@ -6,7 +6,6 @@ import {
   TrafficLayer,
   TransitLayer,
   KmlLayer,
-  HeatmapLayer,
 } from "@react-google-maps/api";
 import { Box, Text, useToast } from "@chakra-ui/react";
 import React, {
@@ -55,6 +54,7 @@ export const Map = () => {
     "DRIVING" as google.maps.TravelMode
   );
   const [unitSystem, setUnitSystem] = useState<google.maps.UnitSystem>(1);
+  const [isInfoButtonEnabled, setIsInfoButtonEnabled] = useState(false);
   const [isTrafficLayerVisible, setIsTrafficLayerVisible] = useState(false);
   const [isTransitLayerVisible, setIsTransitLayerVisible] = useState(false);
   const [isKmlLayerVisible, setIsKmlLayerVisible] = useState(false);
@@ -113,9 +113,10 @@ export const Map = () => {
         renderCount.current === 0
       ) {
         setDirections(result);
+        setIsInfoButtonEnabled(true);
       } else {
         switch (status) {
-          case "INVALID_REQUEST":
+          case google.maps.DirectionsStatus.INVALID_REQUEST:
             toast({
               ...TOAST_PRESET,
               title: "Invalid request",
@@ -123,11 +124,22 @@ export const Map = () => {
               status: "error",
             });
             break;
-          case "NOT_FOUND":
+          case google.maps.DirectionsStatus.NOT_FOUND:
+            setIsInfoButtonEnabled(false);
             toast({
               ...TOAST_PRESET,
               title: "Not found",
               description: "At least one waypoint is not found",
+              status: "error",
+            });
+            break;
+          case google.maps.DirectionsStatus.ZERO_RESULTS:
+            setIsInfoButtonEnabled(false);
+            toast({
+              ...TOAST_PRESET,
+              title: "No valid route",
+              description:
+                "There are no possible routes between the given locations",
               status: "error",
             });
             break;
@@ -191,6 +203,7 @@ export const Map = () => {
             directions={directions}
             travelMode={travelMode}
             setTravelMode={onTravelModeChange}
+            isInfoButtonEnabled={isInfoButtonEnabled}
             isTrafficLayerVisible={isTrafficLayerVisible}
             setIsTrafficLayerVisible={onTrafficLayerChange}
             isTransitLayerVisible={isTransitLayerVisible}

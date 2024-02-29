@@ -27,6 +27,7 @@ type AdventureRouteInfoProps = {
   directions: google.maps.DirectionsResult | null;
   travelMode: google.maps.TravelMode;
   setTravelMode: (travelMode: google.maps.TravelMode) => void;
+  isInfoButtonEnabled: boolean;
   isTrafficLayerVisible: boolean;
   setIsTrafficLayerVisible: () => void;
   isTransitLayerVisible: boolean;
@@ -43,9 +44,14 @@ type AdventureRouteInfoProps = {
   setMutcdFont: (mutcdFont: MUTCDFont) => void;
 };
 export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
-  const { adventureRoute, directions, ...mapSettingsProps } = props;
+  const {
+    adventureRoute,
+    directions,
+    isInfoButtonEnabled,
+    ...mapSettingsProps
+  } = props;
   const { mutcdFont, unitSystem } = mapSettingsProps;
-  const { name, description } = adventureRoute || {};
+  const { name, description, priceCategory } = adventureRoute || {};
   const { routes } = directions || {};
   const generatedPath = routes?.[0];
   const { legs } = generatedPath || {};
@@ -65,8 +71,9 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
         borderRadius={2}
         borderLeftRadius={0}
         onClick={onDrawerOpen}
+        isDisabled={!isInfoButtonEnabled}
       >
-        Adventure Route Info
+        Info
       </Button>
       <Drawer
         isOpen={isDrawerOpen}
@@ -85,11 +92,17 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
               <TabList>
                 <Tab color="white">Journal</Tab>
                 <Tab color="white">Directions</Tab>
+                <Tab color="white">Comments</Tab>
                 <Tab color="white">Settings</Tab>
               </TabList>
               <TabPanels>
                 <TabPanel color="white">
                   <Text>{description}</Text>
+                  <Text>
+                    {priceCategory === 0
+                      ? "Free"
+                      : [...Array(priceCategory)].map(() => "$")}
+                  </Text>
                 </TabPanel>
                 <TabPanel paddingLeft={0} paddingRight={0}>
                   <MapDirections
@@ -98,6 +111,7 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
                     mutcdFont={mutcdFont}
                   />
                 </TabPanel>
+                <TabPanel></TabPanel>
                 <TabPanel>
                   <MapSettings {...mapSettingsProps} />
                 </TabPanel>

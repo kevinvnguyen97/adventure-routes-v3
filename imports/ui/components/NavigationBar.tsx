@@ -67,7 +67,6 @@ export const NavigationBar = () => {
 
   const onLogout = () => {
     Meteor.logout((error: Error | Meteor.Error | undefined) => {
-      console.log("ERROR:", error);
       if (error) {
         const meteorError = error as Meteor.Error;
         console.error(meteorError);

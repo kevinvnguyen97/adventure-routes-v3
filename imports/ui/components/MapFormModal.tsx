@@ -48,7 +48,6 @@ export const MapFormModal = (props: MapFormModalProps) => {
   const [destination, setDestination] = useState("");
 
   const isEditing = !!adventureRoute;
-  console.log(adventureRoute);
 
   useEffect(() => {
     if (isEditing) {
@@ -179,8 +178,6 @@ export const MapFormModal = (props: MapFormModalProps) => {
               <FormErrorMessage>Origin is required</FormErrorMessage>
             </FormControl>
             {waypoints.map((waypoint, i) => {
-              console.log(i);
-              console.log(i < 23);
               return (
                 <InputGroup key={`waypoint${i}`}>
                   <Input

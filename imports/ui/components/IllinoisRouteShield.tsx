@@ -11,9 +11,8 @@ export const IllinoisRouteShield = (props: IllinoisRouteShieldProps) => {
         display: "inline-block",
         position: "relative",
         height: "30px",
-        verticalAlign: "middle",
+        verticalAlign: "bottom",
         width: `${illinoisRouteNumber.length > 2 ? "40" : "30"}px`,
-        userSelect: "none",
       }}
     >
       <img
