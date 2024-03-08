@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import {
+  Avatar,
   Box,
+  FormLabel,
   IconButton,
+  Input,
   Table,
   TableContainer,
   Tbody,
@@ -17,6 +20,7 @@ import { Meteor } from "meteor/meteor";
 import { motion } from "framer-motion";
 
 import {
+  ChangeEmailModal,
   ChangePasswordModal,
   ChangeUsernameModal,
 } from "/imports/ui/components";
@@ -30,6 +34,12 @@ export const Settings = () => {
 
   const { username = "", emails = [], profile } = user || {};
   const { firstName, lastName, phoneNumber } = profile || {};
+
+  const fullName = [firstName, lastName].filter(Boolean).join(" ");
+
+  const [oldEmailInput, setOldEmailInput] = useState("");
+  const [newEmailInput, setNewEmailInput] = useState("");
+  const [newEmailReentryInput, setNewEmailReentryInput] = useState("");
 
   const [oldPasswordInput, setOldPasswordInput] = useState("");
   const [newPasswordInput, setNewPasswordInput] = useState("");
@@ -58,6 +68,12 @@ export const Settings = () => {
         });
       }
     }
+  };
+
+  const changeEmail = async () => {
+    try {
+      await meteorMethodPromise("changeEmail", newEmailInput);
+    } catch (error) {}
   };
 
   const changePassword = () => {
@@ -104,6 +120,17 @@ export const Settings = () => {
         <Text color="white" fontWeight="bold" fontSize={40}>
           Settings
         </Text>
+        <Avatar
+          bgColor="orange.500"
+          alignSelf="center"
+          size="xl"
+          name={fullName}
+          color="white"
+          as={FormLabel}
+          _hover={{ cursor: "pointer" }}
+          htmlFor="profile-picture-upload"
+        />
+        <Input type="file" display="none" id="profile-picture-upload" />
         <TableContainer>
           <Table
             size="md"
@@ -116,7 +143,7 @@ export const Settings = () => {
             <Tbody>
               <Tr>
                 <Th textColor="white">Name</Th>
-                <Td>{[firstName, lastName].filter(Boolean).join(" ")}</Td>
+                <Td>{fullName}</Td>
               </Tr>
               <Tr>
                 <Th textColor="white">Username</Th>
@@ -131,22 +158,27 @@ export const Settings = () => {
                 </Td>
               </Tr>
               <Tr>
-                <Th textColor="white">Email(s)</Th>
+                <Th textColor="white">Email</Th>
                 <Td display="flex" justifyContent="space-between">
                   <Box>
                     {emails.map(({ address }) => (
                       <Tr key={address}>{address}</Tr>
                     ))}
                   </Box>
-                  <IconButton
-                    colorScheme="orange"
-                    icon={<EditIcon />}
-                    aria-label="phone-edit"
+                  <ChangeEmailModal
+                    currentEmail={emails[0]?.address}
+                    oldEmailInput={oldEmailInput}
+                    setOldEmailInput={setOldEmailInput}
+                    newEmailInput={newEmailInput}
+                    setNewEmailInput={setNewEmailInput}
+                    changeEmail={changeEmail}
+                    newEmailReentryInput={newEmailReentryInput}
+                    setNewEmailReentryInput={setNewEmailReentryInput}
                   />
                 </Td>
               </Tr>
               <Tr>
-                <Th>Phone</Th>
+                <Th textColor="white">Phone</Th>
                 <Td display="flex" justifyContent="space-between">
                   <Text>{phoneNumber}</Text>
                   <IconButton
@@ -157,7 +189,7 @@ export const Settings = () => {
                 </Td>
               </Tr>
               <Tr>
-                <Th>Password</Th>
+                <Th textColor="white">Password</Th>
                 <Td display="flex" justifyContent="end">
                   <ChangePasswordModal
                     oldPassword={oldPasswordInput}

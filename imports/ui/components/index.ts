@@ -1,5 +1,6 @@
 export { AdventureRouteCard } from "./AdventureRouteCard";
 export { AdventureRouteInfo } from "./AdventureRouteInfo";
+export { ChangeEmailModal } from "./ChangeEmailModal";
 export { ChangePasswordModal } from "./ChangePasswordModal";
 export { ChangeUsernameModal } from "./ChangeUsernameModal";
 export { DeleteRouteModal } from "./DeleteRouteModal";

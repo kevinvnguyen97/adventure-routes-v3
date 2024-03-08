@@ -15,6 +15,7 @@ export const MINIMUM_USERNAME_LENGTH = 8;
 
 export enum Color {
   WHITE = "#FFFFFF",
+  BLACK = "#000000",
   MUTCD_GREEN = "#006B54",
   MUTCD_YELLOW = "#FFCC00",
 }

@@ -62,6 +62,8 @@ export const NavigationBar = () => {
     onClose: onUserMenuClose,
   } = useDisclosure();
   const { user, loggedIn } = useMeteorAuth();
+  const { profile } = user || {};
+  const { firstName, lastName } = profile || {};
   const navigate = useNavigate();
   const toast = useToast();
 
@@ -137,9 +139,11 @@ export const NavigationBar = () => {
             <PopoverTrigger>
               <Avatar
                 _hover={{ cursor: "pointer", backgroundColor: "orange.600" }}
-                as={Button}
+                as={IconButton}
                 bgColor="orange.500"
                 isDisabled={!loggedIn}
+                name={[firstName, lastName].filter(Boolean).join(" ")}
+                color="white"
               />
             </PopoverTrigger>
             <PopoverContent color="black" shadow="base">

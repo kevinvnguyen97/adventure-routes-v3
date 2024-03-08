@@ -33,7 +33,18 @@ Meteor.methods({
     await AdventureRoutesCollection.removeAsync({ _id: adventureRouteId });
   },
   changeUsername: (newUsername: string) => {
-    const userId = Meteor.userId() ?? "";
-    Accounts.setUsername(userId, newUsername);
+    const userId = Meteor.userId();
+    if (!!userId) {
+      Accounts.setUsername(userId, newUsername);
+    }
+  },
+  changeEmail: (newEmail: string) => {
+    const user = Meteor.user();
+    const { emails = [], _id: userId } = user || {};
+
+    if (emails.length > 0 && !!userId && Meteor.isServer) {
+      Accounts.removeEmail(userId, emails[0].address);
+      Accounts.addEmail(userId, newEmail);
+    }
   },
 });
