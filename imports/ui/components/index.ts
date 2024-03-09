@@ -3,6 +3,7 @@ export { AdventureRouteInfo } from "./AdventureRouteInfo";
 export { ChangeEmailModal } from "./ChangeEmailModal";
 export { ChangePasswordModal } from "./ChangePasswordModal";
 export { ChangeUsernameModal } from "./ChangeUsernameModal";
+export { ChangeFullNameModal } from "./ChangeFullNameModal";
 export { DeleteRouteModal } from "./DeleteRouteModal";
 export { LoadingScreen } from "./LoadingScreen";
 export { MapFormModal } from "./MapFormModal";

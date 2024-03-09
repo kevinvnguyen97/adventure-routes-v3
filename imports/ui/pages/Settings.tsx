@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import {
   Avatar,
   Box,
@@ -21,6 +21,7 @@ import { motion } from "framer-motion";
 
 import {
   ChangeEmailModal,
+  ChangeFullNameModal,
   ChangePasswordModal,
   ChangeUsernameModal,
 } from "/imports/ui/components";
@@ -31,7 +32,7 @@ import { uploadToImgBB } from "/imports/api/imgbb";
 
 export const Settings = () => {
   const toast = useToast();
-  const { user, userId } = useMeteorAuth();
+  const { user, userId, loggedIn } = useMeteorAuth();
 
   const { username = "", emails = [], profile } = user || {};
   const { firstName, lastName, phoneNumber, profilePictureUrl } = profile || {};
@@ -134,6 +135,13 @@ export const Settings = () => {
     );
   };
 
+  useEffect(() => {
+    if (loggedIn) {
+      setNewFirstNameInput(firstName ?? "");
+      setNewLastNameInput(lastName ?? "");
+    }
+  }, [loggedIn]);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -184,7 +192,16 @@ export const Settings = () => {
             <Tbody>
               <Tr>
                 <Th textColor="white">Name</Th>
-                <Td>{fullName}</Td>
+                <Td display="flex" justifyContent="space-between">
+                  <Text>{fullName}</Text>
+                  <ChangeFullNameModal
+                    newFirstNameInput={newFirstNameInput}
+                    setNewFirstNameInput={setNewFirstNameInput}
+                    newLastNameInput={newLastNameInput}
+                    setNewLastNameInput={setNewLastNameInput}
+                    changeFullName={changeFullName}
+                  />
+                </Td>
               </Tr>
               <Tr>
                 <Th textColor="white">Username</Th>

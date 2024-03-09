@@ -99,6 +99,7 @@ export const ChangeEmailModal = (props: ChangeEmailModalProps) => {
               >
                 <Input
                   value={oldEmailInput}
+                  type="email"
                   onChange={(e) => setOldEmailInput(e.target.value)}
                   placeholder="Enter current email"
                   bgColor={Color.WHITE}
@@ -111,6 +112,7 @@ export const ChangeEmailModal = (props: ChangeEmailModalProps) => {
               >
                 <Input
                   value={newEmailInput}
+                  type="email"
                   onChange={(e) => setNewEmailInput(e.target.value)}
                   placeholder="Enter new email"
                   bgColor={Color.WHITE}
@@ -126,6 +128,7 @@ export const ChangeEmailModal = (props: ChangeEmailModalProps) => {
               >
                 <Input
                   value={newEmailReentryInput}
+                  type="email"
                   onChange={(e) => setNewEmailReentryInput(e.target.value)}
                   placeholder="Re-enter new email"
                   bgColor={Color.WHITE}
