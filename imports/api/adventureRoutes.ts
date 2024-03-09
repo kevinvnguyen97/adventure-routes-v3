@@ -47,4 +47,28 @@ Meteor.methods({
       Accounts.addEmail(userId, newEmail);
     }
   },
+  changeProfilePicture: async (newProfilePictureUrl: string) => {
+    const userId = Meteor.userId();
+    if (!!userId) {
+      await Meteor.users.updateAsync(
+        { _id: userId },
+        { $set: { "profile.profilePictureUrl": newProfilePictureUrl } }
+      );
+    }
+  },
+  changeFullName: async (args: { firstName: string; lastName: string }) => {
+    const { firstName, lastName } = args;
+    const userId = Meteor.userId();
+    if (!!userId) {
+      await Meteor.users.updateAsync(
+        { _id: userId },
+        {
+          $set: {
+            "profile.firstName": firstName,
+            "profile.lastName": lastName,
+          },
+        }
+      );
+    }
+  },
 });

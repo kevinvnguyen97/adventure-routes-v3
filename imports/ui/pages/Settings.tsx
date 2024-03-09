@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import {
   Avatar,
   Box,
@@ -27,15 +27,19 @@ import {
 import { useMeteorAuth } from "/imports/ui/providers";
 import { meteorMethodPromise } from "/imports/utils";
 import { TOAST_PRESET } from "/imports/constants/toast";
+import { uploadToImgBB } from "/imports/api/imgbb";
 
 export const Settings = () => {
   const toast = useToast();
-  const { user } = useMeteorAuth();
+  const { user, userId } = useMeteorAuth();
 
   const { username = "", emails = [], profile } = user || {};
-  const { firstName, lastName, phoneNumber } = profile || {};
+  const { firstName, lastName, phoneNumber, profilePictureUrl } = profile || {};
 
   const fullName = [firstName, lastName].filter(Boolean).join(" ");
+
+  const [newFirstNameInput, setNewFirstNameInput] = useState("");
+  const [newLastNameInput, setNewLastNameInput] = useState("");
 
   const [oldEmailInput, setOldEmailInput] = useState("");
   const [newEmailInput, setNewEmailInput] = useState("");
@@ -46,6 +50,33 @@ export const Settings = () => {
   const [newPasswordReentryInput, setNewPasswordReentryInput] = useState("");
 
   const [newUsernameInput, setNewUsernameInput] = useState("");
+
+  const changeFullName = async () => {
+    try {
+      await meteorMethodPromise("changeFullName", {
+        firstName: newFirstNameInput,
+        lastName: newLastNameInput,
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const uploadProfilePicture = async (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      const file = files[0];
+
+      try {
+        const response = await uploadToImgBB(file, userId ?? "");
+        if (response.data && response.status === 200) {
+          await meteorMethodPromise("changeProfilePicture", response.data?.url);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  };
 
   const changeUsername = async () => {
     try {
@@ -73,7 +104,9 @@ export const Settings = () => {
   const changeEmail = async () => {
     try {
       await meteorMethodPromise("changeEmail", newEmailInput);
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const changePassword = () => {
@@ -129,8 +162,16 @@ export const Settings = () => {
           as={FormLabel}
           _hover={{ cursor: "pointer" }}
           htmlFor="profile-picture-upload"
+          src={profilePictureUrl}
         />
-        <Input type="file" display="none" id="profile-picture-upload" />
+        <Input
+          type="file"
+          display="none"
+          id="profile-picture-upload"
+          accept="image/*"
+          onChange={uploadProfilePicture}
+          name="profile-picture"
+        />
         <TableContainer>
           <Table
             size="md"
@@ -189,8 +230,10 @@ export const Settings = () => {
                 </Td>
               </Tr>
               <Tr>
-                <Th textColor="white">Password</Th>
-                <Td display="flex" justifyContent="end">
+                <Th textColor="white" borderBottom={0}>
+                  Password
+                </Th>
+                <Td display="flex" justifyContent="end" borderBottom={0}>
                   <ChangePasswordModal
                     oldPassword={oldPasswordInput}
                     setOldPassword={setOldPasswordInput}

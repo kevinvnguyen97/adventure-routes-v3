@@ -63,7 +63,7 @@ export const NavigationBar = () => {
   } = useDisclosure();
   const { user, loggedIn } = useMeteorAuth();
   const { profile } = user || {};
-  const { firstName, lastName } = profile || {};
+  const { firstName, lastName, profilePictureUrl } = profile || {};
   const navigate = useNavigate();
   const toast = useToast();
 
@@ -144,6 +144,7 @@ export const NavigationBar = () => {
                 isDisabled={!loggedIn}
                 name={[firstName, lastName].filter(Boolean).join(" ")}
                 color="white"
+                src={profilePictureUrl}
               />
             </PopoverTrigger>
             <PopoverContent color="black" shadow="base">

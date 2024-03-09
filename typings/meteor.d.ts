@@ -8,6 +8,7 @@ declare module "meteor/meteor" {
         firstName: string;
         lastName: string;
         phoneNumber: string;
+        profilePictureUrl: string;
       };
       services?: any;
       username?: string;

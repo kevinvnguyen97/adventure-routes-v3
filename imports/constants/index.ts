@@ -1,15 +1,17 @@
 import { Meteor } from "meteor/meteor";
-interface GoogleSecret {
+interface Secret {
   oauth: {
     googleMapsApiKey: string;
+    imgBBApiKey: string;
   };
   public: {
     oauth: {
       googleMapsApiKey: string;
+      imgBBApiKey: string;
     };
   };
 }
-export const GOOGLE_SECRETS = Meteor.settings as unknown as GoogleSecret;
+export const SECRETS = Meteor.settings as unknown as Secret;
 export const MINIMUM_PASSWORD_LENGTH = 8;
 export const MINIMUM_USERNAME_LENGTH = 8;
 
