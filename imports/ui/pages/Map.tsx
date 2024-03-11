@@ -20,7 +20,7 @@ import { motion } from "framer-motion";
 
 import { useAdventureRoutesForUser } from "/imports/ui/providers";
 import { AdventureRouteInfo, LoadingScreen } from "/imports/ui/components";
-import { GOOGLE_SECRETS, MUTCDFont } from "/imports/constants";
+import { SECRETS, MUTCDFont } from "/imports/constants";
 import { TOAST_PRESET } from "/imports/constants/toast";
 
 const MAP_CONTAINER_STYLE: CSSProperties = {
@@ -31,7 +31,7 @@ const MAP_CONTAINER_STYLE: CSSProperties = {
 export const Map = () => {
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: GOOGLE_SECRETS.public.oauth.googleMapsApiKey,
+    googleMapsApiKey: SECRETS.public.oauth.googleMapsApiKey,
     libraries: ["visualization"],
   });
   const toast = useToast();

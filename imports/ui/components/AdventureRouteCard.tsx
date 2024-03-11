@@ -73,6 +73,7 @@ export const AdventureRouteCard = (props: AdventureRouteCardProps) => {
         color="white"
         _hover={{ cursor: "pointer" }}
         flexDirection="row"
+        paddingTop={5}
       >
         <Box>
           <Image
