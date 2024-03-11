@@ -24,7 +24,7 @@ import {
   ChangeFullNameModal,
   ChangePasswordModal,
   ChangeUsernameModal,
-} from "/imports/ui/components";
+} from "/imports/ui/components/modals";
 import { useMeteorAuth } from "/imports/ui/providers";
 import { meteorMethodPromise } from "/imports/utils";
 import { TOAST_PRESET } from "/imports/constants/toast";

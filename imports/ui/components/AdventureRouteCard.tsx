@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { AdventureRoute } from "/imports/api/adventureRoutes";
 import { meteorMethodPromise } from "/imports/utils";
 import { TOAST_PRESET } from "/imports/constants/toast";
-import { DeleteRouteModal, MapFormModal } from "/imports/ui/components";
+import { DeleteRouteModal, MapFormModal } from "/imports/ui/components/modals";
 import { EditIcon } from "@chakra-ui/icons";
 
 type AdventureRouteCardProps = {

@@ -1,16 +1,7 @@
 export { AdventureRouteCard } from "./AdventureRouteCard";
 export { AdventureRouteInfo } from "./AdventureRouteInfo";
-export { ChangeEmailModal } from "./ChangeEmailModal";
-export { ChangePasswordModal } from "./ChangePasswordModal";
-export { ChangeUsernameModal } from "./ChangeUsernameModal";
-export { ChangeFullNameModal } from "./ChangeFullNameModal";
-export { DeleteRouteModal } from "./DeleteRouteModal";
 export { LoadingScreen } from "./LoadingScreen";
-export { MapFormModal } from "./MapFormModal";
 export { NavigationBar } from "./NavigationBar";
 export { MUTCDRectangleSign } from "./MUTCDRectangleSign";
-export { InterstateShield } from "./InterstateShield";
-export { IllinoisRouteShield } from "./IllinoisRouteShield";
-export { USRouteShield } from "./USRouteShield";
 export { MapSettings } from "./MapSettings";
 export { MapDirections } from "./MapDirections";

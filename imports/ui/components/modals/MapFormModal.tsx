@@ -16,7 +16,7 @@ import {
   InputGroup,
   Textarea,
 } from "@chakra-ui/react";
-import { useMeteorAuth } from "../providers/Auth";
+import { useMeteorAuth } from "../../providers/Auth";
 import { Meteor } from "meteor/meteor";
 import { MultiSelect, useMultiSelect } from "chakra-multiselect";
 import { AdventureRoute } from "/imports/api/adventureRoutes";

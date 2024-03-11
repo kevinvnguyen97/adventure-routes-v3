@@ -4,7 +4,7 @@ import {
   USRouteShield,
   IllinoisRouteShield,
   InterstateShield,
-} from "/imports/ui/components";
+} from "/imports/ui/components/shields";
 
 export const formatDirections = (directionInstructions: string) => {
   const splitInstructions = directionInstructions.split(" ");

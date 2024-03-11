@@ -6,11 +6,8 @@ import {
   useAdventureRoutesForUser,
   useMeteorAuth,
 } from "/imports/ui/providers";
-import {
-  AdventureRouteCard,
-  LoadingScreen,
-  MapFormModal,
-} from "/imports/ui/components";
+import { AdventureRouteCard, LoadingScreen } from "/imports/ui/components";
+import { MapFormModal } from "/imports/ui/components/modals";
 
 export const Dashboard = () => {
   const { data: adventureRoutesForUser, isLoading } =
