@@ -63,6 +63,8 @@ export const AdventureRouteCard = (props: AdventureRouteCardProps) => {
     }
   };
 
+  const numberOfStopovers = adventureRoute.route.waypoints?.length ?? 0;
+
   return (
     <>
       <Card
@@ -118,9 +120,12 @@ export const AdventureRouteCard = (props: AdventureRouteCardProps) => {
               {[...Array(adventureRoute.priceCategory)].map(() => "$")}
             </Text>
             <Text>Start: {adventureRoute.route.origin}</Text>
-            <Text>
-              {(adventureRoute.route.waypoints?.length ?? 0) > 0 && "..."}
-            </Text>
+            {numberOfStopovers > 0 && (
+              <Text>
+                {numberOfStopovers}{" "}
+                {numberOfStopovers === 1 ? "Stopover" : "Stopovers"}
+              </Text>
+            )}
             <Text>End: {adventureRoute.route.destination}</Text>
           </CardBody>
         </Box>

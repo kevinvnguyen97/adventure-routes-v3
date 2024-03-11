@@ -122,3 +122,5 @@ export const getTextColorBasedOnBackground = (backgroundColor: string) => {
 
   return textColor;
 };
+
+export { formatDirections } from "./formatDirections";
