@@ -22,6 +22,7 @@ import { MultiSelect, useMultiSelect } from "chakra-multiselect";
 import { AdventureRoute } from "/imports/api/adventureRoutes";
 import { meteorMethodPromise } from "/imports/utils";
 import { TOAST_PRESET } from "/imports/constants/toast";
+import { Color } from "/imports/constants";
 
 type MapFormModalProps = {
   isOpen: boolean;
@@ -117,7 +118,7 @@ export const MapFormModal = (props: MapFormModalProps) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent backgroundColor="orange" textColor="white">
+      <ModalContent backgroundColor={Color.ORANGE} textColor={Color.WHITE}>
         <ModalHeader>{isEditing ? "Edit" : "Create"} Route</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
@@ -131,8 +132,8 @@ export const MapFormModal = (props: MapFormModalProps) => {
                 placeholder="Route Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                backgroundColor="white"
-                textColor="black"
+                backgroundColor={Color.WHITE}
+                textColor={Color.BLACK}
                 focusBorderColor="orange.400"
                 errorBorderColor="red.500"
                 required
@@ -144,8 +145,8 @@ export const MapFormModal = (props: MapFormModalProps) => {
                 placeholder="Description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                bgColor="white"
-                textColor="black"
+                bgColor={Color.WHITE}
+                textColor={Color.BLACK}
                 focusBorderColor="orange.400"
                 errorBorderColor="red.500"
                 as="textarea"
@@ -155,8 +156,8 @@ export const MapFormModal = (props: MapFormModalProps) => {
               placeholder="Select Price Category"
               value={priceCategory}
               onChange={(e) => setPriceCategory(parseInt(e.target.value))}
-              bgColor="white"
-              textColor="black"
+              bgColor={Color.WHITE}
+              textColor={Color.BLACK}
               focusBorderColor="orange.400"
               errorBorderColor="red.500"
             >
@@ -170,8 +171,8 @@ export const MapFormModal = (props: MapFormModalProps) => {
                 placeholder="Origin"
                 value={origin}
                 onChange={(e) => setOrigin(e.target.value)}
-                backgroundColor="white"
-                textColor="black"
+                backgroundColor={Color.WHITE}
+                textColor={Color.BLACK}
                 focusBorderColor="orange.400"
                 errorBorderColor="red.500"
               />
@@ -192,8 +193,8 @@ export const MapFormModal = (props: MapFormModalProps) => {
                       );
                       setWaypoints(updatedWaypoints);
                     }}
-                    backgroundColor="white"
-                    textColor="black"
+                    backgroundColor={Color.WHITE}
+                    textColor={Color.BLACK}
                     focusBorderColor="orange.400"
                     errorBorderColor="red.500"
                   />
@@ -227,8 +228,8 @@ export const MapFormModal = (props: MapFormModalProps) => {
                 placeholder="Destination"
                 value={destination}
                 onChange={(e) => setDestination(e.target.value)}
-                backgroundColor="white"
-                textColor="black"
+                backgroundColor={Color.WHITE}
+                textColor={Color.BLACK}
                 focusBorderColor="orange.400"
                 errorBorderColor="red.500"
               />

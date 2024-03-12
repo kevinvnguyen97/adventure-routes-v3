@@ -8,6 +8,7 @@ import {
 } from "/imports/ui/providers";
 import { AdventureRouteCard, LoadingScreen } from "/imports/ui/components";
 import { MapFormModal } from "/imports/ui/components/modals";
+import { Color } from "/imports/constants";
 
 export const Dashboard = () => {
   const { data: adventureRoutesForUser, isLoading } =
@@ -31,7 +32,7 @@ export const Dashboard = () => {
       exit={{ opacity: 0 }}
     >
       <Box margin="auto" paddingTop={5} textAlign="center" gap={2}>
-        <Text color="white" fontWeight="bold" fontSize={40}>
+        <Text color={Color.WHITE} fontWeight="bold" fontSize={40}>
           {username}'s Routes
         </Text>
         <Button onClick={onOpen} colorScheme="orange" marginBottom={2}>

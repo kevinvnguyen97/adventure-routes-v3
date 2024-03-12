@@ -1,4 +1,5 @@
 import React from "react";
+import { Color } from "/imports/constants";
 
 type InterstateShieldProps = {
   interstateNumber: string;
@@ -31,7 +32,7 @@ export const InterstateShield = (props: InterstateShieldProps) => {
           left: "50%",
           top: "50%",
           transform: "translate(-50%, -45%)",
-          color: "white",
+          color: Color.WHITE,
           fontFamily: `${
             interstateNumber.length > 2
               ? "Highway Gothic Narrow"

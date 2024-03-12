@@ -20,6 +20,8 @@ export enum Color {
   BLACK = "#000000",
   MUTCD_GREEN = "#006B54",
   MUTCD_YELLOW = "#FFCC00",
+  DARK_ORANGE = "#F09000",
+  ORANGE = "orange",
 }
 
 export const humanReadableTravelMode: Record<google.maps.TravelMode, string> = {

@@ -1,4 +1,5 @@
 import React from "react";
+import { Color } from "/imports/constants";
 
 type USRouteShieldProps = {
   usRouteNumber: string;
@@ -28,7 +29,7 @@ export const USRouteShield = (props: USRouteShieldProps) => {
           left: "50%",
           top: "50%",
           transform: "translate(-50%, -50%)",
-          color: "black",
+          color: Color.BLACK,
           fontFamily: `${
             usRouteNumber.length > 2
               ? "Highway Gothic Narrow"

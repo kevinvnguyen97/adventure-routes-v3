@@ -16,7 +16,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import React, { FormEvent } from "react";
-import { MINIMUM_USERNAME_LENGTH } from "/imports/constants";
+import { Color, MINIMUM_USERNAME_LENGTH } from "/imports/constants";
 
 type ChangeUsernameModalProps = {
   oldUsername: string;
@@ -64,7 +64,7 @@ export const ChangeUsernameModal = (props: ChangeUsernameModalProps) => {
       />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent backgroundColor="orange" textColor="white">
+        <ModalContent backgroundColor={Color.ORANGE} textColor={Color.WHITE}>
           <ModalHeader>Change Username</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -85,8 +85,8 @@ export const ChangeUsernameModal = (props: ChangeUsernameModalProps) => {
                   placeholder="New Username"
                   value={newUsername}
                   onChange={(e) => setNewUsername(e.target.value)}
-                  backgroundColor="white"
-                  textColor="black"
+                  backgroundColor={Color.WHITE}
+                  textColor={Color.BLACK}
                   focusBorderColor="orange.400"
                   errorBorderColor="red.500"
                   required

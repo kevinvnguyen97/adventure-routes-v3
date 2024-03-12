@@ -53,8 +53,8 @@ export const MapSettings = (props: MapSettingsProps) => {
     <Box>
       <Select
         placeholder="Select Transportation Mode"
-        bgColor="white"
-        color="black"
+        bgColor={Color.WHITE}
+        color={Color.BLACK}
         focusBorderColor="orange.400"
         errorBorderColor="red.500"
         value={travelMode}
@@ -163,7 +163,7 @@ export const MapSettings = (props: MapSettingsProps) => {
         onChange={(e) => setUnitSystem(parseInt(e))}
         paddingBottom={5}
       >
-        <HStack justifyContent="space-between" color="white">
+        <HStack justifyContent="space-between" color={Color.WHITE}>
           <Text fontWeight="bold">Unit of Measurement</Text>
           <Radio value="1">Imperial</Radio>
           <Radio value="0">Metric</Radio>
@@ -174,7 +174,7 @@ export const MapSettings = (props: MapSettingsProps) => {
         value={mutcdFont}
         onChange={(e) => setMutcdFont(e as MUTCDFont)}
       >
-        <HStack justifyContent="space-between" color="white">
+        <HStack justifyContent="space-between" color={Color.WHITE}>
           <Text fontWeight="bold">MUTCD Font</Text>
           <Radio value={MUTCDFont.HWYGOTHIC} fontFamily={MUTCDFont.HWYGOTHIC}>
             <Text fontFamily={MUTCDFont.HWYGOTHIC} letterSpacing={2}>

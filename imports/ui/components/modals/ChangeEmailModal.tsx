@@ -85,7 +85,7 @@ export const ChangeEmailModal = (props: ChangeEmailModalProps) => {
       />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent backgroundColor="orange" textColor="white">
+        <ModalContent backgroundColor={Color.ORANGE} textColor={Color.WHITE}>
           <ModalHeader>Change Email</ModalHeader>
           <ModalCloseButton />
           <ModalBody>

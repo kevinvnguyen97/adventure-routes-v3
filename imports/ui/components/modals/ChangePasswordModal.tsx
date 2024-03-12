@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import React, { FormEvent } from "react";
 
-import { MINIMUM_PASSWORD_LENGTH } from "/imports/constants";
+import { Color, MINIMUM_PASSWORD_LENGTH } from "/imports/constants";
 
 type ChangePasswordModalProps = {
   oldPassword: string;
@@ -76,7 +76,7 @@ export const ChangePasswordModal = (props: ChangePasswordModalProps) => {
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent backgroundColor="orange" textColor="white">
+        <ModalContent backgroundColor={Color.ORANGE} textColor={Color.WHITE}>
           <ModalHeader>Change Password</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -91,8 +91,8 @@ export const ChangePasswordModal = (props: ChangePasswordModalProps) => {
                   type="password"
                   value={oldPassword}
                   onChange={(e) => setOldPassword(e.target.value)}
-                  backgroundColor="white"
-                  textColor="black"
+                  backgroundColor={Color.WHITE}
+                  textColor={Color.BLACK}
                   focusBorderColor="orange.400"
                   errorBorderColor="red.500"
                   required
@@ -112,8 +112,8 @@ export const ChangePasswordModal = (props: ChangePasswordModalProps) => {
                   type="password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  backgroundColor="white"
-                  textColor="black"
+                  backgroundColor={Color.WHITE}
+                  textColor={Color.BLACK}
                   focusBorderColor="orange.400"
                   errorBorderColor="red.500"
                   required
@@ -131,8 +131,8 @@ export const ChangePasswordModal = (props: ChangePasswordModalProps) => {
                   type="password"
                   value={newPasswordReentry}
                   onChange={(e) => setNewPasswordReentry(e.target.value)}
-                  backgroundColor="white"
-                  textColor="black"
+                  backgroundColor={Color.WHITE}
+                  textColor={Color.BLACK}
                   focusBorderColor="orange.400"
                   errorBorderColor="red.500"
                   required

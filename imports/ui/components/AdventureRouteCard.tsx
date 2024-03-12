@@ -19,6 +19,7 @@ import { meteorMethodPromise } from "/imports/utils";
 import { TOAST_PRESET } from "/imports/constants/toast";
 import { DeleteRouteModal, MapFormModal } from "/imports/ui/components/modals";
 import { EditIcon } from "@chakra-ui/icons";
+import { Color } from "/imports/constants";
 
 type AdventureRouteCardProps = {
   adventureRoute: AdventureRoute;
@@ -71,8 +72,8 @@ export const AdventureRouteCard = (props: AdventureRouteCardProps) => {
         onClick={() => navigate(`/map/${adventureRoute._id}`)}
         key={adventureRoute._id}
         width="100%"
-        bgColor="#f09000"
-        color="white"
+        bgColor={Color.DARK_ORANGE}
+        color={Color.WHITE}
         _hover={{ cursor: "pointer" }}
         flexDirection="row"
         paddingTop={5}

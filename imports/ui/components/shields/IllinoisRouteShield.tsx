@@ -1,4 +1,5 @@
 import React from "react";
+import { Color } from "/imports/constants";
 
 type IllinoisRouteShieldProps = {
   illinoisRouteNumber: string;
@@ -30,7 +31,7 @@ export const IllinoisRouteShield = (props: IllinoisRouteShieldProps) => {
           left: "50%",
           top: "50%",
           transform: `translate(-50%, -35%)`,
-          color: "black",
+          color: Color.BLACK,
           fontFamily: "Highway Gothic",
           fontSize: "20px",
           letterSpacing: "0.5px",

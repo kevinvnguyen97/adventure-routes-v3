@@ -19,6 +19,7 @@ import { motion } from "framer-motion";
 
 import { TOAST_PRESET } from "/imports/constants/toast";
 import {
+  Color,
   MINIMUM_PASSWORD_LENGTH,
   MINIMUM_USERNAME_LENGTH,
 } from "/imports/constants";
@@ -131,7 +132,7 @@ export const Register = () => {
               <FormControl isInvalid={!firstName}>
                 <Input
                   placeholder="First Name"
-                  backgroundColor="white"
+                  backgroundColor={Color.WHITE}
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value.trim())}
                 />
@@ -140,7 +141,7 @@ export const Register = () => {
               <FormControl isInvalid={!lastName}>
                 <Input
                   placeholder="Last Name"
-                  backgroundColor="white"
+                  backgroundColor={Color.WHITE}
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value.trim())}
                 />
@@ -152,7 +153,7 @@ export const Register = () => {
             >
               <Input
                 placeholder="Username"
-                backgroundColor="white"
+                backgroundColor={Color.WHITE}
                 value={username}
                 onChange={(e) => setUsername(e.target.value.trim())}
               />
@@ -169,7 +170,7 @@ export const Register = () => {
                 placeholder="Phone Number"
                 type="tel"
                 inputMode="tel"
-                backgroundColor="white"
+                backgroundColor={Color.WHITE}
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value.trim())}
               />
@@ -183,7 +184,7 @@ export const Register = () => {
               <Input
                 placeholder="Email"
                 type="email"
-                backgroundColor="white"
+                backgroundColor={Color.WHITE}
                 value={email}
                 onChange={(e) => setEmail(e.target.value.trim())}
               />
@@ -197,7 +198,7 @@ export const Register = () => {
               <Input
                 placeholder="Password"
                 type="password"
-                backgroundColor="white"
+                backgroundColor={Color.WHITE}
                 value={password}
                 onChange={(e) => setPassword(e.target.value.trim())}
               />
@@ -213,7 +214,7 @@ export const Register = () => {
               <Input
                 placeholder="Re-enter Password"
                 type="Password"
-                backgroundColor="white"
+                backgroundColor={Color.WHITE}
                 value={passwordReentry}
                 onChange={(e) => setPasswordReentry(e.target.value.trim())}
               />

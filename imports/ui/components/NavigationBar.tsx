@@ -25,6 +25,7 @@ import { useMeteorAuth } from "../providers/Auth";
 import { Meteor } from "meteor/meteor";
 import { useNavigate } from "react-router-dom";
 import { TOAST_PRESET } from "/imports/constants/toast";
+import { Color } from "/imports/constants";
 
 const LINKS = ["Dashboard"];
 
@@ -90,7 +91,7 @@ export const NavigationBar = () => {
   };
 
   return (
-    <Box bg="#f09000" px={4} color="white">
+    <Box bg={Color.DARK_ORANGE} px={4} color={Color.WHITE}>
       <Flex h={16} alignItems="center" justifyContent="space-between">
         <IconButton
           size="md"
@@ -135,6 +136,8 @@ export const NavigationBar = () => {
             onOpen={onUserMenuOpen}
             closeOnBlur
             onClose={onUserMenuClose}
+            flip
+            arrowShadowColor="none"
           >
             <PopoverTrigger>
               <Avatar
@@ -143,21 +146,32 @@ export const NavigationBar = () => {
                 bgColor="orange.500"
                 isDisabled={!loggedIn}
                 name={[firstName, lastName].filter(Boolean).join(" ")}
-                color="white"
+                color={Color.WHITE}
                 src={profilePictureUrl}
               />
             </PopoverTrigger>
-            <PopoverContent color="black" shadow="base">
-              <PopoverArrow />
-              <PopoverHeader fontWeight="bold">{user?.username}</PopoverHeader>
+            <PopoverContent
+              color={Color.WHITE}
+              shadow="base"
+              bgColor={Color.DARK_ORANGE}
+              border={0}
+              zIndex={1}
+              boxShadow="20px black"
+              marginTop={1}
+            >
+              <PopoverArrow bgColor={Color.DARK_ORANGE} />
+              <PopoverHeader fontWeight="bold" border={0}>
+                {user?.username}
+              </PopoverHeader>
               {/* <PopoverBody></PopoverBody> */}
-              <PopoverFooter display="flex" gap={3}>
+              <PopoverFooter display="flex" gap={3} border={0}>
                 <Button
                   key="Settings"
                   onClick={() => {
                     onUserMenuClose();
                     navigate("/settings");
                   }}
+                  colorScheme="orange"
                 >
                   Settings
                 </Button>

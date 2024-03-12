@@ -9,6 +9,7 @@ import {
   ModalOverlay,
 } from "@chakra-ui/react";
 import React from "react";
+import { Color } from "/imports/constants";
 
 type DeleteRouteModalProps = {
   isOpen: boolean;
@@ -21,7 +22,7 @@ export const DeleteRouteModal = (props: DeleteRouteModalProps) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent backgroundColor="orange" textColor="white">
+      <ModalContent backgroundColor={Color.ORANGE} textColor={Color.WHITE}>
         <ModalHeader>Delete Route Confirmation</ModalHeader>
         <ModalCloseButton />
         <ModalBody>

@@ -1,15 +1,16 @@
 import React, { useEffect } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { Box } from "@chakra-ui/react";
+import { AnimatePresence } from "framer-motion";
 
 import { NavigationBar } from "/imports/ui/components";
 import { RequireNotAuth, RequireAuth } from "/imports/ui/providers";
 import { Login, Dashboard, Register, Map, Settings } from "/imports/ui/pages";
-import { AnimatePresence } from "framer-motion";
+import { Color } from "/imports/constants";
 
 export const App = () => {
   useEffect(() => {
-    document.body.style.backgroundColor = "orange";
+    document.body.style.backgroundColor = Color.ORANGE;
   }, []);
 
   const location = useLocation();

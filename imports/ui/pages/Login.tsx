@@ -14,6 +14,7 @@ import { Link as NavigationLink } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import { TOAST_PRESET } from "/imports/constants/toast";
+import { Color } from "/imports/constants";
 
 export const Login = () => {
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
@@ -85,7 +86,7 @@ export const Login = () => {
           <FormControl isInvalid={!usernameOrEmail}>
             <Input
               placeholder="Username or Email"
-              backgroundColor="white"
+              backgroundColor={Color.WHITE}
               value={usernameOrEmail}
               onChange={(e) => setUsernameOrEmail(e.target.value)}
             />
@@ -95,7 +96,7 @@ export const Login = () => {
             <Input
               placeholder="Password"
               type="password"
-              backgroundColor="white"
+              backgroundColor={Color.WHITE}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />

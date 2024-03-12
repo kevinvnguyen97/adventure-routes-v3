@@ -48,7 +48,7 @@ export const MapDirections = (props: MapDirectionsProps) => {
   return (
     <Accordion allowToggle defaultIndex={0}>
       <AccordionItem tabIndex={0}>
-        <AccordionButton color="white" fontWeight="bold">
+        <AccordionButton color={Color.WHITE} fontWeight="bold">
           Overview
         </AccordionButton>
         <AccordionPanel paddingLeft={0} paddingRight={0}>
@@ -87,7 +87,7 @@ export const MapDirections = (props: MapDirectionsProps) => {
             key={`Leg${stepBeginningLabel}to${stepEndLabel}`}
             tabIndex={i + 1}
           >
-            <AccordionButton color="white" fontWeight="bold">
+            <AccordionButton color={Color.WHITE} fontWeight="bold">
               Leg {stepBeginningLabel} to {stepEndLabel} ({leg.distance?.text},{" "}
               {leg.duration?.text})
             </AccordionButton>

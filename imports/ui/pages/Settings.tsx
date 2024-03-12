@@ -29,6 +29,7 @@ import { useMeteorAuth } from "/imports/ui/providers";
 import { meteorMethodPromise } from "/imports/utils";
 import { TOAST_PRESET } from "/imports/constants/toast";
 import { uploadToImgBB } from "/imports/api/imgbb";
+import { Color } from "/imports/constants";
 
 export const Settings = () => {
   const toast = useToast();
@@ -70,8 +71,14 @@ export const Settings = () => {
 
       try {
         const response = await uploadToImgBB(file, userId ?? "");
-        if (response.data && response.status === 200) {
+        if (response.data) {
           await meteorMethodPromise("changeProfilePicture", response.data?.url);
+          toast({
+            ...TOAST_PRESET,
+            title: "Success",
+            description: "Profile picture successfully updated",
+            status: "success",
+          });
         }
       } catch (e) {
         console.error(e);
@@ -158,7 +165,7 @@ export const Settings = () => {
         textAlign="center"
         gap={2}
       >
-        <Text color="white" fontWeight="bold" fontSize={40}>
+        <Text color={Color.WHITE} fontWeight="bold" fontSize={40}>
           Settings
         </Text>
         <Avatar
@@ -166,7 +173,7 @@ export const Settings = () => {
           alignSelf="center"
           size="xl"
           name={fullName}
-          color="white"
+          color={Color.WHITE}
           as={FormLabel}
           _hover={{ cursor: "pointer" }}
           htmlFor="profile-picture-upload"
@@ -184,14 +191,14 @@ export const Settings = () => {
           <Table
             size="md"
             variant="simple"
-            backgroundColor="white"
+            backgroundColor={Color.WHITE}
             borderRadius={5}
             bgColor="darkorange"
-            textColor="white"
+            textColor={Color.WHITE}
           >
             <Tbody>
               <Tr>
-                <Th textColor="white">Name</Th>
+                <Th textColor={Color.WHITE}>Name</Th>
                 <Td display="flex" justifyContent="space-between">
                   <Text>{fullName}</Text>
                   <ChangeFullNameModal
@@ -204,7 +211,7 @@ export const Settings = () => {
                 </Td>
               </Tr>
               <Tr>
-                <Th textColor="white">Username</Th>
+                <Th textColor={Color.WHITE}>Username</Th>
                 <Td display="flex" justifyContent="space-between">
                   <Text>{username}</Text>
                   <ChangeUsernameModal
@@ -216,7 +223,7 @@ export const Settings = () => {
                 </Td>
               </Tr>
               <Tr>
-                <Th textColor="white">Email</Th>
+                <Th textColor={Color.WHITE}>Email</Th>
                 <Td display="flex" justifyContent="space-between">
                   <Box>
                     {emails.map(({ address }) => (
@@ -236,7 +243,7 @@ export const Settings = () => {
                 </Td>
               </Tr>
               <Tr>
-                <Th textColor="white">Phone</Th>
+                <Th textColor={Color.WHITE}>Phone</Th>
                 <Td display="flex" justifyContent="space-between">
                   <Text>{phoneNumber}</Text>
                   <IconButton
@@ -248,7 +255,7 @@ export const Settings = () => {
                 </Td>
               </Tr>
               <Tr>
-                <Th textColor="white" borderBottom={0}>
+                <Th textColor={Color.WHITE} borderBottom={0}>
                   Password
                 </Th>
                 <Td display="flex" justifyContent="end" borderBottom={0}>

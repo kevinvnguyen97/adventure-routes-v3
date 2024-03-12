@@ -5,6 +5,7 @@ import {
   IllinoisRouteShield,
   InterstateShield,
 } from "/imports/ui/components/shields";
+import { Color } from "/imports/constants";
 
 export const formatDirections = (directionInstructions: string) => {
   const splitInstructions = directionInstructions.split(" ");
@@ -223,7 +224,7 @@ export const formatDirections = (directionInstructions: string) => {
       renderToStaticMarkup(
         <div
           style={{
-            color: "black",
+            color: Color.BLACK,
             padding: "1px",
             backgroundColor: "#FFCC00",
             width: "110px",

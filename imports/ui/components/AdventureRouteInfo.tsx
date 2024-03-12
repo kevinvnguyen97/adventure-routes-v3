@@ -19,7 +19,7 @@ import {
 } from "@chakra-ui/react";
 
 import { AdventureRoute } from "/imports/api/adventureRoutes";
-import { MUTCDFont } from "/imports/constants";
+import { Color, MUTCDFont } from "/imports/constants";
 import { MapDirections, MapSettings } from "/imports/ui/components";
 
 type AdventureRouteInfoProps = {
@@ -67,7 +67,7 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
       <Button
         ref={adventureRouteInfoButtonRef}
         zIndex={1}
-        backgroundColor="white"
+        backgroundColor={Color.WHITE}
         borderRadius={2}
         borderLeftRadius={0}
         onClick={onDrawerOpen}
@@ -84,19 +84,19 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
         colorScheme="orange"
       >
         <DrawerOverlay />
-        <DrawerContent bgColor="orange" color="black">
-          <DrawerCloseButton color="white" />
-          <DrawerHeader textColor="white">{name}</DrawerHeader>
+        <DrawerContent bgColor={Color.ORANGE} color={Color.BLACK}>
+          <DrawerCloseButton color={Color.WHITE} />
+          <DrawerHeader textColor={Color.WHITE}>{name}</DrawerHeader>
           <DrawerBody>
             <Tabs variant="solid-rounded" colorScheme="orange" defaultIndex={1}>
               <TabList>
-                <Tab color="white">Journal</Tab>
-                <Tab color="white">Directions</Tab>
-                <Tab color="white">Comments</Tab>
-                <Tab color="white">Settings</Tab>
+                <Tab color={Color.WHITE}>Journal</Tab>
+                <Tab color={Color.WHITE}>Directions</Tab>
+                <Tab color={Color.WHITE}>Comments</Tab>
+                <Tab color={Color.WHITE}>Settings</Tab>
               </TabList>
               <TabPanels>
-                <TabPanel color="white">
+                <TabPanel color={Color.WHITE}>
                   <Text>{description}</Text>
                   <Text>
                     {priceCategory === 0

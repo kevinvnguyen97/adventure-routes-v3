@@ -1,5 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { AdventureRoute } from "/imports/api/adventureRoutes";
+import { Color } from "/imports/constants";
 
 const VALID_EMAIL_REGEX =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -118,7 +119,7 @@ export const getTextColorBasedOnBackground = (backgroundColor: string) => {
     (redValue * 299 + greenValue * 587 + blueValue * 114) / 1000
   );
 
-  const textColor = brightness > 125 ? "black" : "white";
+  const textColor = brightness > 125 ? Color.BLACK : Color.WHITE;
 
   return textColor;
 };

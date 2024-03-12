@@ -16,6 +16,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import React, { FormEvent } from "react";
+import { Color } from "/imports/constants";
 
 type ChangeFullNameModalProps = {
   newFirstNameInput: string;
@@ -56,7 +57,7 @@ export const ChangeFullNameModal = (props: ChangeFullNameModalProps) => {
       />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent backgroundColor="orange" textColor="white">
+        <ModalContent backgroundColor={Color.ORANGE} textColor={Color.WHITE}>
           <ModalHeader>Change Full Name</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -70,8 +71,8 @@ export const ChangeFullNameModal = (props: ChangeFullNameModalProps) => {
                   placeholder="First Name"
                   value={newFirstNameInput}
                   onChange={(e) => setNewFirstNameInput(e.target.value)}
-                  backgroundColor="white"
-                  textColor="black"
+                  backgroundColor={Color.WHITE}
+                  textColor={Color.BLACK}
                   focusBorderColor="orange.400"
                   errorBorderColor="red.500"
                   required
@@ -83,8 +84,8 @@ export const ChangeFullNameModal = (props: ChangeFullNameModalProps) => {
                   placeholder="Last Name"
                   value={newLastNameInput}
                   onChange={(e) => setNewLastNameInput(e.target.value)}
-                  backgroundColor="white"
-                  textColor="black"
+                  backgroundColor={Color.WHITE}
+                  textColor={Color.BLACK}
                   focusBorderColor="orange.400"
                   errorBorderColor="red.500"
                   required
