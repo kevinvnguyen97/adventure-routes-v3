@@ -25,6 +25,8 @@ import { MapDirections, MapSettings } from "/imports/ui/components";
 type AdventureRouteInfoProps = {
   adventureRoute?: AdventureRoute;
   directions: google.maps.DirectionsResult | null;
+  selectedRoutes: boolean[];
+  setSelectedRoutes: (selectedRoutes: boolean[]) => void;
   travelMode: google.maps.TravelMode;
   setTravelMode: (travelMode: google.maps.TravelMode) => void;
   isInfoButtonEnabled: boolean;
@@ -47,14 +49,13 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
   const {
     adventureRoute,
     directions,
+    selectedRoutes,
+    setSelectedRoutes,
     isInfoButtonEnabled,
     ...mapSettingsProps
   } = props;
   const { mutcdFont, unitSystem } = mapSettingsProps;
   const { name, description, priceCategory } = adventureRoute || {};
-  const { routes } = directions || {};
-  const generatedPath = routes?.[0];
-  const { legs } = generatedPath || {};
   const adventureRouteInfoButtonRef = createRef<HTMLButtonElement>();
   const {
     isOpen: isDrawerOpen,
@@ -106,7 +107,9 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
                 </TabPanel>
                 <TabPanel paddingLeft={0} paddingRight={0}>
                   <MapDirections
-                    legs={legs}
+                    routes={directions?.routes ?? []}
+                    selectedRoutes={selectedRoutes}
+                    setSelectedRoutes={setSelectedRoutes}
                     unitSystem={unitSystem}
                     mutcdFont={mutcdFont}
                   />

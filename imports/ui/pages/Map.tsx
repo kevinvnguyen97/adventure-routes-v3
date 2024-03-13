@@ -20,7 +20,7 @@ import { motion } from "framer-motion";
 
 import { useAdventureRoutesForUser } from "/imports/ui/providers";
 import { AdventureRouteInfo, LoadingScreen } from "/imports/ui/components";
-import { SECRETS, MUTCDFont } from "/imports/constants";
+import { SECRETS, MUTCDFont, ROUTE_COLORS } from "/imports/constants";
 import { TOAST_PRESET } from "/imports/constants/toast";
 
 const MAP_CONTAINER_STYLE: CSSProperties = {
@@ -48,6 +48,9 @@ export const Map = () => {
     (waypoint) => ({ location: waypoint, stopover: true })
   );
 
+  const [isMapLoading, setIsMapLoading] = useState(true);
+  const [map, setMap] = useState<google.maps.Map | undefined>();
+  const [selectedRoutes, setSelectedRoutes] = useState<boolean[]>([]);
   const [directions, setDirections] =
     useState<google.maps.DirectionsResult | null>(null);
   const [travelMode, setTravelMode] = useState<google.maps.TravelMode>(
@@ -60,6 +63,8 @@ export const Map = () => {
   const [isKmlLayerVisible, setIsKmlLayerVisible] = useState(false);
   const [isAvoidHighwaysEnabled, setIsAvoidHighwaysEnabled] = useState(false);
   const [isAvoidTollsEnabled, setIsAvoidTollsEnabled] = useState(false);
+  const [isAvoidFerriesEnabled, setIsAvoidFerriesEnabled] = useState(false);
+  const [allowRouteAlternatives, setAllowRouteAlternatives] = useState(true);
   const [mutcdFont, setMutcdFont] = useState<MUTCDFont>(MUTCDFont.HWYGOTHIC);
 
   const onTrafficLayerChange = () => {
@@ -96,6 +101,7 @@ export const Map = () => {
 
   const onLoad = useCallback((map: google.maps.Map) => {
     console.log("MAP:", map);
+    setMap(map);
   }, []);
   const onUnmount = useCallback((map: google.maps.Map) => {
     console.log("MAP:", map);
@@ -107,45 +113,57 @@ export const Map = () => {
     ) => {
       console.log("RESULT:", result);
       console.log("STATUS:", status);
-      if (
-        result &&
-        status === google.maps.DirectionsStatus.OK &&
-        renderCount.current === 0
-      ) {
-        setDirections(result);
-        setIsInfoButtonEnabled(true);
-      } else {
-        switch (status) {
-          case google.maps.DirectionsStatus.INVALID_REQUEST:
-            toast({
-              ...TOAST_PRESET,
-              title: "Invalid request",
-              description: "Route cannot be rendered",
-              status: "error",
-            });
-            break;
-          case google.maps.DirectionsStatus.NOT_FOUND:
-            setIsInfoButtonEnabled(false);
-            toast({
-              ...TOAST_PRESET,
-              title: "Not found",
-              description: "At least one waypoint is not found",
-              status: "error",
-            });
-            break;
-          case google.maps.DirectionsStatus.ZERO_RESULTS:
-            setIsInfoButtonEnabled(false);
-            toast({
-              ...TOAST_PRESET,
-              title: "No valid route",
-              description:
-                "There are no possible routes between the given locations",
-              status: "error",
-            });
-            break;
+
+      if (renderCount.current === 0) {
+        if (result && status === google.maps.DirectionsStatus.OK) {
+          setIsMapLoading(false);
+          setDirections(result);
+          const initialSelectedRoutes = result.routes.map(() => true);
+          setSelectedRoutes(initialSelectedRoutes);
+          setIsInfoButtonEnabled(true);
+        } else {
+          switch (status) {
+            case google.maps.DirectionsStatus.INVALID_REQUEST:
+              toast({
+                ...TOAST_PRESET,
+                title: "Invalid request",
+                description: "Route cannot be rendered",
+                status: "error",
+              });
+              break;
+            case google.maps.DirectionsStatus.NOT_FOUND:
+              toast({
+                ...TOAST_PRESET,
+                title: "Not found",
+                description: "At least one waypoint is not found",
+                status: "error",
+              });
+              break;
+            case google.maps.DirectionsStatus.ZERO_RESULTS:
+              toast({
+                ...TOAST_PRESET,
+                title: "No valid route",
+                description:
+                  "There are no possible routes between the given locations",
+                status: "error",
+              });
+              break;
+            /** google.maps.DirectionsStatus enum did not include this */
+            /** @ts-ignore */
+            case "MAX_ROUTE_LENGTH_EXCEEDED":
+              // toast({
+              //   ...TOAST_PRESET,
+              //   title: "Route length exceeded",
+              //   description:
+              //     "Total length of combined routes is too long for the map to render",
+              //   status: "error",
+              // });
+              setAllowRouteAlternatives(false);
+              renderCount.current = -1;
+          }
         }
+        renderCount.current++;
       }
-      renderCount.current++;
     },
     []
   );
@@ -186,6 +204,7 @@ export const Map = () => {
   if (!adventureRoute) {
     return <Text>Adventure route not found</Text>;
   }
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -201,6 +220,8 @@ export const Map = () => {
           <AdventureRouteInfo
             adventureRoute={adventureRoute}
             directions={directions}
+            selectedRoutes={selectedRoutes}
+            setSelectedRoutes={setSelectedRoutes}
             travelMode={travelMode}
             setTravelMode={onTravelModeChange}
             isInfoButtonEnabled={isInfoButtonEnabled}
@@ -235,15 +256,32 @@ export const Map = () => {
             unitSystem,
             avoidHighways: isAvoidHighwaysEnabled,
             avoidTolls: isAvoidTollsEnabled,
+            avoidFerries: isAvoidFerriesEnabled,
+            provideRouteAlternatives: allowRouteAlternatives,
+            drivingOptions: {
+              departureTime: new Date(),
+              trafficModel: google.maps.TrafficModel.PESSIMISTIC,
+            },
+            region: "us",
           }}
         />
-        <DirectionsRenderer
-          options={{
-            directions,
-          }}
-          onLoad={directionsRendererOnLoad}
-          onUnmount={directionsRendererOnUnmount}
-        />
+        {directions?.routes.map(
+          (_, i) =>
+            selectedRoutes[i] && (
+              <DirectionsRenderer
+                options={{
+                  directions,
+                  polylineOptions: {
+                    strokeColor: ROUTE_COLORS[i],
+                    strokeOpacity: 0.6,
+                  },
+                  routeIndex: i,
+                }}
+                onLoad={directionsRendererOnLoad}
+                onUnmount={directionsRendererOnUnmount}
+              />
+            )
+        )}
       </GoogleMap>
     </motion.div>
   );

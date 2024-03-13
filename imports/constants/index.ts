@@ -21,8 +21,17 @@ export enum Color {
   MUTCD_GREEN = "#006B54",
   MUTCD_YELLOW = "#FFCC00",
   DARK_ORANGE = "#F09000",
-  ORANGE = "orange",
+  BLUE = "#0000FF",
+  RED = "#FF0000",
+  ORANGE = "#FFA500",
 }
+
+export const ROUTE_COLORS: Color[] = [
+  Color.MUTCD_GREEN,
+  Color.BLUE,
+  Color.RED,
+  Color.BLACK,
+];
 
 export const humanReadableTravelMode: Record<google.maps.TravelMode, string> = {
   DRIVING: "Driving",
