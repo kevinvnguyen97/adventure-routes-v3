@@ -40,6 +40,7 @@ export const Map = () => {
   const adventureRoute = adventureRoutes.find(({ _id }) => id === _id);
 
   const renderCount = useRef(0);
+  const map = useRef<GoogleMap | null>(null);
 
   const { route } = adventureRoute || {};
   const { origin = "", waypoints = [], destination = "" } = route || {};
@@ -48,8 +49,6 @@ export const Map = () => {
     (waypoint) => ({ location: waypoint, stopover: true })
   );
 
-  const [isMapLoading, setIsMapLoading] = useState(true);
-  const [map, setMap] = useState<google.maps.Map | undefined>();
   const [selectedRoutes, setSelectedRoutes] = useState<boolean[]>([]);
   const [directions, setDirections] =
     useState<google.maps.DirectionsResult | null>(null);
@@ -70,38 +69,38 @@ export const Map = () => {
   const onTrafficLayerChange = () => {
     setIsTrafficLayerVisible(!isTrafficLayerVisible);
   };
-
   const onTransitLayerChange = () => {
     setIsTransitLayerVisible(!isTransitLayerVisible);
   };
-
   const onKmlLayerChange = () => {
     setIsKmlLayerVisible(!isKmlLayerVisible);
   };
-
   const onUnitSystemChange = (newUnitSystem: google.maps.UnitSystem) => {
     setUnitSystem(newUnitSystem);
     renderCount.current = 0;
   };
-
   const onTravelModeChange = (newTravelMode: google.maps.TravelMode) => {
     setTravelMode(newTravelMode);
     renderCount.current = 0;
   };
-
   const onAvoidHighwayChange = () => {
     setIsAvoidHighwaysEnabled(!isAvoidHighwaysEnabled);
     renderCount.current = 0;
   };
-
   const onAvoidTollChange = () => {
     setIsAvoidTollsEnabled(!isAvoidTollsEnabled);
     renderCount.current = 0;
   };
+  const fitBounds = (boundPoints: google.maps.LatLng[]) => {
+    const bounds = new google.maps.LatLngBounds();
+    boundPoints.forEach((boundPoint) => {
+      bounds.extend(boundPoint);
+    });
+    map.current?.state.map?.fitBounds(bounds);
+  };
 
   const onLoad = useCallback((map: google.maps.Map) => {
     console.log("MAP:", map);
-    setMap(map);
   }, []);
   const onUnmount = useCallback((map: google.maps.Map) => {
     console.log("MAP:", map);
@@ -116,7 +115,6 @@ export const Map = () => {
 
       if (renderCount.current === 0) {
         if (result && status === google.maps.DirectionsStatus.OK) {
-          setIsMapLoading(false);
           setDirections(result);
           const initialSelectedRoutes = result.routes.map(() => true);
           setSelectedRoutes(initialSelectedRoutes);
@@ -151,15 +149,19 @@ export const Map = () => {
             /** google.maps.DirectionsStatus enum did not include this */
             /** @ts-ignore */
             case "MAX_ROUTE_LENGTH_EXCEEDED":
-              // toast({
-              //   ...TOAST_PRESET,
-              //   title: "Route length exceeded",
-              //   description:
-              //     "Total length of combined routes is too long for the map to render",
-              //   status: "error",
-              // });
+              if (result?.routes?.length ?? 0 <= 1) {
+                toast({
+                  ...TOAST_PRESET,
+                  title: "Route length exceeded",
+                  description:
+                    "Total length of combined routes is too long for the map to render",
+                  status: "error",
+                });
+                break;
+              }
               setAllowRouteAlternatives(false);
               renderCount.current = -1;
+              break;
           }
         }
         renderCount.current++;
@@ -215,11 +217,13 @@ export const Map = () => {
         mapContainerStyle={MAP_CONTAINER_STYLE}
         onLoad={onLoad}
         onUnmount={onUnmount}
+        ref={(mapRef) => (map.current = mapRef)}
       >
         <Box position="absolute" left="179px" top="10px">
           <AdventureRouteInfo
             adventureRoute={adventureRoute}
             directions={directions}
+            fitBounds={fitBounds}
             selectedRoutes={selectedRoutes}
             setSelectedRoutes={setSelectedRoutes}
             travelMode={travelMode}

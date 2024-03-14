@@ -23,10 +23,12 @@ type MapDirectionsProps = {
   setSelectedRoutes: (selectedRoutes: boolean[]) => void;
   unitSystem: google.maps.UnitSystem;
   mutcdFont: MUTCDFont;
+  fitBounds: (boundPoints: google.maps.LatLng[]) => void;
 };
 export const MapDirections = (props: MapDirectionsProps) => {
   const {
     routes = [],
+    fitBounds,
     selectedRoutes,
     setSelectedRoutes,
     unitSystem,
@@ -42,9 +44,8 @@ export const MapDirections = (props: MapDirectionsProps) => {
 
   return (
     <Accordion allowToggle as={Box}>
-      {routes.map((route, routeIndex) => {
+      {routes.map(({ legs = [], summary }, routeIndex) => {
         /** Total route distance in meters */
-        const { legs } = route;
         const totalDistance =
           legs
             ?.map(({ distance }) => distance?.value ?? 0)
@@ -65,12 +66,15 @@ export const MapDirections = (props: MapDirectionsProps) => {
           unitSystem === 0
             ? formatMetricDistance(totalDistance)
             : formatImperialDistance(totalDistance);
+        const isRouteTolled = legs.some(({ steps }) =>
+          steps.some(({ instructions }) => instructions.includes("Toll road"))
+        );
         return (
           <AccordionItem
             border={0}
             width="100%"
             paddingBottom={1}
-            key={route.summary}
+            key={summary}
             isDisabled={!selectedRoutes[routeIndex]}
           >
             <Box display="flex" gap={3}>
@@ -91,16 +95,28 @@ export const MapDirections = (props: MapDirectionsProps) => {
                     justifyContent="space-between"
                     width="100%"
                   >
-                    <Text textAlign="left">
-                      Directions via{" "}
-                      <Box
-                        display="inline"
-                        dangerouslySetInnerHTML={{
-                          __html: formatDirections(route.summary),
-                        }}
-                      />
-                    </Text>
-                    <Box textAlign="right">
+                    <Box display="flex" flexDirection="column" gap={2}>
+                      <Text textAlign="left">
+                        Directions via{" "}
+                        <Box
+                          display="inline"
+                          dangerouslySetInnerHTML={{
+                            __html: formatDirections(summary),
+                          }}
+                        />
+                      </Text>
+                      {isRouteTolled && (
+                        <Box
+                          bgColor={Color.MUTCD_YELLOW}
+                          color={Color.BLACK}
+                          padding={1}
+                          borderRadius={5}
+                        >
+                          THIS ROUTE HAS TOLLS
+                        </Box>
+                      )}
+                    </Box>
+                    <Box textAlign="right" minWidth={140}>
                       <Text>{formattedDistance}</Text>
                       <Text>{formattedDuration}</Text>
                     </Box>
@@ -110,7 +126,7 @@ export const MapDirections = (props: MapDirectionsProps) => {
             </Box>
             <AccordionPanel>
               <Accordion allowToggle>
-                {route?.legs?.map((leg, legIndex) => {
+                {legs.map(({ distance, duration, steps }, legIndex) => {
                   const stepBeginningLabel = String.fromCharCode(legIndex + 65);
                   const stepEndLabel =
                     legIndex === 25 ? "AA" : String.fromCharCode(legIndex + 66);
@@ -121,52 +137,60 @@ export const MapDirections = (props: MapDirectionsProps) => {
                     >
                       <AccordionButton color={Color.WHITE} fontWeight="bold">
                         Leg {stepBeginningLabel} to {stepEndLabel} (
-                        {leg.distance?.text}, {leg.duration?.text})
+                        {distance?.text}, {duration?.text})
                       </AccordionButton>
                       <AccordionPanel paddingLeft={0} paddingRight={0}>
                         <Box display="flex" flexDirection="column" gap={1}>
-                          {leg.steps.some((step) =>
-                            step.instructions.includes("Toll road")
-                          ) && (
-                            <MUTCDRectangleSign signColor={Color.MUTCD_YELLOW}>
-                              <Box textAlign="center">THIS ROUTE HAS TOLLS</Box>
-                            </MUTCDRectangleSign>
-                          )}
-                          {leg.steps.map((step, stepIndex) => {
-                            /** Instructions split up by spaces */
-                            const formattedInstructions = formatDirections(
-                              step.instructions
-                            );
-                            return (
-                              <MUTCDRectangleSign
-                                key={`step${stepIndex}`}
-                                fontFamily={mutcdFont}
-                                signColor={ROUTE_COLORS[routeIndex]}
-                              >
-                                <Box
-                                  display="flex"
-                                  justifyContent="space-between"
-                                  alignItems="center"
+                          {steps.map(
+                            (
+                              {
+                                instructions,
+                                distance,
+                                duration,
+                                start_location,
+                                end_location,
+                              },
+                              stepIndex
+                            ) => {
+                              /** Instructions split up by spaces */
+                              const formattedInstructions =
+                                formatDirections(instructions);
+                              const boundPoints = [
+                                start_location,
+                                end_location,
+                              ];
+                              return (
+                                <MUTCDRectangleSign
+                                  key={`step${stepIndex}`}
+                                  fontFamily={mutcdFont}
+                                  signColor={ROUTE_COLORS[routeIndex]}
+                                  onClick={() => fitBounds(boundPoints)}
                                 >
-                                  <Box>
-                                    <Box
-                                      dangerouslySetInnerHTML={{
-                                        __html: formattedInstructions,
-                                      }}
-                                    />
-                                  </Box>
                                   <Box
-                                    minWidth={140}
-                                    textAlign="end"
-                                    alignSelf="center"
+                                    display="flex"
+                                    justifyContent="space-between"
+                                    alignItems="center"
                                   >
-                                    <Text>{step.distance?.text}</Text>
-                                    <Text>{step.duration?.text}</Text>
+                                    <Box>
+                                      <Box
+                                        dangerouslySetInnerHTML={{
+                                          __html: formattedInstructions,
+                                        }}
+                                      />
+                                    </Box>
+                                    <Box
+                                      minWidth={140}
+                                      textAlign="end"
+                                      alignSelf="center"
+                                    >
+                                      <Text>{distance?.text}</Text>
+                                      <Text>{duration?.text}</Text>
+                                    </Box>
                                   </Box>
-                                </Box>
-                              </MUTCDRectangleSign>
-                            );
-                          })}
+                                </MUTCDRectangleSign>
+                              );
+                            }
+                          )}
                         </Box>
                       </AccordionPanel>
                     </AccordionItem>

@@ -8,6 +8,7 @@ type MUTCDRectangleProps = {
   children: ReactNode;
   signColor?: string;
   width?: string | number;
+  onClick?: () => void;
 };
 export const MUTCDRectangleSign = (props: MUTCDRectangleProps) => {
   const {
@@ -15,6 +16,7 @@ export const MUTCDRectangleSign = (props: MUTCDRectangleProps) => {
     fontFamily = MUTCDFont.HWYGOTHIC,
     signColor = Color.MUTCD_GREEN,
     width = "100%",
+    onClick,
   } = props;
 
   const textColor = getTextColorBasedOnBackground(signColor);
@@ -28,6 +30,8 @@ export const MUTCDRectangleSign = (props: MUTCDRectangleProps) => {
       borderRadius={10}
       userSelect="none"
       width={width}
+      onClick={onClick}
+      cursor={onClick ? "pointer" : "default"}
     >
       <Box
         fontFamily={fontFamily}

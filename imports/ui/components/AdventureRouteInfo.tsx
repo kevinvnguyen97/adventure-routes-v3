@@ -15,7 +15,14 @@ import {
   TabList,
   TabPanels,
   TabPanel,
-  Text,
+  TableContainer,
+  Table,
+  Tbody,
+  Th,
+  Tr,
+  Td,
+  List,
+  ListItem,
 } from "@chakra-ui/react";
 
 import { AdventureRoute } from "/imports/api/adventureRoutes";
@@ -25,6 +32,7 @@ import { MapDirections, MapSettings } from "/imports/ui/components";
 type AdventureRouteInfoProps = {
   adventureRoute?: AdventureRoute;
   directions: google.maps.DirectionsResult | null;
+  fitBounds: (boundPoints: google.maps.LatLng[]) => void;
   selectedRoutes: boolean[];
   setSelectedRoutes: (selectedRoutes: boolean[]) => void;
   travelMode: google.maps.TravelMode;
@@ -51,11 +59,13 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
     directions,
     selectedRoutes,
     setSelectedRoutes,
+    fitBounds,
     isInfoButtonEnabled,
     ...mapSettingsProps
   } = props;
   const { mutcdFont, unitSystem } = mapSettingsProps;
-  const { name, description, priceCategory } = adventureRoute || {};
+  const { name, description, priceCategory, route } = adventureRoute || {};
+  const { origin, waypoints = [], destination } = route || {};
   const adventureRouteInfoButtonRef = createRef<HTMLButtonElement>();
   const {
     isOpen: isDrawerOpen,
@@ -63,6 +73,7 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
     onClose: onDrawerClose,
   } = useDisclosure();
 
+  console.log("DESC:", description);
   return (
     <Box>
       <Button
@@ -98,16 +109,52 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
               </TabList>
               <TabPanels>
                 <TabPanel color={Color.WHITE}>
-                  <Text>{description}</Text>
-                  <Text>
-                    {priceCategory === 0
-                      ? "Free"
-                      : [...Array(priceCategory)].map(() => "$")}
-                  </Text>
+                  <TableContainer width="inherit">
+                    <Table size="md">
+                      <Tbody>
+                        <Tr>
+                          <Th textColor={Color.WHITE}>Description</Th>
+                          <Td>{description || "N/A"}</Td>
+                        </Tr>
+                        <Tr>
+                          <Th textColor={Color.WHITE}>Price Category</Th>
+                          <Td>
+                            {priceCategory === 0
+                              ? "Free"
+                              : [...Array(priceCategory)].map(() => "$")}
+                          </Td>
+                        </Tr>
+                        <Tr>
+                          <Th textColor="white">Origin</Th>
+                          <Td textOverflow="ellipsis">{origin}</Td>
+                        </Tr>
+                        <Tr>
+                          <Th textColor="white">Stopovers</Th>
+                          <Td>
+                            {waypoints.map((waypoint) => (
+                              <List
+                                listStylePosition="outside"
+                                listStyleType="square"
+                              >
+                                <ListItem>
+                                  {waypoint.split(",").join("\r\n")}
+                                </ListItem>
+                              </List>
+                            ))}
+                          </Td>
+                        </Tr>
+                        <Tr>
+                          <Th textColor="white">Destination</Th>
+                          <Td>{destination}</Td>
+                        </Tr>
+                      </Tbody>
+                    </Table>
+                  </TableContainer>
                 </TabPanel>
                 <TabPanel paddingLeft={0} paddingRight={0}>
                   <MapDirections
                     routes={directions?.routes ?? []}
+                    fitBounds={fitBounds}
                     selectedRoutes={selectedRoutes}
                     setSelectedRoutes={setSelectedRoutes}
                     unitSystem={unitSystem}
