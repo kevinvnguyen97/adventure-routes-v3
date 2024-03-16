@@ -1,11 +1,8 @@
 import React from "react";
 import { Color } from "/imports/constants";
 
-type InterstateShieldProps = {
-  interstateNumber: string;
-};
-export const InterstateShield = (props: InterstateShieldProps) => {
-  const { interstateNumber } = props;
+export const InterstateShield = (props: RouteShieldProps) => {
+  const { routeNumber } = props;
   return (
     <div
       style={{
@@ -13,18 +10,18 @@ export const InterstateShield = (props: InterstateShieldProps) => {
         position: "relative",
         height: "30px",
         verticalAlign: "middle",
-        width: `${interstateNumber.length > 2 ? "40" : "30"}px`,
+        width: `${routeNumber.length > 2 ? "40" : "30"}px`,
         margin: "2px",
       }}
     >
       <img
         src={`/images/${
-          interstateNumber.length > 2
+          routeNumber.length > 2
             ? "Interstate_Shield_Wide"
             : "Interstate_Shield"
         }.png`}
         height="30px"
-        width={interstateNumber.length > 2 ? "40px" : "30px"}
+        width={routeNumber.length > 2 ? "40px" : "30px"}
       />
       <div
         style={{
@@ -34,9 +31,7 @@ export const InterstateShield = (props: InterstateShieldProps) => {
           transform: "translate(-50%, -45%)",
           color: Color.WHITE,
           fontFamily: `${
-            interstateNumber.length > 2
-              ? "Highway Gothic Narrow"
-              : "Highway Gothic"
+            routeNumber.length > 2 ? "Highway Gothic Narrow" : "Highway Gothic"
           } !important`,
           fontSize: "20px",
           letterSpacing: "0.5px",
@@ -44,7 +39,7 @@ export const InterstateShield = (props: InterstateShieldProps) => {
           fontWeight: "normal",
         }}
       >
-        {interstateNumber}
+        {routeNumber}
       </div>
     </div>
   );

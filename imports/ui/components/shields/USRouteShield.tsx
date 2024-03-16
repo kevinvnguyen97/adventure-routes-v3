@@ -1,11 +1,8 @@
 import React from "react";
 import { Color } from "/imports/constants";
 
-type USRouteShieldProps = {
-  usRouteNumber: string;
-};
-export const USRouteShield = (props: USRouteShieldProps) => {
-  const { usRouteNumber } = props;
+export const USRouteShield = (props: RouteShieldProps) => {
+  const { routeNumber } = props;
   return (
     <div
       style={{
@@ -13,12 +10,12 @@ export const USRouteShield = (props: USRouteShieldProps) => {
         position: "relative",
         height: "30px",
         verticalAlign: "middle",
-        width: `${usRouteNumber.length > 2 ? "40" : "30"}px`,
+        width: `${routeNumber.length > 2 ? "40" : "30"}px`,
       }}
     >
       <img
         src={`/images/${
-          usRouteNumber.length > 2 ? "US_Route_Shield_Wide" : "US_Route_Shield"
+          routeNumber.length > 2 ? "US_Route_Shield_Wide" : "US_Route_Shield"
         }.png`}
         height="100%"
         width="100%"
@@ -31,9 +28,7 @@ export const USRouteShield = (props: USRouteShieldProps) => {
           transform: "translate(-50%, -50%)",
           color: Color.BLACK,
           fontFamily: `${
-            usRouteNumber.length > 2
-              ? "Highway Gothic Narrow"
-              : "Highway Gothic"
+            routeNumber.length > 2 ? "Highway Gothic Narrow" : "Highway Gothic"
           } !important`,
           fontSize: "24px",
           letterSpacing: "0.5px",
@@ -41,7 +36,7 @@ export const USRouteShield = (props: USRouteShieldProps) => {
           fontWeight: "normal",
         }}
       >
-        {usRouteNumber}
+        {routeNumber}
       </div>
     </div>
   );

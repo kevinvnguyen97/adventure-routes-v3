@@ -1,7 +1,7 @@
 import React from "react";
 import { Color } from "/imports/constants";
 
-export const IllinoisRouteShield = (props: RouteShieldProps) => {
+export const MichiganRouteShield = (props: RouteShieldProps) => {
   const { routeNumber } = props;
   return (
     <div
@@ -16,8 +16,8 @@ export const IllinoisRouteShield = (props: RouteShieldProps) => {
       <img
         src={`/images/${
           routeNumber.length > 2
-            ? "Illinois_Route_Shield_Wide"
-            : "Illinois_Route_Shield"
+            ? "Michigan_Route_Shield_Wide"
+            : "Michigan_Route_Shield"
         }.png`}
         height="100%"
         width="100%"
@@ -27,10 +27,10 @@ export const IllinoisRouteShield = (props: RouteShieldProps) => {
           position: "absolute",
           left: "50%",
           top: "50%",
-          transform: `translate(-50%, -35%)`,
+          transform: `translate(-50%, -40%)`,
           color: Color.BLACK,
           fontFamily: "Highway Gothic",
-          fontSize: "20px",
+          fontSize: "16px",
           letterSpacing: "0.5px",
           textAlign: "center",
           fontWeight: "normal",

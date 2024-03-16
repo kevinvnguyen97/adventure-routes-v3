@@ -4,6 +4,7 @@ import {
   USRouteShield,
   IllinoisRouteShield,
   InterstateShield,
+  MichiganRouteShield,
 } from "/imports/ui/components/shields";
 import { Color } from "/imports/constants";
 
@@ -18,13 +19,19 @@ export const formatDirections = (directionInstructions: string) => {
     if (routeNumber.includes("IL-")) {
       const cleanedRouteNumber = routeNumber.replaceAll("IL-", "");
       return renderToStaticMarkup(
-        <IllinoisRouteShield illinoisRouteNumber={cleanedRouteNumber} />
+        <IllinoisRouteShield routeNumber={cleanedRouteNumber} />
+      );
+    }
+    if (routeNumber.includes("M-")) {
+      const cleanedRouteNumber = routeNumber.replaceAll("M-", "");
+      return renderToStaticMarkup(
+        <MichiganRouteShield routeNumber={cleanedRouteNumber} />
       );
     }
     if (routeNumber.includes("US-")) {
       const cleanedRouteNumber = routeNumber.replaceAll("US-", "");
       return renderToStaticMarkup(
-        <USRouteShield usRouteNumber={cleanedRouteNumber} />
+        <USRouteShield routeNumber={cleanedRouteNumber} />
       );
     }
     if (
@@ -36,7 +43,7 @@ export const formatDirections = (directionInstructions: string) => {
         .replaceAll("I-", "")
         .replaceAll(",", "");
       return renderToStaticMarkup(
-        <InterstateShield interstateNumber={cleanedRouteNumber} />
+        <InterstateShield routeNumber={cleanedRouteNumber} />
       );
     }
     return routeNumber;

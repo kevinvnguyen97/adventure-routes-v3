@@ -1,0 +1,3 @@
+type RouteShieldProps = {
+  routeNumber: string;
+};
