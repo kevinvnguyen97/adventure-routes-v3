@@ -250,7 +250,7 @@ export const Settings = () => {
                     colorScheme="orange"
                     icon={<EditIcon />}
                     aria-label="phone-edit"
-                    isDisabled={true}
+                    isDisabled
                   />
                 </Td>
               </Tr>

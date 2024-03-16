@@ -125,3 +125,29 @@ export const getTextColorBasedOnBackground = (backgroundColor: string) => {
 };
 
 export { formatDirections } from "./formatDirections";
+
+export const getTotalDistance = (legs: google.maps.DirectionsLeg[]) => {
+  return (
+    legs
+      ?.map(({ distance }) => distance?.value ?? 0)
+      .reduce(
+        (accumulatedDistance, legDistance) => accumulatedDistance + legDistance
+      ) ?? 0
+  );
+};
+
+export const getTotalDuration = (
+  legs: google.maps.DirectionsLeg[],
+  inTraffic?: boolean
+) => {
+  return (
+    legs
+      ?.map(
+        ({ duration, duration_in_traffic }) =>
+          (inTraffic ? duration_in_traffic : duration)?.value ?? 0
+      )
+      .reduce(
+        (accumulatedDuration, legDuration) => accumulatedDuration + legDuration
+      ) ?? 0
+  );
+};

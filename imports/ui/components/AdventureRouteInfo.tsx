@@ -109,7 +109,7 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
               </TabList>
               <TabPanels>
                 <TabPanel color={Color.WHITE}>
-                  <TableContainer width="inherit">
+                  <TableContainer>
                     <Table size="md">
                       <Tbody>
                         <Tr>
@@ -125,24 +125,26 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
                           </Td>
                         </Tr>
                         <Tr>
-                          <Th textColor="white">Origin</Th>
+                          <Th textColor={Color.WHITE}>Origin</Th>
                           <Td textOverflow="ellipsis">{origin}</Td>
                         </Tr>
-                        <Tr>
-                          <Th textColor="white">Stopovers</Th>
-                          <Td>
-                            {waypoints.map((waypoint) => (
-                              <List
-                                listStylePosition="outside"
-                                listStyleType="square"
-                              >
-                                <ListItem>
-                                  {waypoint.split(",").join("\r\n")}
-                                </ListItem>
-                              </List>
-                            ))}
-                          </Td>
-                        </Tr>
+                        {waypoints.length > 0 && (
+                          <Tr>
+                            <Th textColor="white">Stopovers</Th>
+                            <Td>
+                              {waypoints.map((waypoint) => (
+                                <List
+                                  listStylePosition="outside"
+                                  listStyleType="square"
+                                >
+                                  <ListItem>
+                                    {waypoint.split(",").join("\r\n")}
+                                  </ListItem>
+                                </List>
+                              ))}
+                            </Td>
+                          </Tr>
+                        )}
                         <Tr>
                           <Th textColor="white">Destination</Th>
                           <Td>{destination}</Td>

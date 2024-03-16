@@ -43,9 +43,10 @@ export const formatDirections = (directionInstructions: string) => {
   };
 
   const directionInstructionsNewLine = directionInstructions
-    .replaceAll(`<div style="font-size:0.9em">`, ", ")
+    .replaceAll(`<div style="font-size:0.9em">`, " ")
     .replaceAll("</div>", "")
-    .replaceAll("Interstate ", "I-");
+    .replaceAll("Interstate ", "I-")
+    .replaceAll("US Hwy ", "US-");
   const simplifiedInstructions = htmlToPlainText(directionInstructionsNewLine);
   const splitInstructions = simplifiedInstructions.split(" ");
   const formattedInstructions = splitInstructions
@@ -63,23 +64,23 @@ export const formatDirections = (directionInstructions: string) => {
       return renderRouteShield(word);
     })
     .join(" ")
-    .replaceAll(
-      "Toll road",
-      renderToStaticMarkup(
-        <div
-          style={{
-            backgroundColor: Color.MUTCD_YELLOW,
-            color: Color.BLACK,
-            borderRadius: "5px",
-            padding: "5px",
-            textAlign: "center",
-            width: "150px",
-            marginTop: "10px",
-          }}
-        >
-          TOLL ROAD
-        </div>
-      )
-    );
+    .replaceAll("Toll road", "");
+  if (simplifiedInstructions.includes("Toll road")) {
+    return `${formattedInstructions}\n${renderToStaticMarkup(
+      <div
+        style={{
+          backgroundColor: Color.MUTCD_YELLOW,
+          color: Color.BLACK,
+          borderRadius: "5px",
+          padding: "5px",
+          textAlign: "center",
+          width: "150px",
+          marginTop: "10px",
+        }}
+      >
+        TOLL ROAD
+      </div>
+    )}`;
+  }
   return formattedInstructions;
 };

@@ -35,7 +35,7 @@ export const MUTCDRectangleSign = (props: MUTCDRectangleProps) => {
     >
       <Box
         fontFamily={fontFamily}
-        fontWeight={500}
+        fontWeight={fontFamily === MUTCDFont.CLEARVIEW ? "bold" : "normal"}
         padding={2}
         borderWidth={2}
         borderRadius={10}
