@@ -144,7 +144,8 @@ export const getTotalDuration = (
     legs
       ?.map(
         ({ duration, duration_in_traffic }) =>
-          (inTraffic ? duration_in_traffic : duration)?.value ?? 0
+          (inTraffic && !!duration_in_traffic ? duration_in_traffic : duration)
+            ?.value ?? 0
       )
       .reduce(
         (accumulatedDuration, legDuration) => accumulatedDuration + legDuration
