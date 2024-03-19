@@ -156,7 +156,8 @@ export const NavigationBar = () => {
               bgColor={Color.DARK_ORANGE}
               border={0}
               zIndex={1}
-              boxShadow="20px black"
+              boxShadow={`inset 0 -3em 3em rgb(0 200 0 / 30%),
+              0.3em 0.3em 1em rgb(200 0 0 / 60%)`}
               marginTop={1}
             >
               <PopoverArrow bgColor={Color.DARK_ORANGE} />

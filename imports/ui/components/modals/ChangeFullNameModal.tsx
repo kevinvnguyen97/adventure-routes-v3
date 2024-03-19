@@ -96,7 +96,7 @@ export const ChangeFullNameModal = (props: ChangeFullNameModalProps) => {
           </ModalBody>
           <ModalFooter display="flex" gap={2}>
             <Button
-              colorScheme="blue"
+              colorScheme="orange"
               type="submit"
               form="change-full-name-form"
               isDisabled={!isFormValid}

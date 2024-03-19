@@ -147,7 +147,7 @@ export const ChangePasswordModal = (props: ChangePasswordModalProps) => {
           </ModalBody>
           <ModalFooter display="flex" gap={2}>
             <Button
-              colorScheme="blue"
+              colorScheme="orange"
               type="submit"
               form="change-password-form"
               isDisabled={!isFormValid}

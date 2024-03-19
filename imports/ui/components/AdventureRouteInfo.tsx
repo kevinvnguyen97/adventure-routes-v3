@@ -23,6 +23,8 @@ import {
   Td,
   List,
   ListItem,
+  Badge,
+  Tag,
 } from "@chakra-ui/react";
 
 import { AdventureRoute } from "/imports/api/adventureRoutes";
@@ -64,7 +66,13 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
     ...mapSettingsProps
   } = props;
   const { mutcdFont, unitSystem } = mapSettingsProps;
-  const { name, description, priceCategory, route } = adventureRoute || {};
+  const {
+    name,
+    description,
+    priceCategory,
+    route,
+    activities = [],
+  } = adventureRoute || {};
   const { origin, waypoints = [], destination } = route || {};
   const adventureRouteInfoButtonRef = createRef<HTMLButtonElement>();
   const {
@@ -124,6 +132,22 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
                               : [...Array(priceCategory)].map(() => "$")}
                           </Td>
                         </Tr>
+                        {activities.length > 0 && (
+                          <Tr>
+                            <Th textColor={Color.WHITE}>Activities</Th>
+                            <Td display="flex" gap={2}>
+                              {activities.map((activity) => (
+                                <Tag
+                                  colorScheme="orange"
+                                  variant="solid"
+                                  borderRadius="full"
+                                >
+                                  {activity}
+                                </Tag>
+                              ))}
+                            </Td>
+                          </Tr>
+                        )}
                         <Tr>
                           <Th textColor={Color.WHITE}>Origin</Th>
                           <Td textOverflow="ellipsis">{origin}</Td>

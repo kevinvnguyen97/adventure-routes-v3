@@ -15,7 +15,7 @@
     "@emotion/styled": "^11.11.0",
     "@react-google-maps/api": "^2.19.2",
     "@types/meteor": "^2.9.7",
-    "chakra-multiselect": "^0.4.6",
+    "chakra-react-select": "^4.7.6",
     "framer-motion": "^10.16.12",
     "html-react-parser": "^5.1.5",
     "libphonenumber-js": "^1.10.51",

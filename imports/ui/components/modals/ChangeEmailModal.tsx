@@ -140,7 +140,7 @@ export const ChangeEmailModal = (props: ChangeEmailModalProps) => {
           </ModalBody>
           <ModalFooter display="flex" gap={2}>
             <Button
-              colorScheme="blue"
+              colorScheme="orange"
               type="submit"
               form="change-email-form"
               isDisabled={!isFormValid}

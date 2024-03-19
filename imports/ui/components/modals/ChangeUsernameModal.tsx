@@ -97,7 +97,7 @@ export const ChangeUsernameModal = (props: ChangeUsernameModalProps) => {
           </ModalBody>
           <ModalFooter display="flex" gap={2}>
             <Button
-              colorScheme="blue"
+              colorScheme="orange"
               type="submit"
               form="change-username-form"
               isDisabled={!isFormValid}
