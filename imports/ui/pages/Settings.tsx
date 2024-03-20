@@ -3,7 +3,6 @@ import {
   Avatar,
   Box,
   FormLabel,
-  IconButton,
   Input,
   Table,
   TableContainer,
@@ -14,7 +13,6 @@ import {
   Tr,
   useToast,
 } from "@chakra-ui/react";
-import { EditIcon } from "@chakra-ui/icons";
 import { Accounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
 import { motion } from "framer-motion";
@@ -23,6 +21,7 @@ import {
   ChangeEmailModal,
   ChangeFullNameModal,
   ChangePasswordModal,
+  ChangePhoneModal,
   ChangeUsernameModal,
 } from "/imports/ui/components/modals";
 import { useMeteorAuth } from "/imports/ui/providers";
@@ -33,7 +32,7 @@ import { Color } from "/imports/constants";
 
 export const Settings = () => {
   const toast = useToast();
-  const { user, userId, loggedIn } = useMeteorAuth();
+  const { user, userId } = useMeteorAuth();
 
   const { username = "", emails = [], profile } = user || {};
   const { firstName, lastName, phoneNumber, profilePictureUrl } = profile || {};
@@ -42,6 +41,8 @@ export const Settings = () => {
 
   const [newFirstNameInput, setNewFirstNameInput] = useState("");
   const [newLastNameInput, setNewLastNameInput] = useState("");
+
+  const [newPhoneNumberInput, setNewPhoneNumberInput] = useState("");
 
   const [oldEmailInput, setOldEmailInput] = useState("");
   const [newEmailInput, setNewEmailInput] = useState("");
@@ -59,6 +60,14 @@ export const Settings = () => {
         firstName: newFirstNameInput,
         lastName: newLastNameInput,
       });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const changePhoneNumber = async () => {
+    try {
+      await meteorMethodPromise("changePhoneNumber", newPhoneNumberInput);
     } catch (e) {
       console.error(e);
     }
@@ -113,7 +122,16 @@ export const Settings = () => {
     try {
       await meteorMethodPromise("changeEmail", newEmailInput);
     } catch (error) {
-      console.error(error);
+      if (error) {
+        const meteorError = error as Meteor.Error;
+        console.error(meteorError);
+        toast({
+          ...TOAST_PRESET,
+          title: meteorError.name,
+          description: meteorError.message,
+          status: "error",
+        });
+      }
     }
   };
 
@@ -143,11 +161,12 @@ export const Settings = () => {
   };
 
   useEffect(() => {
-    if (loggedIn) {
+    if (user) {
       setNewFirstNameInput(firstName ?? "");
       setNewLastNameInput(lastName ?? "");
+      setNewUsernameInput(username);
     }
-  }, [loggedIn]);
+  }, [user]);
 
   return (
     <motion.div
@@ -246,11 +265,10 @@ export const Settings = () => {
                 <Th textColor={Color.WHITE}>Phone</Th>
                 <Td display="flex" justifyContent="space-between">
                   <Text>{phoneNumber}</Text>
-                  <IconButton
-                    colorScheme="orange"
-                    icon={<EditIcon />}
-                    aria-label="phone-edit"
-                    isDisabled
+                  <ChangePhoneModal
+                    newPhoneNumber={newPhoneNumberInput}
+                    setNewPhoneNumber={setNewPhoneNumberInput}
+                    applyPhoneNumberChange={changePhoneNumber}
                   />
                 </Td>
               </Tr>

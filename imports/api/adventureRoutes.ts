@@ -1,6 +1,8 @@
 import { Accounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
 import { Mongo } from "meteor/mongo";
+import { isValidPhoneNumber, parsePhoneNumber } from "libphonenumber-js";
+import { isValidEmail } from "/imports/utils";
 
 export interface AdventureRoute {
   _id?: string;
@@ -42,6 +44,10 @@ Meteor.methods({
     const user = Meteor.user();
     const { emails = [], _id: userId } = user || {};
 
+    if (!isValidEmail(newEmail)) {
+      throw new Meteor.Error("invalid-input", "Email must be valid");
+    }
+
     if (emails.length > 0 && !!userId && Meteor.isServer) {
       Accounts.removeEmail(userId, emails[0].address);
       Accounts.addEmail(userId, newEmail);
@@ -66,6 +72,25 @@ Meteor.methods({
           $set: {
             "profile.firstName": firstName,
             "profile.lastName": lastName,
+          },
+        }
+      );
+    }
+  },
+  changePhoneNumber: async (newPhoneNumber: string) => {
+    const userId = Meteor.userId();
+    if (!!userId) {
+      if (!isValidPhoneNumber(newPhoneNumber, "US")) {
+        throw new Meteor.Error("invalid-input", "Phone number is invalid");
+      }
+      await Meteor.users.updateAsync(
+        { _id: userId },
+        {
+          $set: {
+            "profile.phoneNumber": parsePhoneNumber(
+              newPhoneNumber,
+              "US"
+            ).formatNational(),
           },
         }
       );

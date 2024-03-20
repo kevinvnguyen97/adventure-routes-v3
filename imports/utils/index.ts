@@ -29,6 +29,10 @@ export async function meteorMethodPromise(
   name: "changeFullName",
   args: { firstName: string; lastName: string }
 ): Promise<void>;
+export async function meteorMethodPromise(
+  name: "changePhoneNumber",
+  newPhoneNumber: string
+): Promise<void>;
 export async function meteorMethodPromise<TReturn, TArgs extends any[]>(
   name: string,
   ...args: TArgs

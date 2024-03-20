@@ -184,6 +184,7 @@ export const Register = () => {
               <Input
                 placeholder="Email"
                 type="email"
+                inputMode="email"
                 backgroundColor={Color.WHITE}
                 value={email}
                 onChange={(e) => setEmail(e.target.value.trim())}
