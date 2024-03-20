@@ -17,7 +17,10 @@ import {
   InputGroup,
   Textarea,
   Box,
+  InputRightElement,
+  IconButton,
 } from "@chakra-ui/react";
+import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { CreatableSelect as MultiSelect, Options } from "chakra-react-select";
 import { Autocomplete } from "@react-google-maps/api";
 
@@ -317,7 +320,7 @@ export const MapFormModal = (props: MapFormModalProps) => {
             {waypoints.map((waypoint, i) => {
               return (
                 <InputGroup key={`waypoint${i}`}>
-                  <Box width="100%">
+                  <Box width="inherit">
                     <Autocomplete
                       onLoad={(autocomplete) =>
                         onAutoCompleteLoad(autocomplete, "waypoint")
@@ -340,36 +343,48 @@ export const MapFormModal = (props: MapFormModalProps) => {
                         textColor={Color.BLACK}
                         focusBorderColor="orange.400"
                         errorBorderColor="red.500"
+                        paddingRight={20}
                       />
                     </Autocomplete>
                   </Box>
-                  {waypoints.length > 1 && (
-                    <Button
-                      onClick={() => {
-                        const updatedWaypoints = waypoints.filter(
-                          (_, waypointIndexToRemove) =>
-                            i !== waypointIndexToRemove
-                        );
-                        const newRefs = waypointsAutoCompleteRef.current.filter(
-                          (_, waypointIndexToRemove) =>
-                            i !== waypointIndexToRemove
-                        );
-                        waypointsAutoCompleteRef.current = newRefs;
-                        setWaypoints(updatedWaypoints);
-                      }}
-                      colorScheme="red"
-                    >
-                      -
-                    </Button>
-                  )}
-                  {waypoints.length < 25 && (
-                    <Button
-                      onClick={() => setWaypoints([...waypoints, ""])}
-                      colorScheme="orange"
-                    >
-                      +
-                    </Button>
-                  )}
+                  <InputRightElement
+                    display="flex"
+                    justifyContent="end"
+                    gap={1}
+                    paddingRight={1}
+                    width={100}
+                  >
+                    {waypoints.length > 1 && (
+                      <IconButton
+                        onClick={() => {
+                          const updatedWaypoints = waypoints.filter(
+                            (_, waypointIndexToRemove) =>
+                              i !== waypointIndexToRemove
+                          );
+                          const newRefs =
+                            waypointsAutoCompleteRef.current.filter(
+                              (_, waypointIndexToRemove) =>
+                                i !== waypointIndexToRemove
+                            );
+                          waypointsAutoCompleteRef.current = newRefs;
+                          setWaypoints(updatedWaypoints);
+                        }}
+                        colorScheme="red"
+                        size="sm"
+                        icon={<MinusIcon />}
+                        aria-label="remove-waypoint"
+                      />
+                    )}
+                    {waypoints.length < 25 && (
+                      <IconButton
+                        onClick={() => setWaypoints([...waypoints, ""])}
+                        colorScheme="orange"
+                        size="sm"
+                        icon={<AddIcon />}
+                        aria-label="add-new-waypoint"
+                      />
+                    )}
+                  </InputRightElement>
                 </InputGroup>
               );
             })}
