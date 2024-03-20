@@ -1,4 +1,5 @@
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
+import { Meteor } from "meteor/meteor";
 import {
   Button,
   Modal,
@@ -15,10 +16,12 @@ import {
   FormErrorMessage,
   InputGroup,
   Textarea,
+  Box,
 } from "@chakra-ui/react";
-import { useMeteorAuth } from "../../providers/Auth";
-import { Meteor } from "meteor/meteor";
 import { CreatableSelect as MultiSelect, Options } from "chakra-react-select";
+import { Autocomplete } from "@react-google-maps/api";
+
+import { useMeteorAuth } from "/imports/ui/providers/Auth";
 import { AdventureRoute } from "/imports/api/adventureRoutes";
 import { meteorMethodPromise } from "/imports/utils";
 import { TOAST_PRESET } from "/imports/constants/toast";
@@ -124,6 +127,60 @@ export const MapFormModal = (props: MapFormModalProps) => {
           });
         }
       }
+    }
+  };
+
+  const originAutoCompleteRef = useRef<
+    google.maps.places.Autocomplete | undefined
+  >(undefined);
+  const destinationAutoCompleteRef = useRef<
+    google.maps.places.Autocomplete | undefined
+  >(undefined);
+  const waypointsAutoCompleteRef = useRef<google.maps.places.Autocomplete[]>(
+    []
+  );
+  const onAutoCompleteLoad = (
+    autocomplete: google.maps.places.Autocomplete,
+    placeType: string
+  ) => {
+    switch (placeType) {
+      case "origin":
+        originAutoCompleteRef.current = autocomplete;
+        break;
+      case "destination":
+        destinationAutoCompleteRef.current = autocomplete;
+        break;
+      default:
+        waypointsAutoCompleteRef.current.push(autocomplete);
+        break;
+    }
+  };
+  const onPlaceChanged = (placeType: string, waypointIndex?: number) => {
+    switch (placeType) {
+      case "origin":
+        const originAddress =
+          originAutoCompleteRef.current?.getPlace().formatted_address;
+        if (originAddress) {
+          setOrigin(originAddress);
+        }
+        break;
+      case "destination":
+        const destinationAddress =
+          destinationAutoCompleteRef.current?.getPlace().formatted_address;
+        if (destinationAddress) {
+          setDestination(destinationAddress);
+        }
+        break;
+      default:
+        const waypointAddress =
+          waypointsAutoCompleteRef.current[waypointIndex!]?.getPlace()
+            .formatted_address;
+        if (waypointAddress) {
+          const formattedWaypoints = waypoints.map((waypoint, i) =>
+            i === waypointIndex ? waypointAddress : waypoint
+          );
+          setWaypoints(formattedWaypoints);
+        }
     }
   };
 
@@ -237,39 +294,55 @@ export const MapFormModal = (props: MapFormModalProps) => {
               />
             </FormControl>
             <FormControl isRequired isInvalid={!origin}>
-              <Input
-                placeholder="Origin"
-                value={origin}
-                onChange={(e) => {
-                  setOrigin(e.target.value);
-                }}
-                backgroundColor={Color.WHITE}
-                textColor={Color.BLACK}
-                focusBorderColor="orange.400"
-                errorBorderColor="red.500"
-              />
+              <Autocomplete
+                onLoad={(autocomplete) =>
+                  onAutoCompleteLoad(autocomplete, "origin")
+                }
+                onPlaceChanged={() => onPlaceChanged("origin")}
+              >
+                <Input
+                  placeholder="Origin"
+                  value={origin}
+                  onChange={(e) => {
+                    setOrigin(e.target.value);
+                  }}
+                  backgroundColor={Color.WHITE}
+                  textColor={Color.BLACK}
+                  focusBorderColor="orange.400"
+                  errorBorderColor="red.500"
+                />
+              </Autocomplete>
               <FormErrorMessage>Origin is required</FormErrorMessage>
             </FormControl>
             {waypoints.map((waypoint, i) => {
               return (
                 <InputGroup key={`waypoint${i}`}>
-                  <Input
-                    placeholder={`Waypoint ${i + 1}`}
-                    value={waypoint}
-                    onChange={(e) => {
-                      const updatedWaypoints = waypoints.map(
-                        (existingWaypoint, waypointIndexToUpdate) =>
-                          i === waypointIndexToUpdate
-                            ? e.target.value
-                            : existingWaypoint
-                      );
-                      setWaypoints(updatedWaypoints);
-                    }}
-                    backgroundColor={Color.WHITE}
-                    textColor={Color.BLACK}
-                    focusBorderColor="orange.400"
-                    errorBorderColor="red.500"
-                  />
+                  <Box width="100%">
+                    <Autocomplete
+                      onLoad={(autocomplete) =>
+                        onAutoCompleteLoad(autocomplete, "waypoint")
+                      }
+                      onPlaceChanged={() => onPlaceChanged("waypoint", i)}
+                    >
+                      <Input
+                        placeholder={`Waypoint ${i + 1}`}
+                        value={waypoint}
+                        onChange={(e) => {
+                          const updatedWaypoints = waypoints.map(
+                            (existingWaypoint, waypointIndexToUpdate) =>
+                              i === waypointIndexToUpdate
+                                ? e.target.value
+                                : existingWaypoint
+                          );
+                          setWaypoints(updatedWaypoints);
+                        }}
+                        backgroundColor={Color.WHITE}
+                        textColor={Color.BLACK}
+                        focusBorderColor="orange.400"
+                        errorBorderColor="red.500"
+                      />
+                    </Autocomplete>
+                  </Box>
                   {waypoints.length > 1 && (
                     <Button
                       onClick={() => {
@@ -277,6 +350,11 @@ export const MapFormModal = (props: MapFormModalProps) => {
                           (_, waypointIndexToRemove) =>
                             i !== waypointIndexToRemove
                         );
+                        const newRefs = waypointsAutoCompleteRef.current.filter(
+                          (_, waypointIndexToRemove) =>
+                            i !== waypointIndexToRemove
+                        );
+                        waypointsAutoCompleteRef.current = newRefs;
                         setWaypoints(updatedWaypoints);
                       }}
                       colorScheme="red"
@@ -296,15 +374,22 @@ export const MapFormModal = (props: MapFormModalProps) => {
               );
             })}
             <FormControl isRequired isInvalid={!destination}>
-              <Input
-                placeholder="Destination"
-                value={destination}
-                onChange={(e) => setDestination(e.target.value)}
-                backgroundColor={Color.WHITE}
-                textColor={Color.BLACK}
-                focusBorderColor="orange.400"
-                errorBorderColor="red.500"
-              />
+              <Autocomplete
+                onLoad={(autocomplete) =>
+                  onAutoCompleteLoad(autocomplete, "destination")
+                }
+                onPlaceChanged={() => onPlaceChanged("destination")}
+              >
+                <Input
+                  placeholder="Destination"
+                  value={destination}
+                  onChange={(e) => setDestination(e.target.value)}
+                  backgroundColor={Color.WHITE}
+                  textColor={Color.BLACK}
+                  focusBorderColor="orange.400"
+                  errorBorderColor="red.500"
+                />
+              </Autocomplete>
               <FormErrorMessage>Destination is required</FormErrorMessage>
             </FormControl>
           </form>

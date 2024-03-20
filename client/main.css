@@ -7,3 +7,7 @@
 body {
   font-family: sans-serif;
 }
+
+.pac-container {
+  z-index: 10000 !important;
+}

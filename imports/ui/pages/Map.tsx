@@ -1,6 +1,5 @@
 import {
   GoogleMap,
-  useJsApiLoader,
   DirectionsService,
   DirectionsRenderer,
   TrafficLayer,
@@ -19,8 +18,8 @@ import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import { useAdventureRoutesForUser } from "/imports/ui/providers";
-import { AdventureRouteInfo, LoadingScreen } from "/imports/ui/components";
-import { SECRETS, MUTCDFont, ROUTE_COLORS } from "/imports/constants";
+import { AdventureRouteInfo } from "/imports/ui/components";
+import { MUTCDFont, ROUTE_COLORS } from "/imports/constants";
 import { TOAST_PRESET } from "/imports/constants/toast";
 
 const MAP_CONTAINER_STYLE: CSSProperties = {
@@ -29,11 +28,6 @@ const MAP_CONTAINER_STYLE: CSSProperties = {
 };
 
 export const Map = () => {
-  const { isLoaded } = useJsApiLoader({
-    id: "google-map-script",
-    googleMapsApiKey: SECRETS.public.oauth.googleMapsApiKey,
-    libraries: ["visualization"],
-  });
   const toast = useToast();
   const { id } = useParams();
   const { data: adventureRoutes } = useAdventureRoutesForUser();
@@ -200,9 +194,6 @@ export const Map = () => {
     } - Adventure Routes`;
   }, [adventureRoute?.name]);
 
-  if (!isLoaded) {
-    return <LoadingScreen />;
-  }
   if (!adventureRoute) {
     return <Text>Adventure route not found</Text>;
   }
