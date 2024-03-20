@@ -90,8 +90,14 @@ export const MapDirections = (props: MapDirectionsProps) => {
                       flexDirection="row"
                       justifyContent="space-between"
                       width="100%"
+                      alignItems="center"
                     >
-                      <Box display="flex" flexDirection="column" gap={2}>
+                      <Box
+                        display="flex"
+                        flexDirection="column"
+                        gap={2}
+                        alignItems="center"
+                      >
                         <Text textAlign="left">
                           Directions via{" "}
                           <Box
