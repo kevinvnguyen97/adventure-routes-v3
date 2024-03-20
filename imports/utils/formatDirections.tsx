@@ -7,6 +7,7 @@ import {
   MichiganRouteShield,
 } from "/imports/ui/components/shields";
 import { Color } from "/imports/constants";
+import { IndianaRouteShield } from "../ui/components/shields/IndianaRouteShield";
 
 export const formatDirections = (directionInstructions: string) => {
   const htmlToPlainText = (html: string) => {
@@ -20,6 +21,12 @@ export const formatDirections = (directionInstructions: string) => {
       const cleanedRouteNumber = routeNumber.replaceAll("IL-", "");
       return renderToStaticMarkup(
         <IllinoisRouteShield routeNumber={cleanedRouteNumber} />
+      );
+    }
+    if (routeNumber.includes("IN-")) {
+      const cleanedRouteNumber = routeNumber.replaceAll("IN-", "");
+      return renderToStaticMarkup(
+        <IndianaRouteShield routeNumber={cleanedRouteNumber} />
       );
     }
     if (routeNumber.includes("M-")) {
