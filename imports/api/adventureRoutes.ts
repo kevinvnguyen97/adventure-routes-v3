@@ -19,9 +19,21 @@ export interface AdventureRoute {
   };
 }
 
+export interface Comment {
+  _id?: string;
+  userId: string;
+  adventureRouteId: string;
+  dateTime: Date;
+  comment: string;
+  commentIdReplyFrom?: string;
+  imageAttachmentUrl?: string;
+  placeOfInterest?: google.maps.Place;
+}
+
 export const AdventureRoutesCollection = new Mongo.Collection<AdventureRoute>(
   "adventureRoutes"
 );
+export const CommentsCollection = new Mongo.Collection<Comment>("comments");
 
 Meteor.methods({
   upsertAdventureRoute: async (adventureRoute: AdventureRoute) => {
@@ -80,7 +92,7 @@ Meteor.methods({
   changePhoneNumber: async (newPhoneNumber: string) => {
     const userId = Meteor.userId();
     if (!!userId) {
-      if (!isValidPhoneNumber(newPhoneNumber, "US")) {
+      if (!isValidPhoneNumber(newPhoneNumber, "US") || !newPhoneNumber) {
         throw new Meteor.Error("invalid-input", "Phone number is invalid");
       }
       await Meteor.users.updateAsync(
@@ -95,5 +107,12 @@ Meteor.methods({
         }
       );
     }
+  },
+  upsertComment: async (comment: Comment) => {
+    const { _id, ...commentFields } = comment;
+    await CommentsCollection.upsertAsync({ _id }, { $set: commentFields });
+  },
+  deleteComment: async (commentId: string) => {
+    await CommentsCollection.removeAsync({ _id: commentId });
   },
 });

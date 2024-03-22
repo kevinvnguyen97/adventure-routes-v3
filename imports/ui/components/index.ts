@@ -1,5 +1,8 @@
 export { AdventureRouteCard } from "./AdventureRouteCard";
 export { AdventureRouteInfo } from "./AdventureRouteInfo";
+export { AdventureRouteTable } from "./AdventureRouteTable";
+export { CommentCard } from "./CommentCard";
+export { CommentsSection } from "./CommentsSection";
 export { LoadingScreen } from "./LoadingScreen";
 export { NavigationBar } from "./NavigationBar";
 export { MUTCDRectangleSign } from "./MUTCDRectangleSign";
