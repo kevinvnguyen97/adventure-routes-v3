@@ -1,9 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { useTracker } from "meteor/react-meteor-data";
-import {
-  AdventureRoutesCollection,
-  CommentsCollection,
-} from "/imports/api/adventureRoutes";
+import { AdventureRoutesCollection } from "/imports/api/adventureRoutes";
+import { CommentsCollection } from "/imports/api/comments";
 
 export const useAdventureRoutesForUser = (userId: string) => {
   return useTracker(() => {
