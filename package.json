@@ -19,12 +19,14 @@
     "framer-motion": "^10.16.12",
     "html-react-parser": "^5.1.5",
     "libphonenumber-js": "^1.10.51",
+    "luxon": "^3.4.4",
     "meteor-node-stubs": "^1.2.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.20.1"
   },
   "devDependencies": {
+    "@types/luxon": "^3.4.2",
     "@types/mocha": "^8.2.3",
     "@types/node": "^18.13.0",
     "@types/react": "^18.0.26",

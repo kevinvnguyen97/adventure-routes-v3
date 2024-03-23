@@ -1,4 +1,5 @@
 import React from "react";
+import { Meteor } from "meteor/meteor";
 import {
   Card,
   CardHeader,
@@ -9,8 +10,28 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Color } from "/imports/constants";
+import { Comment } from "/imports/api/adventureRoutes";
+import { useUserInfo } from "/imports/ui/providers";
+import { DateTime } from "luxon";
 
-export const CommentCard = () => {
+type CommentCardProps = {
+  comment: Comment;
+  deleteComment: () => void;
+};
+export const CommentCard = (props: CommentCardProps) => {
+  const { comment, deleteComment } = props;
+  const { commentText, date, userId: commentUserId } = comment;
+
+  const userId = Meteor.userId();
+
+  const { data: user } = useUserInfo(commentUserId);
+  const { username, profile } = user;
+  const { profilePictureUrl } = profile || {};
+
+  const formattedDate = DateTime.fromJSDate(date).toFormat(
+    "LLLL d, yyyy h:mm:ss a"
+  );
+
   return (
     <Card colorScheme="orange" bgColor={Color.DARK_ORANGE} color={Color.WHITE}>
       <CardHeader
@@ -23,15 +44,23 @@ export const CommentCard = () => {
         paddingTop={2}
         _hover={{ cursor: "pointer" }}
       >
-        <Avatar bgColor="orange.500" />
-        Hello
+        <Avatar bgColor="orange.500" src={profilePictureUrl} />
+        {username}
       </CardHeader>
-      <ModalCloseButton />
+      {userId === commentUserId && (
+        <ModalCloseButton
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            deleteComment();
+          }}
+        />
+      )}
       <CardBody paddingTop={0} paddingBottom={0} fontSize="large">
-        This is my comment.
+        {commentText}
       </CardBody>
       <CardFooter display="flex" justifyContent="end" paddingBottom={2}>
-        <Text>{`${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`}</Text>
+        <Text>{formattedDate}</Text>
       </CardFooter>
     </Card>
   );

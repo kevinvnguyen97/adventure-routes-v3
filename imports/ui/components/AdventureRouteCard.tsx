@@ -20,12 +20,14 @@ import { TOAST_PRESET } from "/imports/constants/toast";
 import { DeleteRouteModal, MapFormModal } from "/imports/ui/components/modals";
 import { EditIcon } from "@chakra-ui/icons";
 import { Color } from "/imports/constants";
+import { useMeteorAuth } from "/imports/ui/providers";
 
 type AdventureRouteCardProps = {
   adventureRoute: AdventureRoute;
 };
 export const AdventureRouteCard = (props: AdventureRouteCardProps) => {
   const { adventureRoute } = props;
+  const { userId } = useMeteorAuth();
   const {
     isOpen: isDeleteRouteModalOpen,
     onOpen: onDeleteRouteModalOpen,
@@ -90,30 +92,34 @@ export const AdventureRouteCard = (props: AdventureRouteCardProps) => {
           <CardHeader fontWeight="bold" textAlign="start">
             {adventureRoute.name}
           </CardHeader>
-          <IconButton
-            aria-label="edit-adventure-route"
-            icon={<EditIcon />}
-            size="sm"
-            colorScheme="transparent"
-            _hover={{ bgColor: "orange.500" }}
-            position="absolute"
-            right={8}
-            top={0}
-            onClick={(e) => {
-              e.stopPropagation();
-              onEditMapModalOpen();
-            }}
-          />
-          <CloseButton
-            onClick={(e) => {
-              e.stopPropagation();
-              onDeleteRouteModalOpen();
-            }}
-            position="absolute"
-            right={0}
-            top={0}
-            colorScheme="red"
-          />
+          {userId === adventureRoute.userId && (
+            <>
+              <IconButton
+                aria-label="edit-adventure-route"
+                icon={<EditIcon />}
+                size="sm"
+                colorScheme="transparent"
+                _hover={{ bgColor: "orange.500" }}
+                position="absolute"
+                right={8}
+                top={0}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEditMapModalOpen();
+                }}
+              />
+              <CloseButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDeleteRouteModalOpen();
+                }}
+                position="absolute"
+                right={0}
+                top={0}
+                colorScheme="red"
+              />
+            </>
+          )}
           <CardBody textAlign="start">
             <Text>{adventureRoute.description}</Text>
             <Text>_</Text>

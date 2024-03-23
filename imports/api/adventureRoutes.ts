@@ -23,8 +23,8 @@ export interface Comment {
   _id?: string;
   userId: string;
   adventureRouteId: string;
-  dateTime: Date;
-  comment: string;
+  date: Date;
+  commentText: string;
   commentIdReplyFrom?: string;
   imageAttachmentUrl?: string;
   placeOfInterest?: google.maps.Place;
@@ -37,6 +37,10 @@ export const CommentsCollection = new Mongo.Collection<Comment>("comments");
 
 Meteor.methods({
   upsertAdventureRoute: async (adventureRoute: AdventureRoute) => {
+    const userId = Meteor.userId();
+    if (userId !== adventureRoute._id) {
+      throw new Meteor.Error("not-authorized");
+    }
     const { _id, ...adventureRouteFields } = adventureRoute;
     await AdventureRoutesCollection.upsertAsync(
       { _id },
@@ -44,6 +48,13 @@ Meteor.methods({
     );
   },
   deleteAdventureRoute: async (adventureRouteId: string) => {
+    const userId = Meteor.userId();
+    const adventureRoute = AdventureRoutesCollection.findOne({
+      _id: adventureRouteId,
+    });
+    if (userId !== adventureRoute?.userId) {
+      throw new Meteor.Error("not-authorized");
+    }
     await AdventureRoutesCollection.removeAsync({ _id: adventureRouteId });
   },
   changeUsername: (newUsername: string) => {
@@ -110,9 +121,20 @@ Meteor.methods({
   },
   upsertComment: async (comment: Comment) => {
     const { _id, ...commentFields } = comment;
+    if (!comment.commentText) {
+      throw new Meteor.Error("incomplete", "Field required");
+    }
     await CommentsCollection.upsertAsync({ _id }, { $set: commentFields });
   },
   deleteComment: async (commentId: string) => {
+    const userId = Meteor.userId();
+    const commentToRemove = CommentsCollection.findOne({ _id: commentId });
+    if (!userId) {
+      throw new Meteor.Error("not-logged-in");
+    }
+    if (userId !== commentToRemove?.userId) {
+      throw new Meteor.Error("not-authorized", "");
+    }
     await CommentsCollection.removeAsync({ _id: commentId });
   },
 });

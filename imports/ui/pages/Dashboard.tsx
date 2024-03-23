@@ -11,10 +11,11 @@ import { MapFormModal } from "/imports/ui/components/modals";
 import { Color } from "/imports/constants";
 
 export const Dashboard = () => {
-  const { data: adventureRoutesForUser, isLoading } =
-    useAdventureRoutesForUser();
+  const { user, userId } = useMeteorAuth();
+  const { data: adventureRoutesForUser, isLoading } = useAdventureRoutesForUser(
+    userId ?? ""
+  );
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { user } = useMeteorAuth();
   const { username } = user || {};
 
   useEffect(() => {

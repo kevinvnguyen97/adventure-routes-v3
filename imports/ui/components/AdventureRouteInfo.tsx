@@ -61,7 +61,7 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
     ...mapSettingsProps
   } = props;
   const { mutcdFont, unitSystem } = mapSettingsProps;
-  const { name, description } = adventureRoute || {};
+  const { _id: adventureRouteId = "", name } = adventureRoute || {};
   const adventureRouteInfoButtonRef = createRef<HTMLButtonElement>();
   const {
     isOpen: isDrawerOpen,
@@ -69,7 +69,6 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
     onClose: onDrawerClose,
   } = useDisclosure();
 
-  console.log("DESC:", description);
   return (
     <Box>
       <Button
@@ -118,7 +117,7 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
                   />
                 </TabPanel>
                 <TabPanel display="flex" flexDirection="column" gap={3}>
-                  <CommentsSection />
+                  <CommentsSection adventureRouteId={adventureRouteId} />
                 </TabPanel>
                 <TabPanel>
                   <MapSettings {...mapSettingsProps} />
