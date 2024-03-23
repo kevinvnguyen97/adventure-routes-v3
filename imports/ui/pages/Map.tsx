@@ -17,7 +17,7 @@ import React, {
 import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 
-import { useAdventureRoutesForUser } from "/imports/ui/providers";
+import { useAdventureRoute } from "/imports/ui/providers";
 import { AdventureRouteInfo } from "/imports/ui/components";
 import { MUTCDFont, ROUTE_COLORS } from "/imports/constants";
 import { TOAST_PRESET } from "/imports/constants/toast";
@@ -29,9 +29,8 @@ const MAP_CONTAINER_STYLE: CSSProperties = {
 
 export const Map = () => {
   const toast = useToast();
-  const { id } = useParams();
-  const { data: adventureRoutes } = useAdventureRoutesForUser();
-  const adventureRoute = adventureRoutes.find(({ _id }) => id === _id);
+  const { id = "" } = useParams();
+  const { data: adventureRoute } = useAdventureRoute(id);
 
   const renderCount = useRef(0);
   const map = useRef<GoogleMap | null>(null);
@@ -257,7 +256,6 @@ export const Map = () => {
               departureTime: new Date(),
               trafficModel: google.maps.TrafficModel.PESSIMISTIC,
             },
-            region: "us",
           }}
         />
         {directions?.routes.map(

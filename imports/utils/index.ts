@@ -1,5 +1,5 @@
 import { Meteor } from "meteor/meteor";
-import { AdventureRoute } from "/imports/api/adventureRoutes";
+import { AdventureRoute, Comment } from "/imports/api/adventureRoutes";
 import { Color } from "/imports/constants";
 
 const VALID_EMAIL_REGEX =
@@ -32,6 +32,14 @@ export async function meteorMethodPromise(
 export async function meteorMethodPromise(
   name: "changePhoneNumber",
   newPhoneNumber: string
+): Promise<void>;
+export async function meteorMethodPromise(
+  name: "upsertComment",
+  comment: Comment
+): Promise<void>;
+export async function meteorMethodPromise(
+  name: "deleteComment",
+  commentId: string
 ): Promise<void>;
 export async function meteorMethodPromise<TReturn, TArgs extends any[]>(
   name: string,

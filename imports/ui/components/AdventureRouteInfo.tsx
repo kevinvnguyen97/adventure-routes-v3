@@ -15,21 +15,16 @@ import {
   TabList,
   TabPanels,
   TabPanel,
-  TableContainer,
-  Table,
-  Tbody,
-  Th,
-  Tr,
-  Td,
-  List,
-  ListItem,
-  Badge,
-  Tag,
 } from "@chakra-ui/react";
 
 import { AdventureRoute } from "/imports/api/adventureRoutes";
 import { Color, MUTCDFont } from "/imports/constants";
-import { MapDirections, MapSettings } from "/imports/ui/components";
+import {
+  AdventureRouteTable,
+  CommentsSection,
+  MapDirections,
+  MapSettings,
+} from "/imports/ui/components";
 
 type AdventureRouteInfoProps = {
   adventureRoute?: AdventureRoute;
@@ -66,14 +61,7 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
     ...mapSettingsProps
   } = props;
   const { mutcdFont, unitSystem } = mapSettingsProps;
-  const {
-    name,
-    description,
-    priceCategory,
-    route,
-    activities = [],
-  } = adventureRoute || {};
-  const { origin, waypoints = [], destination } = route || {};
+  const { _id: adventureRouteId = "", name } = adventureRoute || {};
   const adventureRouteInfoButtonRef = createRef<HTMLButtonElement>();
   const {
     isOpen: isDrawerOpen,
@@ -81,7 +69,6 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
     onClose: onDrawerClose,
   } = useDisclosure();
 
-  console.log("DESC:", description);
   return (
     <Box>
       <Button
@@ -117,65 +104,7 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
               </TabList>
               <TabPanels>
                 <TabPanel color={Color.WHITE}>
-                  <TableContainer>
-                    <Table size="md">
-                      <Tbody>
-                        <Tr>
-                          <Th textColor={Color.WHITE}>Description</Th>
-                          <Td>{description || "N/A"}</Td>
-                        </Tr>
-                        <Tr>
-                          <Th textColor={Color.WHITE}>Price Category</Th>
-                          <Td>
-                            {priceCategory === 0
-                              ? "Free"
-                              : [...Array(priceCategory)].map(() => "$")}
-                          </Td>
-                        </Tr>
-                        {activities.length > 0 && (
-                          <Tr>
-                            <Th textColor={Color.WHITE}>Activities</Th>
-                            <Td display="flex" gap={2}>
-                              {activities.map((activity) => (
-                                <Tag
-                                  colorScheme="orange"
-                                  variant="solid"
-                                  borderRadius="full"
-                                >
-                                  {activity}
-                                </Tag>
-                              ))}
-                            </Td>
-                          </Tr>
-                        )}
-                        <Tr>
-                          <Th textColor={Color.WHITE}>Origin</Th>
-                          <Td textOverflow="ellipsis">{origin}</Td>
-                        </Tr>
-                        {waypoints.length > 0 && (
-                          <Tr>
-                            <Th textColor="white">Stopovers</Th>
-                            <Td>
-                              {waypoints.map((waypoint) => (
-                                <List
-                                  listStylePosition="outside"
-                                  listStyleType="square"
-                                >
-                                  <ListItem>
-                                    {waypoint.split(",").join("\r\n")}
-                                  </ListItem>
-                                </List>
-                              ))}
-                            </Td>
-                          </Tr>
-                        )}
-                        <Tr>
-                          <Th textColor="white">Destination</Th>
-                          <Td>{destination}</Td>
-                        </Tr>
-                      </Tbody>
-                    </Table>
-                  </TableContainer>
+                  <AdventureRouteTable adventureRoute={adventureRoute} />
                 </TabPanel>
                 <TabPanel paddingLeft={0} paddingRight={0}>
                   <MapDirections
@@ -187,7 +116,9 @@ export const AdventureRouteInfo = (props: AdventureRouteInfoProps) => {
                     mutcdFont={mutcdFont}
                   />
                 </TabPanel>
-                <TabPanel></TabPanel>
+                <TabPanel display="flex" flexDirection="column" gap={3}>
+                  <CommentsSection adventureRouteId={adventureRouteId} />
+                </TabPanel>
                 <TabPanel>
                   <MapSettings {...mapSettingsProps} />
                 </TabPanel>
