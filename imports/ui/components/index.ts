@@ -8,3 +8,4 @@ export { NavigationBar } from "./NavigationBar";
 export { MUTCDRectangleSign } from "./MUTCDRectangleSign";
 export { MapSettings } from "./MapSettings";
 export { MapDirections } from "./MapDirections";
+export { UserCard } from "./UserCard";

@@ -31,7 +31,10 @@ export const useCommentsForAdventureRoute = (adventureRouteId: string = "") => {
       adventureRouteId
     );
     const comments = adventureRouteId
-      ? CommentsCollection.find({ adventureRouteId }).fetch()
+      ? CommentsCollection.find(
+          { adventureRouteId },
+          { sort: { date: -1 } }
+        ).fetch()
       : [];
     return { data: comments, isLoading: !subscription.ready() };
   }, [adventureRouteId]);
@@ -40,10 +43,32 @@ export const useCommentsForAdventureRoute = (adventureRouteId: string = "") => {
 export const useUserInfo = (userId: string) => {
   return useTracker(() => {
     const subscription = Meteor.subscribe("getUserInfo", userId);
-    const user = Meteor.users.findOne(
-      { _id: userId },
-      { fields: { userId: 1, username: 1, "profile.profilePictureUrl": 1 } }
-    );
-    return { data: user as Meteor.User, isLoading: !subscription.ready() };
+    const users = Meteor.users
+      .find(
+        { _id: userId },
+        {
+          fields: { userId: 1, username: 1, "profile.profilePictureUrl": 1 },
+          limit: 1,
+        }
+      )
+      .fetch();
+    return { data: users[0], isLoading: !subscription.ready() };
   }, [userId]);
+};
+
+export const useAllUsers = () => {
+  return useTracker(() => {
+    const userId = Meteor.userId() ?? "";
+    const subscription = Meteor.subscribe("getAllUsers");
+    const users = Meteor.users
+      .find(
+        { _id: { $not: { $eq: userId } } },
+        {
+          fields: { userId: 1, username: 1, "profile.profilePictureUrl": 1 },
+          sort: { username: 1 },
+        }
+      )
+      .fetch();
+    return { data: users, isLoading: !subscription.ready() };
+  });
 };

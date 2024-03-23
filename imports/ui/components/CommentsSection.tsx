@@ -90,7 +90,9 @@ export const CommentsSection = (props: CommentsSectionProps) => {
           ))}
         </>
       ) : (
-        <Text>No comments</Text>
+        <Text color={Color.WHITE} textAlign="center">
+          No comments
+        </Text>
       )}
     </Box>
   );

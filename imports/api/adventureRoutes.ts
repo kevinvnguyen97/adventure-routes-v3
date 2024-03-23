@@ -23,7 +23,7 @@ export const AdventureRoutesCollection = new Mongo.Collection<AdventureRoute>(
 Meteor.methods({
   upsertAdventureRoute: async (adventureRoute: AdventureRoute) => {
     const userId = Meteor.userId();
-    if (userId !== adventureRoute._id) {
+    if (userId !== adventureRoute.userId) {
       throw new Meteor.Error("not-authorized");
     }
     const { _id, ...adventureRouteFields } = adventureRoute;

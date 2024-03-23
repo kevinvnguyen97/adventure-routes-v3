@@ -76,7 +76,8 @@ export const AdventureRouteCard = (props: AdventureRouteCardProps) => {
         width="100%"
         bgColor={Color.DARK_ORANGE}
         color={Color.WHITE}
-        _hover={{ cursor: "pointer" }}
+        _hover={{ cursor: "pointer", bgColor: "orange.500" }}
+        transition="0.25s"
         flexDirection="row"
         paddingTop={5}
       >

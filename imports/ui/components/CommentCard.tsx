@@ -10,9 +10,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Color } from "/imports/constants";
-import { Comment } from "/imports/api/adventureRoutes";
+import { Comment } from "/imports/api/comments";
 import { useUserInfo } from "/imports/ui/providers";
 import { DateTime } from "luxon";
+import { useNavigate } from "react-router-dom";
 
 type CommentCardProps = {
   comment: Comment;
@@ -20,12 +21,13 @@ type CommentCardProps = {
 };
 export const CommentCard = (props: CommentCardProps) => {
   const { comment, deleteComment } = props;
+  const navigate = useNavigate();
   const { commentText, date, userId: commentUserId } = comment;
 
   const userId = Meteor.userId();
 
   const { data: user } = useUserInfo(commentUserId);
-  const { username, profile } = user;
+  const { username = "", profile } = user || {};
   const { profilePictureUrl } = profile || {};
 
   const formattedDate = DateTime.fromJSDate(date).toFormat(
@@ -43,6 +45,7 @@ export const CommentCard = (props: CommentCardProps) => {
         paddingBottom={1}
         paddingTop={2}
         _hover={{ cursor: "pointer" }}
+        onClick={() => navigate(`/${commentUserId}`)}
       >
         <Avatar bgColor="orange.500" src={profilePictureUrl} />
         {username}

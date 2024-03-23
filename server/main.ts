@@ -17,17 +17,27 @@ Meteor.publish("adventureRouteById", (id: string) => {
     console.error("User is not logged in.");
     throw new Meteor.Error("not-logged-in", "User is not logged in.");
   }
-  return AdventureRoutesCollection.find({ _id: id, userId });
+  return AdventureRoutesCollection.find({ _id: id }, { limit: 1 });
 });
 
 Meteor.publish("commentsForAdventureRoute", (adventureRouteId: string) => {
   return CommentsCollection.find({ adventureRouteId });
 });
 
-// @ts-ignore
 Meteor.publish("getUserInfo", (userId: string) => {
-  return Meteor.users.findOne(
+  return Meteor.users.find(
     { _id: userId },
-    { fields: { userId: 1, username: 1, "profile.profilePictureUrl": 1 } }
+    {
+      fields: { userId: 1, username: 1, "profile.profilePictureUrl": 1 },
+      limit: 1,
+    }
+  );
+});
+
+Meteor.publish("getAllUsers", () => {
+  const userId = Meteor.userId() ?? "";
+  return Meteor.users.find(
+    { _id: { $not: { $eq: userId } } },
+    { sort: { username: 1 } }
   );
 });

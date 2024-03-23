@@ -5,27 +5,35 @@ import { motion } from "framer-motion";
 import {
   useAdventureRoutesForUser,
   useMeteorAuth,
+  useUserInfo,
 } from "/imports/ui/providers";
 import { AdventureRouteCard, LoadingScreen } from "/imports/ui/components";
 import { MapFormModal } from "/imports/ui/components/modals";
 import { Color } from "/imports/constants";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const Dashboard = () => {
-  const { user, userId } = useMeteorAuth();
+  const { id = "" } = useParams();
+  const navigate = useNavigate();
+  const { user: loggedInUser, userId: loggedInUserId } = useMeteorAuth();
+  const { data: otherUser, isLoading: isOtherUserLoading } = useUserInfo(id);
   const { data: adventureRoutesForUser, isLoading } = useAdventureRoutesForUser(
-    userId ?? ""
+    (id || loggedInUserId) ?? ""
   );
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { username } = user || {};
+  const { username: loggedInUsername } = loggedInUser || {};
+  const { username: otherUsername } = otherUser || {};
 
   useEffect(() => {
+    if (id && loggedInUserId && id === loggedInUserId) {
+      navigate("/", { replace: true });
+    }
     document.title = "Dashboard - Adventure Routes";
-  }, []);
+  }, [id]);
 
-  if (isLoading) {
+  if (isLoading || (isOtherUserLoading && id)) {
     return <LoadingScreen />;
   }
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -34,7 +42,7 @@ export const Dashboard = () => {
     >
       <Box margin="auto" paddingTop={5} textAlign="center" gap={2}>
         <Text color={Color.WHITE} fontWeight="bold" fontSize={40}>
-          {username}'s Routes
+          {id ? otherUsername : loggedInUsername}'s Routes
         </Text>
         <Button onClick={onOpen} colorScheme="orange" marginBottom={2}>
           Create a Route

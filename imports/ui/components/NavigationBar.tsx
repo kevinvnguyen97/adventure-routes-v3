@@ -27,7 +27,7 @@ import { useNavigate } from "react-router-dom";
 import { TOAST_PRESET } from "/imports/constants/toast";
 import { Color } from "/imports/constants";
 
-const LINKS = ["Dashboard"];
+const LINKS = ["Dashboard", "Other Users"];
 
 type NavLinkProps = {
   onClick?: () => void;
@@ -118,6 +118,9 @@ export const NavigationBar = () => {
                         case "Dashboard":
                           navigate("/");
                           break;
+                        case "Other Users":
+                          navigate("/other-users");
+                          break;
                         default:
                           break;
                       }
@@ -204,6 +207,8 @@ export const NavigationBar = () => {
                       switch (link) {
                         case "Dashboard":
                           navigate("/");
+                        case "Other Users":
+                          navigate("/other-users");
                         default:
                           onHamburgerMenuClose();
                           break;
