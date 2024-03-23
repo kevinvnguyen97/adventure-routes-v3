@@ -1,8 +1,6 @@
 import { Meteor } from "meteor/meteor";
-import {
-  AdventureRoutesCollection,
-  CommentsCollection,
-} from "/imports/api/adventureRoutes";
+import { AdventureRoutesCollection } from "/imports/api/adventureRoutes";
+import { CommentsCollection } from "/imports/api/comments";
 
 Meteor.startup(async () => {
   AdventureRoutesCollection.createIndex({ userId: -1 });
