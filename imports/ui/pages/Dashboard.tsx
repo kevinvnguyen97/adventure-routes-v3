@@ -28,7 +28,11 @@ export const Dashboard = () => {
     if (id && loggedInUserId && id === loggedInUserId) {
       navigate("/", { replace: true });
     }
-    document.title = "Dashboard - Adventure Routes";
+    if (id) {
+      document.title = `${otherUsername} - Adventure Routes`;
+    } else {
+      document.title = "Dashboard - Adventure Routes";
+    }
   }, [id]);
 
   if (isLoading || (isOtherUserLoading && id)) {

@@ -59,8 +59,8 @@ Meteor.methods({
     }
 
     if (emails.length > 0 && !!userId && Meteor.isServer) {
-      Accounts.removeEmail(userId, emails[0].address);
       Accounts.addEmail(userId, newEmail);
+      Accounts.removeEmail(userId, emails[0].address);
     }
   },
   changeProfilePicture: async (newProfilePictureUrl: string) => {

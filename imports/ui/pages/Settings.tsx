@@ -29,6 +29,7 @@ import { meteorMethodPromise } from "/imports/utils";
 import { TOAST_PRESET } from "/imports/constants/toast";
 import { uploadToImgBB } from "/imports/api/imgbb";
 import { Color } from "/imports/constants";
+import { parsePhoneNumber } from "libphonenumber-js";
 
 export const Settings = () => {
   const toast = useToast();
@@ -68,6 +69,14 @@ export const Settings = () => {
   const changePhoneNumber = async () => {
     try {
       await meteorMethodPromise("changePhoneNumber", newPhoneNumberInput);
+      toast({
+        ...TOAST_PRESET,
+        title: "Success",
+        description: `Phone number updated successfully to ${parsePhoneNumber(
+          newPhoneNumberInput
+        ).formatNational()}`,
+        status: "success",
+      });
     } catch (e) {
       console.error(e);
     }
@@ -89,8 +98,15 @@ export const Settings = () => {
             status: "success",
           });
         }
-      } catch (e) {
-        console.error(e);
+      } catch (error) {
+        const meteorError = error as Meteor.Error;
+        console.error(meteorError);
+        toast({
+          ...TOAST_PRESET,
+          title: meteorError.name,
+          description: meteorError.message,
+          status: "error",
+        });
       }
     }
   };
@@ -121,6 +137,12 @@ export const Settings = () => {
   const changeEmail = async () => {
     try {
       await meteorMethodPromise("changeEmail", newEmailInput);
+      toast({
+        ...TOAST_PRESET,
+        title: "Success",
+        description: `Successfully changed email to ${newEmailInput}`,
+        status: "success",
+      });
     } catch (error) {
       if (error) {
         const meteorError = error as Meteor.Error;
@@ -160,6 +182,9 @@ export const Settings = () => {
     );
   };
 
+  useEffect(() => {
+    document.title = "Settings - Adventure Routes";
+  }, []);
   useEffect(() => {
     if (user) {
       setNewFirstNameInput(firstName ?? "");
