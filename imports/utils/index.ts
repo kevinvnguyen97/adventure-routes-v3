@@ -1,5 +1,6 @@
 import { Meteor } from "meteor/meteor";
-import { AdventureRoute, Comment } from "/imports/api/adventureRoutes";
+import { AdventureRoute } from "/imports/api/adventureRoutes";
+import { Comment } from "/imports/api/comments";
 import { Color } from "/imports/constants";
 
 const VALID_EMAIL_REGEX =
