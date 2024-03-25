@@ -18,8 +18,8 @@ import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import { useAdventureRoute } from "/imports/ui/providers";
-import { AdventureRouteInfo } from "/imports/ui/components";
-import { MUTCDFont, ROUTE_COLORS } from "/imports/constants";
+import { AdventureRouteInfo, LoadingScreen } from "/imports/ui/components";
+import { Color, MUTCDFont, ROUTE_COLORS } from "/imports/constants";
 import { TOAST_PRESET } from "/imports/constants/toast";
 
 const MAP_CONTAINER_STYLE: CSSProperties = {
@@ -30,7 +30,8 @@ const MAP_CONTAINER_STYLE: CSSProperties = {
 export const Map = () => {
   const toast = useToast();
   const { id = "" } = useParams();
-  const { data: adventureRoute } = useAdventureRoute(id);
+  const { data: adventureRoute, isLoading: isAdventureRouteLoading } =
+    useAdventureRoute(id);
 
   const renderCount = useRef(0);
   const map = useRef<GoogleMap | null>(null);
@@ -193,10 +194,12 @@ export const Map = () => {
     } - Adventure Routes`;
   }, [adventureRoute?.name]);
 
+  if (isAdventureRouteLoading) {
+    return <LoadingScreen />;
+  }
   if (!adventureRoute) {
     return <Text>Adventure route not found</Text>;
   }
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -209,6 +212,7 @@ export const Map = () => {
         onUnmount={onUnmount}
         ref={(mapRef) => (map.current = mapRef)}
       >
+        {!directions && <LoadingScreen spinnerColor={Color.BLACK} />}
         <Box position="absolute" left="179px" top="10px">
           <AdventureRouteInfo
             adventureRoute={adventureRoute}

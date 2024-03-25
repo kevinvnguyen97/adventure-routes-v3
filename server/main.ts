@@ -3,8 +3,10 @@ import { AdventureRoutesCollection } from "/imports/api/adventureRoutes";
 import { CommentsCollection } from "/imports/api/comments";
 
 Meteor.startup(async () => {
-  AdventureRoutesCollection.createIndex({ userId: -1 });
-  CommentsCollection.createIndex({ _id: -1 });
+  await Promise.all([
+    AdventureRoutesCollection.createIndexAsync({ userId: -1 }),
+    CommentsCollection.createIndexAsync({ _id: -1 }),
+  ]);
 });
 
 Meteor.publish("adventureRoutesForUser", (userId: string) => {

@@ -40,6 +40,7 @@ export const CommentsSection = (props: CommentsSectionProps) => {
         description: "Comment posted successfully",
         status: "success",
       });
+      setNewComment("");
     } catch (error) {
       const meteorError = error as Meteor.Error;
       console.error(error);

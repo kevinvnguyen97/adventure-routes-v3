@@ -44,9 +44,11 @@ export const Dashboard = () => {
         <Text color={Color.WHITE} fontWeight="bold" fontSize={40}>
           {id ? otherUsername : loggedInUsername}'s Routes
         </Text>
-        <Button onClick={onOpen} colorScheme="orange" marginBottom={2}>
-          Create a Route
-        </Button>
+        {(!id || id === loggedInUserId) && (
+          <Button onClick={onOpen} colorScheme="orange" marginBottom={2}>
+            Create a Route
+          </Button>
+        )}
         <SimpleGrid columnGap={3} rowGap={3} minChildWidth={350}>
           {adventureRoutesForUser.map((adventureRoute) => (
             <AdventureRouteCard
