@@ -7,6 +7,7 @@ import {
   MichiganRouteShield,
   FloridaRouteShield,
   FloridaTurnpikeShield,
+  OntarioRouteShield,
 } from "/imports/ui/components/shields";
 import { Color } from "/imports/constants";
 import { IndianaRouteShield } from "../ui/components/shields/IndianaRouteShield";
@@ -49,6 +50,13 @@ export const formatDirections = (directionInstructions: string) => {
       const cleanedRouteNumber = routeNumber.replaceAll("M-", "");
       return renderToStaticMarkup(
         <MichiganRouteShield routeNumber={cleanedRouteNumber} />
+      );
+    }
+    // Render Ontario route shields
+    if (routeNumber.includes("ON-")) {
+      const cleanedRouteNumber = routeNumber.replaceAll("ON-", "");
+      return renderToStaticMarkup(
+        <OntarioRouteShield routeNumber={cleanedRouteNumber} />
       );
     }
     // Render US route shields
