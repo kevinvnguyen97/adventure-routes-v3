@@ -6,6 +6,7 @@ import {
   InterstateShield,
   MichiganRouteShield,
   FloridaRouteShield,
+  FloridaTurnpikeShield,
 } from "/imports/ui/components/shields";
 import { Color } from "/imports/constants";
 import { IndianaRouteShield } from "../ui/components/shields/IndianaRouteShield";
@@ -18,6 +19,10 @@ export const formatDirections = (directionInstructions: string) => {
   };
 
   const renderRouteShield = (routeNumber: string) => {
+    // Render Florida's Turnpike shield
+    if (routeNumber.includes("Florida-Tpke")) {
+      return renderToStaticMarkup(<FloridaTurnpikeShield />);
+    }
     // Render Florida route shields
     if (routeNumber.includes("FL-")) {
       const cleanedRouteNumber = routeNumber.replaceAll("FL-", "");
@@ -73,7 +78,9 @@ export const formatDirections = (directionInstructions: string) => {
     .replaceAll(`<div style="font-size:0.9em">`, " ")
     .replaceAll("</div>", "")
     .replaceAll("Interstate ", "I-")
-    .replaceAll("US Hwy ", "US-");
+    .replaceAll("US Hwy ", "US-")
+    .replaceAll("Florida's Tpke", "Florida-Tpke")
+    .replaceAll("Florida's Turnpike", "Florida-Tpke");
   const simplifiedInstructions = htmlToPlainText(directionInstructionsNewLine);
   const splitInstructions = simplifiedInstructions.split(" ");
   const formattedInstructions = splitInstructions
