@@ -5,6 +5,7 @@ import {
   IllinoisRouteShield,
   InterstateShield,
   MichiganRouteShield,
+  FloridaRouteShield,
 } from "/imports/ui/components/shields";
 import { Color } from "/imports/constants";
 import { IndianaRouteShield } from "../ui/components/shields/IndianaRouteShield";
@@ -17,30 +18,42 @@ export const formatDirections = (directionInstructions: string) => {
   };
 
   const renderRouteShield = (routeNumber: string) => {
+    // Render Florida route shields
+    if (routeNumber.includes("FL-")) {
+      const cleanedRouteNumber = routeNumber.replaceAll("FL-", "");
+      return renderToStaticMarkup(
+        <FloridaRouteShield routeNumber={cleanedRouteNumber} />
+      );
+    }
+    // Render Illinois route shields
     if (routeNumber.includes("IL-")) {
       const cleanedRouteNumber = routeNumber.replaceAll("IL-", "");
       return renderToStaticMarkup(
         <IllinoisRouteShield routeNumber={cleanedRouteNumber} />
       );
     }
+    // Render Indiana route shields
     if (routeNumber.includes("IN-")) {
       const cleanedRouteNumber = routeNumber.replaceAll("IN-", "");
       return renderToStaticMarkup(
         <IndianaRouteShield routeNumber={cleanedRouteNumber} />
       );
     }
+    // Render Michigan route shields
     if (routeNumber.includes("M-")) {
       const cleanedRouteNumber = routeNumber.replaceAll("M-", "");
       return renderToStaticMarkup(
         <MichiganRouteShield routeNumber={cleanedRouteNumber} />
       );
     }
+    // Render US route shields
     if (routeNumber.includes("US-")) {
       const cleanedRouteNumber = routeNumber.replaceAll("US-", "");
       return renderToStaticMarkup(
         <USRouteShield routeNumber={cleanedRouteNumber} />
       );
     }
+    // Render Interstate route shields
     if (
       routeNumber.includes("I-") &&
       !routeNumber.includes("MI-") &&
