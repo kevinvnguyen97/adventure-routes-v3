@@ -92,12 +92,7 @@ export const MapDirections = (props: MapDirectionsProps) => {
                       width="100%"
                       alignItems="center"
                     >
-                      <Box
-                        display="flex"
-                        flexDirection="column"
-                        gap={2}
-                        alignItems="center"
-                      >
+                      <Box display="flex" flexDirection="column" gap={2}>
                         <Text textAlign="left">
                           Directions via{" "}
                           <Box
