@@ -21,7 +21,7 @@ export const OtherUsers = () => {
     >
       <Box margin="auto" display="flex" gap={3}>
         {users.map((user) => (
-          <UserCard user={user} />
+          <UserCard key={user._id} user={user} />
         ))}
       </Box>
     </motion.div>

@@ -48,7 +48,12 @@ export const AdventureRouteTable = (props: AdventureRouteTableProps) => {
               <Th textColor={Color.WHITE}>Activities</Th>
               <Td display="flex" gap={2}>
                 {activities.map((activity) => (
-                  <Tag colorScheme="orange" variant="solid" borderRadius="full">
+                  <Tag
+                    key={activity}
+                    colorScheme="orange"
+                    variant="solid"
+                    borderRadius="full"
+                  >
                     {activity}
                   </Tag>
                 ))}
@@ -63,11 +68,13 @@ export const AdventureRouteTable = (props: AdventureRouteTableProps) => {
             <Tr>
               <Th textColor="white">Stopovers</Th>
               <Td>
-                {waypoints.map((waypoint) => (
-                  <List listStylePosition="outside" listStyleType="square">
-                    <ListItem>{waypoint.split(",").join("\r\n")}</ListItem>
-                  </List>
-                ))}
+                <List listStylePosition="outside" listStyleType="square">
+                  {waypoints.map((waypoint) => (
+                    <ListItem key={waypoint}>
+                      {waypoint.split(",").join("\r\n")}
+                    </ListItem>
+                  ))}
+                </List>
               </Td>
             </Tr>
           )}

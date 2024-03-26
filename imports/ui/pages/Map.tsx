@@ -263,9 +263,10 @@ export const Map = () => {
           }}
         />
         {directions?.routes.map(
-          (_, i) =>
+          ({ summary }, i) =>
             selectedRoutes[i] && (
               <DirectionsRenderer
+                key={summary}
                 options={{
                   directions,
                   polylineOptions: {
