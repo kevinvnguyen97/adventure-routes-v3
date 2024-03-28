@@ -20,7 +20,9 @@ export const OntarioRouteShield = (props: RouteShieldProps) => {
           top: "50%",
           transform: `translate(-50%, -35%)`,
           color: Color.BLACK,
-          fontFamily: "Highway Gothic Condensed",
+          fontFamily: `Highway Gothic ${
+            routeNumber.length > 2 ? "Condensed" : "Narrow"
+          }`,
           fontSize: "26px",
           letterSpacing: "0.5px",
           textAlign: "center",
