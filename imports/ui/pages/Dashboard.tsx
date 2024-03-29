@@ -1,5 +1,12 @@
-import React, { useEffect } from "react";
-import { Box, Text, SimpleGrid, useDisclosure, Button } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import {
+  Box,
+  Text,
+  SimpleGrid,
+  useDisclosure,
+  Button,
+  Input,
+} from "@chakra-ui/react";
 import { motion } from "framer-motion";
 
 import {
@@ -24,6 +31,12 @@ export const Dashboard = () => {
   const { username: loggedInUsername } = loggedInUser || {};
   const { username: otherUsername } = otherUser || {};
 
+  const [routeInput, setRouteInput] = useState("");
+
+  const filteredRoutes = adventureRoutesForUser.filter(({ name }) =>
+    name.toLowerCase().includes(routeInput.toLowerCase())
+  );
+
   useEffect(() => {
     if (id && loggedInUserId && id === loggedInUserId) {
       navigate("/", { replace: true });
@@ -44,17 +57,46 @@ export const Dashboard = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <Box margin="auto" paddingTop={5} textAlign="center" gap={2}>
+      <Box
+        margin="auto"
+        flexDirection="column"
+        paddingTop={5}
+        textAlign="center"
+        gap={2}
+      >
         <Text color={Color.WHITE} fontWeight="bold" fontSize={40}>
           {id ? otherUsername : loggedInUsername}'s Routes
         </Text>
+        <Input
+          type="search"
+          value={routeInput}
+          onChange={(e) => setRouteInput(e.target.value)}
+          bgColor={Color.WHITE}
+          placeholder="Search a route"
+          size="lg"
+          width={400}
+        />
+        <Text textColor={Color.WHITE} fontSize="large">
+          or
+        </Text>
         {(!id || id === loggedInUserId) && (
-          <Button onClick={onOpen} colorScheme="orange" marginBottom={2}>
+          <Button
+            onClick={onOpen}
+            colorScheme="orange"
+            marginBottom={2}
+            width="auto"
+          >
             Create a Route
           </Button>
         )}
-        <SimpleGrid columnGap={3} rowGap={3} minChildWidth={350}>
-          {adventureRoutesForUser.map((adventureRoute) => (
+        <SimpleGrid
+          columnGap={3}
+          rowGap={3}
+          minChildWidth={350}
+          alignContent="center"
+          autoColumns="max-content"
+        >
+          {filteredRoutes.map((adventureRoute) => (
             <AdventureRouteCard
               adventureRoute={adventureRoute}
               key={adventureRoute._id}
