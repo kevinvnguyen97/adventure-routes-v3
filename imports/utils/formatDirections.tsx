@@ -8,6 +8,7 @@ import {
   FloridaRouteShield,
   FloridaTurnpikeShield,
   OntarioRouteShield,
+  HawaiiRouteShield,
 } from "/imports/ui/components/shields";
 import { Color } from "/imports/constants";
 import { IndianaRouteShield } from "../ui/components/shields/IndianaRouteShield";
@@ -29,6 +30,13 @@ export const formatDirections = (directionInstructions: string) => {
       const cleanedRouteNumber = routeNumber.replaceAll("FL-", "");
       return renderToStaticMarkup(
         <FloridaRouteShield routeNumber={cleanedRouteNumber} />
+      );
+    }
+    // Render Hawaii route shields
+    if (routeNumber.includes("HI-")) {
+      const cleanedRouteNumber = routeNumber.replaceAll("HI-", "");
+      return renderToStaticMarkup(
+        <HawaiiRouteShield routeNumber={cleanedRouteNumber} />
       );
     }
     // Render Illinois route shields
@@ -70,10 +78,12 @@ export const formatDirections = (directionInstructions: string) => {
     if (
       routeNumber.includes("I-") &&
       !routeNumber.includes("MI-") &&
-      !routeNumber.includes("WI-")
+      !routeNumber.includes("WI-") &&
+      !routeNumber.includes("HI-")
     ) {
       const cleanedRouteNumber = routeNumber
         .replaceAll("I-", "")
+        .replaceAll("H-", "H")
         .replaceAll(",", "");
       return renderToStaticMarkup(
         <InterstateShield routeNumber={cleanedRouteNumber} />

@@ -31,7 +31,11 @@ export const InterstateShield = (props: RouteShieldProps) => {
           transform: "translate(-50%, -45%)",
           color: Color.WHITE,
           fontFamily: `${
-            routeNumber.length > 2 ? "Highway Gothic Narrow" : "Highway Gothic"
+            routeNumber.length > 3
+              ? "Highway Gothic Condensed"
+              : routeNumber.length > 2
+              ? "Highway Gothic Narrow"
+              : "Highway Gothic"
           } !important`,
           fontSize: "20px",
           letterSpacing: "0.5px",
