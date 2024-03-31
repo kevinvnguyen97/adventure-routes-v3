@@ -207,8 +207,10 @@ export const NavigationBar = () => {
                       switch (link) {
                         case "Dashboard":
                           navigate("/");
+                          break;
                         case "Other Users":
                           navigate("/other-users");
+                          break;
                         default:
                           onHamburgerMenuClose();
                           break;
