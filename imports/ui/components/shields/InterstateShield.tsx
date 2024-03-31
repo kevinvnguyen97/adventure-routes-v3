@@ -1,8 +1,11 @@
 import React from "react";
 import { Color } from "/imports/constants";
 
-export const InterstateShield = (props: RouteShieldProps) => {
-  const { routeNumber } = props;
+type InterstateShieldProps = RouteShieldProps & {
+  isBusinessRoute?: boolean;
+};
+export const InterstateShield = (props: InterstateShieldProps) => {
+  const { routeNumber, isBusinessRoute } = props;
   return (
     <div
       style={{
@@ -17,7 +20,11 @@ export const InterstateShield = (props: RouteShieldProps) => {
       <img
         src={`/images/${
           routeNumber.length > 2
-            ? "Interstate_Shield_Wide"
+            ? isBusinessRoute
+              ? "Interstate_Business_Loop_Shield_Wide"
+              : "Interstate_Shield_Wide"
+            : isBusinessRoute
+            ? "Interstate_Business_Loop_Shield"
             : "Interstate_Shield"
         }.png`}
         height="30px"
@@ -37,7 +44,7 @@ export const InterstateShield = (props: RouteShieldProps) => {
               ? "Highway Gothic Narrow"
               : "Highway Gothic"
           } !important`,
-          fontSize: "20px",
+          fontSize: "18px",
           letterSpacing: "0.5px",
           textAlign: "center",
           fontWeight: "normal",

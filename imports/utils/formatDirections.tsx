@@ -84,9 +84,13 @@ export const formatDirections = (directionInstructions: string) => {
       const cleanedRouteNumber = routeNumber
         .replaceAll("I-", "")
         .replaceAll("H-", "H")
-        .replaceAll(",", "");
+        .replaceAll(",", "")
+        .replaceAll("BL", "");
       return renderToStaticMarkup(
-        <InterstateShield routeNumber={cleanedRouteNumber} />
+        <InterstateShield
+          routeNumber={cleanedRouteNumber}
+          isBusinessRoute={routeNumber.includes("BL")}
+        />
       );
     }
     return routeNumber;
