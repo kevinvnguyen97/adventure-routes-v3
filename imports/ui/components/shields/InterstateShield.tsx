@@ -35,7 +35,7 @@ export const InterstateShield = (props: InterstateShieldProps) => {
           position: "absolute",
           left: "50%",
           top: "50%",
-          transform: "translate(-50%, -45%)",
+          transform: "translate(-50%, -43%)",
           color: Color.WHITE,
           fontFamily: `${
             routeNumber.length > 3
