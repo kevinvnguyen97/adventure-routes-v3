@@ -22,6 +22,7 @@ export const UserCard = (props: UserCardProps) => {
       size="lg"
       padding={8}
       onClick={() => navigate(`/${_id}`)}
+      justifyContent="start"
     >
       {username}
     </Button>

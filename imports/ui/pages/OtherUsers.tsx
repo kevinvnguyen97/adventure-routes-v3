@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Box } from "@chakra-ui/react";
+import { SimpleGrid } from "@chakra-ui/react";
 import { useAllUsers } from "/imports/ui/providers";
 import { LoadingScreen, UserCard } from "/imports/ui/components";
 import { motion } from "framer-motion";
@@ -19,11 +19,16 @@ export const OtherUsers = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <Box margin="auto" display="flex" gap={3}>
+      <SimpleGrid
+        gap={3}
+        minChildWidth={275}
+        columnGap={3}
+        alignContent="center"
+      >
         {users.map((user) => (
           <UserCard key={user._id} user={user} />
         ))}
-      </Box>
+      </SimpleGrid>
     </motion.div>
   );
 };

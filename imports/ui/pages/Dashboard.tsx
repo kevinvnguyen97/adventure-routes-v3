@@ -74,7 +74,8 @@ export const Dashboard = () => {
           bgColor={Color.WHITE}
           placeholder="Search a route"
           size="lg"
-          width={400}
+          width="100%"
+          maxWidth={400}
         />
         <Text textColor={Color.WHITE} fontSize="large">
           or
