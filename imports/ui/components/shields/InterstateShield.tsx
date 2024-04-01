@@ -21,10 +21,10 @@ export const InterstateShield = (props: InterstateShieldProps) => {
         src={`/images/${
           routeNumber.length > 2
             ? isBusinessRoute
-              ? "Interstate_Business_Loop_Shield_Wide"
+              ? "Interstate_Business_Shield_Wide"
               : "Interstate_Shield_Wide"
             : isBusinessRoute
-            ? "Interstate_Business_Loop_Shield"
+            ? "Interstate_Business_Shield"
             : "Interstate_Shield"
         }.png`}
         height="30px"

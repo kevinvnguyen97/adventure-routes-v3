@@ -85,11 +85,11 @@ export const formatDirections = (directionInstructions: string) => {
         .replaceAll("I-", "")
         .replaceAll("H-", "H")
         .replaceAll(",", "")
-        .replaceAll("BL", "");
+        .replaceAll("BUS", "");
       return renderToStaticMarkup(
         <InterstateShield
           routeNumber={cleanedRouteNumber}
-          isBusinessRoute={routeNumber.includes("BL")}
+          isBusinessRoute={routeNumber.includes("BUS")}
         />
       );
     }
@@ -100,7 +100,9 @@ export const formatDirections = (directionInstructions: string) => {
     .replaceAll(`<div style="font-size:0.9em">`, " ")
     .replaceAll("</div>", "")
     .replaceAll("Interstate ", "I-")
+    .replaceAll("BL", "BUS")
     .replaceAll("US Hwy ", "US-")
+    .replaceAll("US ", "US-")
     .replaceAll("Florida's Tpke", "Florida-Tpke")
     .replaceAll("Florida's Turnpike", "Florida-Tpke");
   const simplifiedInstructions = htmlToPlainText(directionInstructionsNewLine);
