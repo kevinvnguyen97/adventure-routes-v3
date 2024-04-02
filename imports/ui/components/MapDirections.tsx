@@ -106,11 +106,11 @@ export const MapDirections = (props: MapDirectionsProps) => {
                           <Box
                             bgColor={Color.MUTCD_YELLOW}
                             color={Color.BLACK}
-                            padding={2}
+                            padding={1}
                             borderRadius={5}
-                            width={250}
+                            width={135}
                           >
-                            THIS ROUTE HAS TOLLS
+                            TOLL ROUTE
                           </Box>
                         )}
                       </Box>

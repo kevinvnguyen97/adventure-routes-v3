@@ -14,12 +14,6 @@ import { Color } from "/imports/constants";
 import { IndianaRouteShield } from "../ui/components/shields/IndianaRouteShield";
 
 export const formatDirections = (directionInstructions: string) => {
-  const htmlToPlainText = (html: string) => {
-    const tempDivElement = document.createElement("div");
-    tempDivElement.innerHTML = html;
-    return tempDivElement.textContent || tempDivElement.innerText || "";
-  };
-
   const renderRouteShield = (routeNumber: string) => {
     // Render Florida's Turnpike shield
     if (routeNumber.includes("Florida-Tpke")) {
@@ -93,7 +87,7 @@ export const formatDirections = (directionInstructions: string) => {
         />
       );
     }
-    return routeNumber;
+    return routeNumber.trim();
   };
 
   const directionInstructionsNewLine = directionInstructions
@@ -104,26 +98,17 @@ export const formatDirections = (directionInstructions: string) => {
     .replaceAll("US Hwy ", "US-")
     .replaceAll("US ", "US-")
     .replaceAll("Florida's Tpke", "Florida-Tpke")
-    .replaceAll("Florida's Turnpike", "Florida-Tpke");
-  const simplifiedInstructions = htmlToPlainText(directionInstructionsNewLine);
-  const splitInstructions = simplifiedInstructions.split(" ");
+    .replaceAll("Florida's Turnpike", "Florida-Tpke")
+    .replaceAll("</b>", " </b>")
+    .replaceAll("<b>", "<b> ")
+    .replaceAll("<div", " <div")
+    .replaceAll("</div>", " </div>");
+  const splitInstructions = directionInstructionsNewLine.split(" ");
   const formattedInstructions = splitInstructions
-    .map((word) => {
-      // Handle splits. Usually for concurrencies
-      if (word.includes("/")) {
-        const subwords = word.split("/");
-
-        const finalResult = subwords.map((subword) => {
-          return renderRouteShield(subword);
-        });
-
-        return finalResult.join("/");
-      }
-      return renderRouteShield(word);
-    })
+    .map((word) => renderRouteShield(word))
     .join(" ")
     .replaceAll("Toll road", "");
-  if (simplifiedInstructions.includes("Toll road")) {
+  if (directionInstructionsNewLine.includes("Toll road")) {
     return `${formattedInstructions}\n${renderToStaticMarkup(
       <div
         style={{
@@ -132,7 +117,7 @@ export const formatDirections = (directionInstructions: string) => {
           borderRadius: "5px",
           padding: "5px",
           textAlign: "center",
-          width: "150px",
+          width: "125px",
           marginTop: "10px",
         }}
       >
