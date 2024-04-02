@@ -212,9 +212,9 @@ export const NavigationBar = () => {
                           navigate("/other-users");
                           break;
                         default:
-                          onHamburgerMenuClose();
                           break;
                       }
+                      onHamburgerMenuClose();
                     }}
                   >
                     <Text>{link}</Text>
