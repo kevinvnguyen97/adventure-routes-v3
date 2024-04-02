@@ -87,7 +87,7 @@ export const formatDirections = (directionInstructions: string) => {
         />
       );
     }
-    return routeNumber.trim();
+    return routeNumber;
   };
 
   const directionInstructionsNewLine = directionInstructions

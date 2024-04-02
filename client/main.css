@@ -1,9 +1,3 @@
-@font-face {
-  font-family: "Clearview 1W";
-  src: local("ClearviewHwy1W"),
-    url("/public/fonts/Clearview/ClearviewHwy1W.ttf") format("ttf");
-}
-
 body {
   font-family: sans-serif;
 }

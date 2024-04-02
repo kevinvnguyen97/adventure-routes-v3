@@ -25,7 +25,8 @@ export const MUTCDRectangleSign = (props: MUTCDRectangleProps) => {
     <Box
       backgroundColor={signColor}
       color={textColor}
-      letterSpacing={fontFamily === MUTCDFont.CLEARVIEW ? 1.5 : 2}
+      letterSpacing={fontFamily === MUTCDFont.CLEARVIEW ? 0 : 2}
+      fontSize={fontFamily === MUTCDFont.CLEARVIEW ? 16 : 18}
       padding={0.5}
       borderRadius={10}
       userSelect="none"
@@ -35,7 +36,6 @@ export const MUTCDRectangleSign = (props: MUTCDRectangleProps) => {
     >
       <Box
         fontFamily={fontFamily}
-        fontWeight={fontFamily === MUTCDFont.CLEARVIEW ? "bold" : "normal"}
         padding={2}
         borderWidth={2}
         borderRadius={10}
