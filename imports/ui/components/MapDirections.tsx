@@ -108,7 +108,7 @@ export const MapDirections = (props: MapDirectionsProps) => {
                             color={Color.BLACK}
                             padding={1}
                             borderRadius={5}
-                            width={135}
+                            width={140}
                           >
                             TOLL ROUTE
                           </Box>

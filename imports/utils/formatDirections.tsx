@@ -117,7 +117,7 @@ export const formatDirections = (directionInstructions: string) => {
           borderRadius: "5px",
           padding: "5px",
           textAlign: "center",
-          width: "125px",
+          width: "130px",
           marginTop: "10px",
         }}
       >
