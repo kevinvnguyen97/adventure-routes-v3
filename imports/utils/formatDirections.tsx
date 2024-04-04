@@ -48,7 +48,7 @@ export const formatDirections = (directionInstructions: string) => {
       );
     }
     // Render Michigan route shields
-    if (routeNumber.includes("M-")) {
+    if (routeNumber.includes("M-") && !routeNumber.includes("NM-")) {
       const cleanedRouteNumber = routeNumber.replaceAll("M-", "");
       return renderToStaticMarkup(
         <MichiganRouteShield routeNumber={cleanedRouteNumber} />
@@ -79,11 +79,13 @@ export const formatDirections = (directionInstructions: string) => {
         .replaceAll("I-", "")
         .replaceAll("H-", "H")
         .replaceAll(",", "")
-        .replaceAll("BUS", "");
+        .replaceAll("BL", "");
+      const isBusinessRoute =
+        routeNumber.includes("BL") || routeNumber.includes("BUS");
       return renderToStaticMarkup(
         <InterstateShield
           routeNumber={cleanedRouteNumber}
-          isBusinessRoute={routeNumber.includes("BUS")}
+          isBusinessRoute={isBusinessRoute}
         />
       );
     }
@@ -91,18 +93,22 @@ export const formatDirections = (directionInstructions: string) => {
   };
 
   const directionInstructionsNewLine = directionInstructions
-    .replaceAll(`<div style="font-size:0.9em">`, " ")
-    .replaceAll("</div>", "")
     .replaceAll("Interstate ", "I-")
-    .replaceAll("BL", "BUS")
+    .replaceAll("BUS", "BUSINESS")
     .replaceAll("US Hwy ", "US-")
     .replaceAll("US ", "US-")
     .replaceAll("Florida's Tpke", "Florida-Tpke")
     .replaceAll("Florida's Turnpike", "Florida-Tpke")
+    // Add spaces to html tags so that they are properly split
     .replaceAll("</b>", " </b>")
     .replaceAll("<b>", "<b> ")
     .replaceAll("<div", " <div")
-    .replaceAll("</div>", " </div>");
+    .replaceAll("</div>", " </div>")
+    .replaceAll("<wbr/>", " <wbr/> ")
+    .replaceAll("E/", "E / ")
+    .replaceAll("W/", "W / ")
+    .replaceAll("N/", "N / ")
+    .replaceAll("S/", "S / ");
   const splitInstructions = directionInstructionsNewLine.split(" ");
   const formattedInstructions = splitInstructions
     .map((word) => renderRouteShield(word))
