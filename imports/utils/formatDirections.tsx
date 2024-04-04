@@ -9,6 +9,7 @@ import {
   FloridaTurnpikeShield,
   OntarioRouteShield,
   HawaiiRouteShield,
+  WisconsinRouteShield,
 } from "/imports/ui/components/shields";
 import { Color } from "/imports/constants";
 import { IndianaRouteShield } from "../ui/components/shields/IndianaRouteShield";
@@ -66,6 +67,12 @@ export const formatDirections = (directionInstructions: string) => {
       const cleanedRouteNumber = term.replaceAll("US-", "");
       return renderToStaticMarkup(
         <USRouteShield routeNumber={cleanedRouteNumber} />
+      );
+    }
+    if (term.includes("WI-")) {
+      const cleanedRouteNumber = term.replaceAll("WI-", "");
+      return renderToStaticMarkup(
+        <WisconsinRouteShield routeNumber={cleanedRouteNumber} />
       );
     }
     // Render Interstate route shields
