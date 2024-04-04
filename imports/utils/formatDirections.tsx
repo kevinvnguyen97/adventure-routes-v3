@@ -14,74 +14,73 @@ import { Color } from "/imports/constants";
 import { IndianaRouteShield } from "../ui/components/shields/IndianaRouteShield";
 
 export const formatDirections = (directionInstructions: string) => {
-  const renderRouteShield = (routeNumber: string) => {
+  const renderRouteShield = (term: string) => {
     // Render Florida's Turnpike shield
-    if (routeNumber.includes("Florida-Tpke")) {
+    if (term.includes("Florida-Tpke")) {
       return renderToStaticMarkup(<FloridaTurnpikeShield />);
     }
     // Render Florida route shields
-    if (routeNumber.includes("FL-")) {
-      const cleanedRouteNumber = routeNumber.replaceAll("FL-", "");
+    if (term.includes("FL-")) {
+      const cleanedRouteNumber = term.replaceAll("FL-", "");
       return renderToStaticMarkup(
         <FloridaRouteShield routeNumber={cleanedRouteNumber} />
       );
     }
     // Render Hawaii route shields
-    if (routeNumber.includes("HI-")) {
-      const cleanedRouteNumber = routeNumber.replaceAll("HI-", "");
+    if (term.includes("HI-")) {
+      const cleanedRouteNumber = term.replaceAll("HI-", "");
       return renderToStaticMarkup(
         <HawaiiRouteShield routeNumber={cleanedRouteNumber} />
       );
     }
     // Render Illinois route shields
-    if (routeNumber.includes("IL-")) {
-      const cleanedRouteNumber = routeNumber.replaceAll("IL-", "");
+    if (term.includes("IL-")) {
+      const cleanedRouteNumber = term.replaceAll("IL-", "");
       return renderToStaticMarkup(
         <IllinoisRouteShield routeNumber={cleanedRouteNumber} />
       );
     }
     // Render Indiana route shields
-    if (routeNumber.includes("IN-")) {
-      const cleanedRouteNumber = routeNumber.replaceAll("IN-", "");
+    if (term.includes("IN-")) {
+      const cleanedRouteNumber = term.replaceAll("IN-", "");
       return renderToStaticMarkup(
         <IndianaRouteShield routeNumber={cleanedRouteNumber} />
       );
     }
     // Render Michigan route shields
-    if (routeNumber.includes("M-") && !routeNumber.includes("NM-")) {
-      const cleanedRouteNumber = routeNumber.replaceAll("M-", "");
+    if (term.includes("M-") && !term.includes("NM-")) {
+      const cleanedRouteNumber = term.replaceAll("M-", "");
       return renderToStaticMarkup(
         <MichiganRouteShield routeNumber={cleanedRouteNumber} />
       );
     }
     // Render Ontario route shields
-    if (routeNumber.includes("ON-")) {
-      const cleanedRouteNumber = routeNumber.replaceAll("ON-", "");
+    if (term.includes("ON-")) {
+      const cleanedRouteNumber = term.replaceAll("ON-", "");
       return renderToStaticMarkup(
         <OntarioRouteShield routeNumber={cleanedRouteNumber} />
       );
     }
     // Render US route shields
-    if (routeNumber.includes("US-")) {
-      const cleanedRouteNumber = routeNumber.replaceAll("US-", "");
+    if (term.includes("US-")) {
+      const cleanedRouteNumber = term.replaceAll("US-", "");
       return renderToStaticMarkup(
         <USRouteShield routeNumber={cleanedRouteNumber} />
       );
     }
     // Render Interstate route shields
     if (
-      routeNumber.includes("I-") &&
-      !routeNumber.includes("MI-") &&
-      !routeNumber.includes("WI-") &&
-      !routeNumber.includes("HI-")
+      term.includes("I-") &&
+      !term.includes("MI-") &&
+      !term.includes("WI-") &&
+      !term.includes("HI-")
     ) {
-      const cleanedRouteNumber = routeNumber
+      const cleanedRouteNumber = term
         .replaceAll("I-", "")
         .replaceAll("H-", "H")
         .replaceAll(",", "")
         .replaceAll("BL", "");
-      const isBusinessRoute =
-        routeNumber.includes("BL") || routeNumber.includes("BUS");
+      const isBusinessRoute = term.includes("BL") || term.includes("BUS");
       return renderToStaticMarkup(
         <InterstateShield
           routeNumber={cleanedRouteNumber}
@@ -89,12 +88,12 @@ export const formatDirections = (directionInstructions: string) => {
         />
       );
     }
-    return routeNumber;
+    return term;
   };
 
   const directionInstructionsNewLine = directionInstructions
+    // Abbreviate routes for sign replacements
     .replaceAll("Interstate ", "I-")
-    .replaceAll("BUS", "BUSINESS")
     .replaceAll("US Hwy ", "US-")
     .replaceAll("US ", "US-")
     .replaceAll("Florida's Tpke", "Florida-Tpke")
