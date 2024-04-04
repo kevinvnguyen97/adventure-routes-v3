@@ -10,12 +10,19 @@ import {
   OntarioRouteShield,
   HawaiiRouteShield,
   WisconsinRouteShield,
+  CaliforniaRouteShield,
 } from "/imports/ui/components/shields";
 import { Color } from "/imports/constants";
 import { IndianaRouteShield } from "../ui/components/shields/IndianaRouteShield";
 
 export const formatDirections = (directionInstructions: string) => {
   const renderRouteShield = (term: string) => {
+    if (term.includes("CA-")) {
+      const cleanedRouteNumber = term.replaceAll("CA-", "");
+      return renderToStaticMarkup(
+        <CaliforniaRouteShield routeNumber={cleanedRouteNumber} />
+      );
+    }
     // Render Florida's Turnpike shield
     if (term.includes("Florida-Tpke")) {
       return renderToStaticMarkup(<FloridaTurnpikeShield />);

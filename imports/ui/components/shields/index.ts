@@ -1,3 +1,4 @@
+export { CaliforniaRouteShield } from "./CaliforniaRouteShield";
 export { FloridaRouteShield } from "./FloridaRouteShield";
 export { FloridaTurnpikeShield } from "./FloridaTurnpikeShield";
 export { HawaiiRouteShield } from "./HawaiiRouteShield";
