@@ -8,9 +8,8 @@ export const CaliforniaRouteShield = (props: RouteShieldProps) => {
       style={{
         display: "inline-block",
         position: "relative",
-        height: "30px",
-        verticalAlign: "bottom",
-        width: `${routeNumber.length > 2 ? "40" : "30"}px`,
+        verticalAlign: "middle",
+        width: `${routeNumber.length > 2 ? "40" : "35"}px`,
       }}
     >
       <img
@@ -27,7 +26,7 @@ export const CaliforniaRouteShield = (props: RouteShieldProps) => {
           position: "absolute",
           left: "50%",
           top: "50%",
-          transform: `translate(-50%, -23%)`,
+          transform: `translate(-50%, -30%)`,
           color: Color.WHITE,
           fontFamily: "Highway Gothic",
           fontSize: "20px",

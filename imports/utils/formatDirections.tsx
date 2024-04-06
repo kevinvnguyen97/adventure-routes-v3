@@ -109,6 +109,7 @@ export const formatDirections = (directionInstructions: string) => {
     // Abbreviate routes for sign replacements
     .replaceAll("Interstate ", "I-")
     .replaceAll("US Hwy ", "US-")
+    .replaceAll("U. S. Hwy ", "US-")
     .replaceAll("US ", "US-")
     .replaceAll("Florida's Tpke", "Florida-Tpke")
     .replaceAll("Florida's Turnpike", "Florida-Tpke")
