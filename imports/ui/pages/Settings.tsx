@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { Accounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
-import { motion } from "framer-motion";
+import { parsePhoneNumber } from "libphonenumber-js";
 
 import {
   ChangeEmailModal,
@@ -29,7 +29,6 @@ import { meteorMethodPromise } from "/imports/utils";
 import { TOAST_PRESET } from "/imports/constants/toast";
 import { uploadToImgBB } from "/imports/api/imgbb";
 import { Color } from "/imports/constants";
-import { parsePhoneNumber } from "libphonenumber-js";
 
 export const Settings = () => {
   const toast = useToast();
@@ -194,129 +193,123 @@ export const Settings = () => {
   }, [user]);
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+    <Box
+      margin="auto"
+      width="auto"
+      padding={5}
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      textAlign="center"
+      gap={2}
     >
-      <Box
-        margin="auto"
-        width="auto"
-        padding={5}
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        textAlign="center"
-        gap={2}
-      >
-        <Text color={Color.WHITE} fontWeight="bold" fontSize={40}>
-          Settings
-        </Text>
-        <Avatar
-          bgColor="orange.500"
-          alignSelf="center"
-          size="xl"
-          name={fullName}
-          color={Color.WHITE}
-          as={FormLabel}
-          _hover={{ cursor: "pointer" }}
-          htmlFor="profile-picture-upload"
-          src={profilePictureUrl}
-        />
-        <Input
-          type="file"
-          display="none"
-          id="profile-picture-upload"
-          accept="image/*"
-          onChange={uploadProfilePicture}
-          name="profile-picture"
-        />
-        <TableContainer>
-          <Table
-            size="md"
-            variant="simple"
-            backgroundColor={Color.WHITE}
-            borderRadius={5}
-            bgColor="darkorange"
-            textColor={Color.WHITE}
-          >
-            <Tbody>
-              <Tr>
-                <Th textColor={Color.WHITE}>Name</Th>
-                <Td display="flex" justifyContent="space-between">
-                  <Text>{fullName}</Text>
-                  <ChangeFullNameModal
-                    newFirstNameInput={newFirstNameInput}
-                    setNewFirstNameInput={setNewFirstNameInput}
-                    newLastNameInput={newLastNameInput}
-                    setNewLastNameInput={setNewLastNameInput}
-                    changeFullName={changeFullName}
-                  />
-                </Td>
-              </Tr>
-              <Tr>
-                <Th textColor={Color.WHITE}>Username</Th>
-                <Td display="flex" justifyContent="space-between">
-                  <Text>{username}</Text>
-                  <ChangeUsernameModal
-                    oldUsername={username}
-                    newUsername={newUsernameInput}
-                    setNewUsername={setNewUsernameInput}
-                    applyUsernameChange={changeUsername}
-                  />
-                </Td>
-              </Tr>
-              <Tr>
-                <Th textColor={Color.WHITE}>Email</Th>
-                <Td display="flex" justifyContent="space-between">
-                  <Box>
-                    {emails.map(({ address }) => (
-                      <Tr key={address}>{address}</Tr>
-                    ))}
-                  </Box>
-                  <ChangeEmailModal
-                    currentEmail={emails[0]?.address}
-                    oldEmailInput={oldEmailInput}
-                    setOldEmailInput={setOldEmailInput}
-                    newEmailInput={newEmailInput}
-                    setNewEmailInput={setNewEmailInput}
-                    changeEmail={changeEmail}
-                    newEmailReentryInput={newEmailReentryInput}
-                    setNewEmailReentryInput={setNewEmailReentryInput}
-                  />
-                </Td>
-              </Tr>
-              <Tr>
-                <Th textColor={Color.WHITE}>Phone</Th>
-                <Td display="flex" justifyContent="space-between">
-                  <Text>{phoneNumber}</Text>
-                  <ChangePhoneModal
-                    newPhoneNumber={newPhoneNumberInput}
-                    setNewPhoneNumber={setNewPhoneNumberInput}
-                    applyPhoneNumberChange={changePhoneNumber}
-                  />
-                </Td>
-              </Tr>
-              <Tr>
-                <Th textColor={Color.WHITE} borderBottom={0}>
-                  Password
-                </Th>
-                <Td display="flex" justifyContent="end" borderBottom={0}>
-                  <ChangePasswordModal
-                    oldPassword={oldPasswordInput}
-                    setOldPassword={setOldPasswordInput}
-                    newPassword={newPasswordInput}
-                    setNewPassword={setNewPasswordInput}
-                    newPasswordReentry={newPasswordReentryInput}
-                    setNewPasswordReentry={setNewPasswordReentryInput}
-                    changePassword={changePassword}
-                  />
-                </Td>
-              </Tr>
-            </Tbody>
-          </Table>
-        </TableContainer>
-      </Box>
-    </motion.div>
+      <Text color={Color.WHITE} fontWeight="bold" fontSize={40}>
+        Settings
+      </Text>
+      <Avatar
+        bgColor="orange.500"
+        alignSelf="center"
+        size="xl"
+        name={fullName}
+        color={Color.WHITE}
+        as={FormLabel}
+        _hover={{ cursor: "pointer" }}
+        htmlFor="profile-picture-upload"
+        src={profilePictureUrl}
+      />
+      <Input
+        type="file"
+        display="none"
+        id="profile-picture-upload"
+        accept="image/*"
+        onChange={uploadProfilePicture}
+        name="profile-picture"
+      />
+      <TableContainer>
+        <Table
+          size="md"
+          variant="simple"
+          backgroundColor={Color.WHITE}
+          borderRadius={5}
+          bgColor="darkorange"
+          textColor={Color.WHITE}
+        >
+          <Tbody>
+            <Tr>
+              <Th textColor={Color.WHITE}>Name</Th>
+              <Td display="flex" justifyContent="space-between">
+                <Text>{fullName}</Text>
+                <ChangeFullNameModal
+                  newFirstNameInput={newFirstNameInput}
+                  setNewFirstNameInput={setNewFirstNameInput}
+                  newLastNameInput={newLastNameInput}
+                  setNewLastNameInput={setNewLastNameInput}
+                  changeFullName={changeFullName}
+                />
+              </Td>
+            </Tr>
+            <Tr>
+              <Th textColor={Color.WHITE}>Username</Th>
+              <Td display="flex" justifyContent="space-between">
+                <Text>{username}</Text>
+                <ChangeUsernameModal
+                  oldUsername={username}
+                  newUsername={newUsernameInput}
+                  setNewUsername={setNewUsernameInput}
+                  applyUsernameChange={changeUsername}
+                />
+              </Td>
+            </Tr>
+            <Tr>
+              <Th textColor={Color.WHITE}>Email</Th>
+              <Td display="flex" justifyContent="space-between">
+                <Box>
+                  {emails.map(({ address }) => (
+                    <Tr key={address}>{address}</Tr>
+                  ))}
+                </Box>
+                <ChangeEmailModal
+                  currentEmail={emails[0]?.address}
+                  oldEmailInput={oldEmailInput}
+                  setOldEmailInput={setOldEmailInput}
+                  newEmailInput={newEmailInput}
+                  setNewEmailInput={setNewEmailInput}
+                  changeEmail={changeEmail}
+                  newEmailReentryInput={newEmailReentryInput}
+                  setNewEmailReentryInput={setNewEmailReentryInput}
+                />
+              </Td>
+            </Tr>
+            <Tr>
+              <Th textColor={Color.WHITE}>Phone</Th>
+              <Td display="flex" justifyContent="space-between">
+                <Text>{phoneNumber}</Text>
+                <ChangePhoneModal
+                  newPhoneNumber={newPhoneNumberInput}
+                  setNewPhoneNumber={setNewPhoneNumberInput}
+                  applyPhoneNumberChange={changePhoneNumber}
+                />
+              </Td>
+            </Tr>
+            <Tr>
+              <Th textColor={Color.WHITE} borderBottom={0}>
+                Password
+              </Th>
+              <Td display="flex" justifyContent="end" borderBottom={0}>
+                <ChangePasswordModal
+                  oldPassword={oldPasswordInput}
+                  setOldPassword={setOldPasswordInput}
+                  newPassword={newPasswordInput}
+                  setNewPassword={setNewPasswordInput}
+                  newPasswordReentry={newPasswordReentryInput}
+                  setNewPasswordReentry={setNewPasswordReentryInput}
+                  changePassword={changePassword}
+                />
+              </Td>
+            </Tr>
+          </Tbody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 };

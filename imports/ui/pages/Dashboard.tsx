@@ -7,7 +7,7 @@ import {
   Button,
   Input,
 } from "@chakra-ui/react";
-import { motion } from "framer-motion";
+import { useNavigate, useParams } from "react-router-dom";
 
 import {
   useAdventureRoutesForUser,
@@ -17,7 +17,6 @@ import {
 import { AdventureRouteCard, LoadingScreen } from "/imports/ui/components";
 import { MapFormModal } from "/imports/ui/components/modals";
 import { Color } from "/imports/constants";
-import { useNavigate, useParams } from "react-router-dom";
 
 export const Dashboard = () => {
   const { id = "" } = useParams();
@@ -52,60 +51,54 @@ export const Dashboard = () => {
     return <LoadingScreen />;
   }
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+    <Box
+      margin="auto"
+      flexDirection="column"
+      paddingTop={5}
+      textAlign="center"
+      gap={2}
     >
-      <Box
-        margin="auto"
-        flexDirection="column"
-        paddingTop={5}
-        textAlign="center"
-        gap={2}
-      >
-        <Text color={Color.WHITE} fontWeight="bold" fontSize={40}>
-          {id ? otherUsername : loggedInUsername}'s Routes
-        </Text>
-        <Input
-          type="search"
-          value={routeInput}
-          onChange={(e) => setRouteInput(e.target.value)}
-          bgColor={Color.WHITE}
-          placeholder="Search a route"
-          size="lg"
-          width="100%"
-          maxWidth={400}
-        />
-        <Text textColor={Color.WHITE} fontSize="large">
-          or
-        </Text>
-        {(!id || id === loggedInUserId) && (
-          <Button
-            onClick={onOpen}
-            colorScheme="orange"
-            marginBottom={2}
-            width="auto"
-          >
-            Create a Route
-          </Button>
-        )}
-        <SimpleGrid
-          columnGap={3}
-          rowGap={3}
-          minChildWidth={350}
-          alignContent="center"
-          autoColumns="max-content"
+      <Text color={Color.WHITE} fontWeight="bold" fontSize={40}>
+        {id ? otherUsername : loggedInUsername}'s Routes
+      </Text>
+      <Input
+        type="search"
+        value={routeInput}
+        onChange={(e) => setRouteInput(e.target.value)}
+        bgColor={Color.WHITE}
+        placeholder="Search a route"
+        size="lg"
+        width="100%"
+        maxWidth={400}
+      />
+      <Text textColor={Color.WHITE} fontSize="large">
+        or
+      </Text>
+      {(!id || id === loggedInUserId) && (
+        <Button
+          onClick={onOpen}
+          colorScheme="orange"
+          marginBottom={2}
+          width="auto"
         >
-          {filteredRoutes.map((adventureRoute) => (
-            <AdventureRouteCard
-              adventureRoute={adventureRoute}
-              key={adventureRoute._id}
-            />
-          ))}
-        </SimpleGrid>
-        <MapFormModal isOpen={isOpen} onClose={onClose} />
-      </Box>
-    </motion.div>
+          Create a Route
+        </Button>
+      )}
+      <SimpleGrid
+        columnGap={3}
+        rowGap={3}
+        minChildWidth={350}
+        alignContent="center"
+        autoColumns="max-content"
+      >
+        {filteredRoutes.map((adventureRoute) => (
+          <AdventureRouteCard
+            adventureRoute={adventureRoute}
+            key={adventureRoute._id}
+          />
+        ))}
+      </SimpleGrid>
+      <MapFormModal isOpen={isOpen} onClose={onClose} />
+    </Box>
   );
 };

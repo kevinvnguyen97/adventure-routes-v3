@@ -15,7 +15,6 @@ import { Link as NavigationLink } from "react-router-dom";
 import { Accounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
 import { isValidPhoneNumber, parsePhoneNumber } from "libphonenumber-js";
-import { motion } from "framer-motion";
 
 import { TOAST_PRESET } from "/imports/constants/toast";
 import {
@@ -102,142 +101,130 @@ export const Register = () => {
   }, []);
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+    <Box
+      display="flex"
+      flexDirection="column"
+      gap={5}
+      width="100%"
+      maxWidth={400}
+      paddingTop={5}
+      margin="auto"
+      alignItems="center"
     >
-      <Box
-        display="flex"
-        flexDirection="column"
-        gap={5}
-        width="100%"
-        maxWidth={400}
-        paddingTop={5}
-        margin="auto"
-        alignItems="center"
+      <Image src="/large_logo.png" width="100%" height="auto" />
+      <form
+        onSubmit={submitRegister}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+          width: "100%",
+        }}
       >
-        <Image src="/large_logo.png" width="100%" height="auto" />
-        <form
-          onSubmit={submitRegister}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "10px",
-            width: "100%",
-          }}
-        >
-          <VStack>
-            <InputGroup gap={2}>
-              <FormControl isInvalid={!firstName}>
-                <Input
-                  placeholder="First Name"
-                  backgroundColor={Color.WHITE}
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value.trim())}
-                />
-                <FormErrorMessage>First name required</FormErrorMessage>
-              </FormControl>
-              <FormControl isInvalid={!lastName}>
-                <Input
-                  placeholder="Last Name"
-                  backgroundColor={Color.WHITE}
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value.trim())}
-                />
-                <FormErrorMessage>Last name required</FormErrorMessage>
-              </FormControl>
-            </InputGroup>
-            <FormControl
-              isInvalid={!username || username.length < MINIMUM_USERNAME_LENGTH}
-            >
+        <VStack>
+          <InputGroup gap={2}>
+            <FormControl isInvalid={!firstName}>
               <Input
-                placeholder="Username"
+                placeholder="First Name"
                 backgroundColor={Color.WHITE}
-                value={username}
-                onChange={(e) => setUsername(e.target.value.trim())}
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value.trim())}
               />
-              <FormErrorMessage>
-                {!username
-                  ? "Username required"
-                  : `Username needs to be at least ${MINIMUM_USERNAME_LENGTH} characters long`}
-              </FormErrorMessage>
+              <FormErrorMessage>First name required</FormErrorMessage>
             </FormControl>
-            <FormControl
-              isInvalid={!phoneNumber || !isValidPhoneNumber(phoneNumber, "US")}
-            >
+            <FormControl isInvalid={!lastName}>
               <Input
-                placeholder="Phone Number"
-                type="tel"
-                inputMode="tel"
+                placeholder="Last Name"
                 backgroundColor={Color.WHITE}
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value.trim())}
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value.trim())}
               />
-              <FormErrorMessage>
-                {!phoneNumber
-                  ? "Phone number required"
-                  : "Invalid phone number"}
-              </FormErrorMessage>
+              <FormErrorMessage>Last name required</FormErrorMessage>
             </FormControl>
-            <FormControl isInvalid={!email || !isValidEmail(email)}>
-              <Input
-                placeholder="Email"
-                type="email"
-                inputMode="email"
-                backgroundColor={Color.WHITE}
-                value={email}
-                onChange={(e) => setEmail(e.target.value.trim())}
-              />
-              <FormErrorMessage>
-                {!email ? "Email required" : "Invalid email"}
-              </FormErrorMessage>
-            </FormControl>
-            <FormControl
-              isInvalid={!password || password.length < MINIMUM_PASSWORD_LENGTH}
-            >
-              <Input
-                placeholder="Password"
-                type="password"
-                backgroundColor={Color.WHITE}
-                value={password}
-                onChange={(e) => setPassword(e.target.value.trim())}
-              />
-              <FormErrorMessage>
-                {!password
-                  ? "Password required"
-                  : `Password needs to be at least ${MINIMUM_PASSWORD_LENGTH} characters long`}
-              </FormErrorMessage>
-            </FormControl>
-            <FormControl
-              isInvalid={!passwordReentry || password !== passwordReentry}
-            >
-              <Input
-                placeholder="Re-enter Password"
-                type="Password"
-                backgroundColor={Color.WHITE}
-                value={passwordReentry}
-                onChange={(e) => setPasswordReentry(e.target.value.trim())}
-              />
-              <FormErrorMessage>
-                {!passwordReentry
-                  ? "Password re-entry required"
-                  : "Passwords do not match"}
-              </FormErrorMessage>
-            </FormControl>
-            <Button
-              type="submit"
-              colorScheme="orange"
-              isDisabled={!isFormValid}
-            >
-              Register
-            </Button>
-          </VStack>
-        </form>
-        <Link as={NavigationLink} to="/login" color="red">
-          Already have an account? Login here
-        </Link>
-      </Box>
-    </motion.div>
+          </InputGroup>
+          <FormControl
+            isInvalid={!username || username.length < MINIMUM_USERNAME_LENGTH}
+          >
+            <Input
+              placeholder="Username"
+              backgroundColor={Color.WHITE}
+              value={username}
+              onChange={(e) => setUsername(e.target.value.trim())}
+            />
+            <FormErrorMessage>
+              {!username
+                ? "Username required"
+                : `Username needs to be at least ${MINIMUM_USERNAME_LENGTH} characters long`}
+            </FormErrorMessage>
+          </FormControl>
+          <FormControl
+            isInvalid={!phoneNumber || !isValidPhoneNumber(phoneNumber, "US")}
+          >
+            <Input
+              placeholder="Phone Number"
+              type="tel"
+              inputMode="tel"
+              backgroundColor={Color.WHITE}
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value.trim())}
+            />
+            <FormErrorMessage>
+              {!phoneNumber ? "Phone number required" : "Invalid phone number"}
+            </FormErrorMessage>
+          </FormControl>
+          <FormControl isInvalid={!email || !isValidEmail(email)}>
+            <Input
+              placeholder="Email"
+              type="email"
+              inputMode="email"
+              backgroundColor={Color.WHITE}
+              value={email}
+              onChange={(e) => setEmail(e.target.value.trim())}
+            />
+            <FormErrorMessage>
+              {!email ? "Email required" : "Invalid email"}
+            </FormErrorMessage>
+          </FormControl>
+          <FormControl
+            isInvalid={!password || password.length < MINIMUM_PASSWORD_LENGTH}
+          >
+            <Input
+              placeholder="Password"
+              type="password"
+              backgroundColor={Color.WHITE}
+              value={password}
+              onChange={(e) => setPassword(e.target.value.trim())}
+            />
+            <FormErrorMessage>
+              {!password
+                ? "Password required"
+                : `Password needs to be at least ${MINIMUM_PASSWORD_LENGTH} characters long`}
+            </FormErrorMessage>
+          </FormControl>
+          <FormControl
+            isInvalid={!passwordReentry || password !== passwordReentry}
+          >
+            <Input
+              placeholder="Re-enter Password"
+              type="Password"
+              backgroundColor={Color.WHITE}
+              value={passwordReentry}
+              onChange={(e) => setPasswordReentry(e.target.value.trim())}
+            />
+            <FormErrorMessage>
+              {!passwordReentry
+                ? "Password re-entry required"
+                : "Passwords do not match"}
+            </FormErrorMessage>
+          </FormControl>
+          <Button type="submit" colorScheme="orange" isDisabled={!isFormValid}>
+            Register
+          </Button>
+        </VStack>
+      </form>
+      <Link as={NavigationLink} to="/login" color="red">
+        Already have an account? Login here
+      </Link>
+    </Box>
   );
 };

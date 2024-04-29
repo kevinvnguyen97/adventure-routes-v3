@@ -11,7 +11,6 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/react";
 import { Link as NavigationLink } from "react-router-dom";
-import { motion } from "framer-motion";
 
 import { TOAST_PRESET } from "/imports/constants/toast";
 import { Color } from "/imports/constants";
@@ -58,58 +57,52 @@ export const Login = () => {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+    <Box
+      display="flex"
+      flexDirection="column"
+      gap={5}
+      width="100%"
+      maxWidth={400}
+      paddingTop={5}
+      margin="auto"
+      alignItems="center"
     >
-      <Box
-        display="flex"
-        flexDirection="column"
-        gap={5}
-        width="100%"
-        maxWidth={400}
-        paddingTop={5}
-        margin="auto"
-        alignItems="center"
+      <Image src="/large_logo.png" width="100%" height="auto" />
+      <form
+        onSubmit={submitLogin}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+          width: "100%",
+        }}
       >
-        <Image src="/large_logo.png" width="100%" height="auto" />
-        <form
-          onSubmit={submitLogin}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "10px",
-            width: "100%",
-          }}
-        >
-          <FormControl isInvalid={!usernameOrEmail}>
-            <Input
-              placeholder="Username or Email"
-              backgroundColor={Color.WHITE}
-              value={usernameOrEmail}
-              onChange={(e) => setUsernameOrEmail(e.target.value)}
-            />
-            <FormErrorMessage>Username or email required</FormErrorMessage>
-          </FormControl>
-          <FormControl isInvalid={!password}>
-            <Input
-              placeholder="Password"
-              type="password"
-              backgroundColor={Color.WHITE}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <FormErrorMessage>Password required</FormErrorMessage>
-          </FormControl>
-          <Button type="submit" colorScheme="orange" isDisabled={!isFormValid}>
-            Login
-          </Button>
-        </form>
-        <Link as={NavigationLink} to="/register" color="red">
-          Don't have an account? Register here
-        </Link>
-      </Box>
-    </motion.div>
+        <FormControl isInvalid={!usernameOrEmail}>
+          <Input
+            placeholder="Username or Email"
+            backgroundColor={Color.WHITE}
+            value={usernameOrEmail}
+            onChange={(e) => setUsernameOrEmail(e.target.value)}
+          />
+          <FormErrorMessage>Username or email required</FormErrorMessage>
+        </FormControl>
+        <FormControl isInvalid={!password}>
+          <Input
+            placeholder="Password"
+            type="password"
+            backgroundColor={Color.WHITE}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <FormErrorMessage>Password required</FormErrorMessage>
+        </FormControl>
+        <Button type="submit" colorScheme="orange" isDisabled={!isFormValid}>
+          Login
+        </Button>
+      </form>
+      <Link as={NavigationLink} to="/register" color="red">
+        Don't have an account? Register here
+      </Link>
+    </Box>
   );
 };

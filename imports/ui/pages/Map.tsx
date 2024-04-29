@@ -1,3 +1,10 @@
+import React, {
+  useState,
+  CSSProperties,
+  useCallback,
+  useRef,
+  useEffect,
+} from "react";
 import {
   GoogleMap,
   DirectionsService,
@@ -7,15 +14,7 @@ import {
   KmlLayer,
 } from "@react-google-maps/api";
 import { Box, Text, useToast } from "@chakra-ui/react";
-import React, {
-  useState,
-  CSSProperties,
-  useCallback,
-  useRef,
-  useEffect,
-} from "react";
 import { useParams } from "react-router-dom";
-import { motion } from "framer-motion";
 
 import { useAdventureRoute } from "/imports/ui/providers";
 import { AdventureRouteInfo, LoadingScreen } from "/imports/ui/components";
@@ -201,86 +200,80 @@ export const Map = () => {
     return <Text>Adventure route not found</Text>;
   }
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+    <GoogleMap
+      mapContainerStyle={MAP_CONTAINER_STYLE}
+      onLoad={onLoad}
+      onUnmount={onUnmount}
+      ref={(mapRef) => (map.current = mapRef)}
     >
-      <GoogleMap
-        mapContainerStyle={MAP_CONTAINER_STYLE}
-        onLoad={onLoad}
-        onUnmount={onUnmount}
-        ref={(mapRef) => (map.current = mapRef)}
-      >
-        {!directions && <LoadingScreen spinnerColor={Color.BLACK} />}
-        <Box position="absolute" left="179px" top="10px">
-          <AdventureRouteInfo
-            adventureRoute={adventureRoute}
-            directions={directions}
-            fitBounds={fitBounds}
-            selectedRoutes={selectedRoutes}
-            setSelectedRoutes={setSelectedRoutes}
-            travelMode={travelMode}
-            setTravelMode={onTravelModeChange}
-            isInfoButtonEnabled={isInfoButtonEnabled}
-            isTrafficLayerVisible={isTrafficLayerVisible}
-            setIsTrafficLayerVisible={onTrafficLayerChange}
-            isTransitLayerVisible={isTransitLayerVisible}
-            setIsTransitLayerVisible={onTransitLayerChange}
-            isKmlLayerVisible={isKmlLayerVisible}
-            setIsKmlLayerVisible={onKmlLayerChange}
-            isAvoidHighwaysEnabled={isAvoidHighwaysEnabled}
-            setIsAvoidHighwaysEnabled={onAvoidHighwayChange}
-            isAvoidTollsEnabled={isAvoidTollsEnabled}
-            setIsAvoidTollsEnabled={onAvoidTollChange}
-            unitSystem={unitSystem}
-            setUnitSystem={onUnitSystemChange}
-            mutcdFont={mutcdFont}
-            setMutcdFont={setMutcdFont}
-          />
-        </Box>
-        {isTrafficLayerVisible && <TrafficLayer />}
-        {isTransitLayerVisible && <TransitLayer />}
-        {isKmlLayerVisible && <KmlLayer />}
-        <DirectionsService
-          callback={directionsCallback}
-          onLoad={directionsOnLoad}
-          onUnmount={directionsUnmount}
-          options={{
-            origin,
-            waypoints: formattedWaypoints,
-            destination,
-            travelMode,
-            unitSystem,
-            avoidHighways: isAvoidHighwaysEnabled,
-            avoidTolls: isAvoidTollsEnabled,
-            avoidFerries: isAvoidFerriesEnabled,
-            provideRouteAlternatives: allowRouteAlternatives,
-            drivingOptions: {
-              departureTime: new Date(),
-              trafficModel: google.maps.TrafficModel.PESSIMISTIC,
-            },
-          }}
+      {!directions && <LoadingScreen spinnerColor={Color.BLACK} />}
+      <Box position="absolute" left="179px" top="10px">
+        <AdventureRouteInfo
+          adventureRoute={adventureRoute}
+          directions={directions}
+          fitBounds={fitBounds}
+          selectedRoutes={selectedRoutes}
+          setSelectedRoutes={setSelectedRoutes}
+          travelMode={travelMode}
+          setTravelMode={onTravelModeChange}
+          isInfoButtonEnabled={isInfoButtonEnabled}
+          isTrafficLayerVisible={isTrafficLayerVisible}
+          setIsTrafficLayerVisible={onTrafficLayerChange}
+          isTransitLayerVisible={isTransitLayerVisible}
+          setIsTransitLayerVisible={onTransitLayerChange}
+          isKmlLayerVisible={isKmlLayerVisible}
+          setIsKmlLayerVisible={onKmlLayerChange}
+          isAvoidHighwaysEnabled={isAvoidHighwaysEnabled}
+          setIsAvoidHighwaysEnabled={onAvoidHighwayChange}
+          isAvoidTollsEnabled={isAvoidTollsEnabled}
+          setIsAvoidTollsEnabled={onAvoidTollChange}
+          unitSystem={unitSystem}
+          setUnitSystem={onUnitSystemChange}
+          mutcdFont={mutcdFont}
+          setMutcdFont={setMutcdFont}
         />
-        {directions?.routes.map(
-          ({ summary }, i) =>
-            selectedRoutes[i] && (
-              <DirectionsRenderer
-                key={summary}
-                options={{
-                  directions,
-                  polylineOptions: {
-                    strokeColor: ROUTE_COLORS[i],
-                    strokeOpacity: 0.6,
-                  },
-                  routeIndex: i,
-                }}
-                onLoad={directionsRendererOnLoad}
-                onUnmount={directionsRendererOnUnmount}
-              />
-            )
-        )}
-      </GoogleMap>
-    </motion.div>
+      </Box>
+      {isTrafficLayerVisible && <TrafficLayer />}
+      {isTransitLayerVisible && <TransitLayer />}
+      {isKmlLayerVisible && <KmlLayer />}
+      <DirectionsService
+        callback={directionsCallback}
+        onLoad={directionsOnLoad}
+        onUnmount={directionsUnmount}
+        options={{
+          origin,
+          waypoints: formattedWaypoints,
+          destination,
+          travelMode,
+          unitSystem,
+          avoidHighways: isAvoidHighwaysEnabled,
+          avoidTolls: isAvoidTollsEnabled,
+          avoidFerries: isAvoidFerriesEnabled,
+          provideRouteAlternatives: allowRouteAlternatives,
+          drivingOptions: {
+            departureTime: new Date(),
+            trafficModel: google.maps.TrafficModel.PESSIMISTIC,
+          },
+        }}
+      />
+      {directions?.routes.map(
+        ({ summary }, i) =>
+          selectedRoutes[i] && (
+            <DirectionsRenderer
+              key={summary}
+              options={{
+                directions,
+                polylineOptions: {
+                  strokeColor: ROUTE_COLORS[i],
+                  strokeOpacity: 0.6,
+                },
+                routeIndex: i,
+              }}
+              onLoad={directionsRendererOnLoad}
+              onUnmount={directionsRendererOnUnmount}
+            />
+          )
+      )}
+    </GoogleMap>
   );
 };

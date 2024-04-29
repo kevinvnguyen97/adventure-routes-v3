@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { Box } from "@chakra-ui/react";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { NavigationBar } from "/imports/ui/components";
 import { RequireNotAuth, RequireAuth } from "/imports/ui/providers";
@@ -14,6 +14,7 @@ import {
   OtherUsers,
 } from "/imports/ui/pages";
 import { Color } from "/imports/constants";
+import { MOTION_PRESET } from "/imports/constants/motion";
 
 export const App = () => {
   useEffect(() => {
@@ -33,7 +34,9 @@ export const App = () => {
                 index
                 element={
                   <RequireAuth>
-                    <Dashboard />
+                    <motion.div {...MOTION_PRESET} key="Dashboard">
+                      <Dashboard />
+                    </motion.div>
                   </RequireAuth>
                 }
               />
@@ -41,7 +44,9 @@ export const App = () => {
                 path="/:id"
                 element={
                   <RequireAuth>
-                    <Dashboard />
+                    <motion.div {...MOTION_PRESET} key="OtherUserDashboard">
+                      <Dashboard />
+                    </motion.div>
                   </RequireAuth>
                 }
               />
@@ -49,7 +54,9 @@ export const App = () => {
                 path="/other-users"
                 element={
                   <RequireAuth>
-                    <OtherUsers />
+                    <motion.div {...MOTION_PRESET} key="OtherUsers">
+                      <OtherUsers />
+                    </motion.div>
                   </RequireAuth>
                 }
               />
@@ -57,7 +64,9 @@ export const App = () => {
                 path="map/:id"
                 element={
                   <RequireAuth>
-                    <Map />
+                    <motion.div {...MOTION_PRESET} key="Map">
+                      <Map />
+                    </motion.div>
                   </RequireAuth>
                 }
               />
@@ -65,7 +74,9 @@ export const App = () => {
                 path="settings"
                 element={
                   <RequireAuth>
-                    <Settings />
+                    <motion.div {...MOTION_PRESET} key="Settings">
+                      <Settings />
+                    </motion.div>
                   </RequireAuth>
                 }
               />
@@ -73,7 +84,9 @@ export const App = () => {
                 path="login"
                 element={
                   <RequireNotAuth>
-                    <Login />
+                    <motion.div {...MOTION_PRESET} key="Login">
+                      <Login />
+                    </motion.div>
                   </RequireNotAuth>
                 }
               />
@@ -81,7 +94,9 @@ export const App = () => {
                 path="register"
                 element={
                   <RequireNotAuth>
-                    <Register />
+                    <motion.div {...MOTION_PRESET} key="Register">
+                      <Register />
+                    </motion.div>
                   </RequireNotAuth>
                 }
               />
