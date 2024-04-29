@@ -2,7 +2,7 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { Meteor } from "meteor/meteor";
 import { BrowserRouter } from "react-router-dom";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, ThemeConfig, extendTheme } from "@chakra-ui/react";
 import { LoadScript } from "@react-google-maps/api";
 
 import { App } from "/imports/ui/App";
@@ -14,6 +14,15 @@ import "./main.css";
 Meteor.startup(() => {
   const container = document.getElementById("react-target");
   const root = createRoot(container!);
+
+  const config: ThemeConfig = {
+    initialColorMode: "light",
+    useSystemColorMode: false,
+    disableTransitionOnChange: false,
+  };
+
+  const theme = extendTheme({ config });
+
   root.render(
     <BrowserRouter>
       <AuthProvider>
@@ -21,7 +30,16 @@ Meteor.startup(() => {
           googleMapsApiKey={SECRETS.public.oauth.googleMapsApiKey}
           libraries={["places"]}
         >
-          <ChakraProvider>
+          <ChakraProvider
+            theme={theme}
+            toastOptions={{
+              defaultOptions: {
+                duration: 5000,
+                isClosable: true,
+                position: "top",
+              },
+            }}
+          >
             <App />
           </ChakraProvider>
         </LoadScript>

@@ -16,7 +16,6 @@ import { useNavigate } from "react-router-dom";
 
 import { AdventureRoute } from "/imports/api/adventureRoutes";
 import { meteorMethodPromise } from "/imports/utils";
-import { TOAST_PRESET } from "/imports/constants/toast";
 import { DeleteRouteModal, MapFormModal } from "/imports/ui/components/modals";
 import { EditIcon } from "@chakra-ui/icons";
 import { Color } from "/imports/constants";
@@ -46,7 +45,6 @@ export const AdventureRouteCard = (props: AdventureRouteCardProps) => {
       try {
         await meteorMethodPromise("deleteAdventureRoute", adventureRoute._id);
         toast({
-          ...TOAST_PRESET,
           title: "Success",
           description: `Deleted route ${adventureRoute.name}`,
           status: "success",
@@ -56,7 +54,6 @@ export const AdventureRouteCard = (props: AdventureRouteCardProps) => {
           const meteorError = error as Meteor.Error;
           console.error(meteorError);
           toast({
-            ...TOAST_PRESET,
             title: meteorError.name,
             description: meteorError.message,
             status: "error",

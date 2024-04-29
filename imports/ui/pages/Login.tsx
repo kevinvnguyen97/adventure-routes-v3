@@ -12,7 +12,6 @@ import {
 } from "@chakra-ui/react";
 import { Link as NavigationLink } from "react-router-dom";
 
-import { TOAST_PRESET } from "/imports/constants/toast";
 import { Color } from "/imports/constants";
 
 export const Login = () => {
@@ -38,7 +37,6 @@ export const Login = () => {
         if (error) {
           console.error(error);
           toast({
-            ...TOAST_PRESET,
             title: error.name,
             description: error.message,
             status: "error",
@@ -46,7 +44,6 @@ export const Login = () => {
         } else {
           const { username = "" } = Meteor.user() || {};
           toast({
-            ...TOAST_PRESET,
             title: "Success",
             description: `Logged in as ${username}`,
             status: "success",

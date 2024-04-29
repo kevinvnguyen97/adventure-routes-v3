@@ -27,7 +27,6 @@ import { Autocomplete } from "@react-google-maps/api";
 import { useMeteorAuth } from "/imports/ui/providers/Auth";
 import { AdventureRoute } from "/imports/api/adventureRoutes";
 import { meteorMethodPromise } from "/imports/utils";
-import { TOAST_PRESET } from "/imports/constants/toast";
 import { Color } from "/imports/constants";
 
 const DEFAULT_ACTIVITY_OPTIONS: Options<{ label: string; value: string }> = [
@@ -108,7 +107,6 @@ export const MapFormModal = (props: MapFormModalProps) => {
       try {
         await meteorMethodPromise("upsertAdventureRoute", adventureRouteInput);
         toast({
-          ...TOAST_PRESET,
           title: "Success",
           description: `${
             isEditing
@@ -123,7 +121,6 @@ export const MapFormModal = (props: MapFormModalProps) => {
           const meteorError = error as Meteor.Error;
           console.error(meteorError);
           toast({
-            ...TOAST_PRESET,
             title: meteorError.name,
             description: meteorError.message,
             status: "error",

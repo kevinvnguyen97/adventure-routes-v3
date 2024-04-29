@@ -12,7 +12,6 @@ import { CommentCard, LoadingScreen } from "/imports/ui/components";
 import { Color } from "/imports/constants";
 import { useCommentsForAdventureRoute } from "/imports/ui/providers";
 import { meteorMethodPromise } from "/imports/utils";
-import { TOAST_PRESET } from "/imports/constants/toast";
 
 type CommentsSectionProps = {
   adventureRouteId: string;
@@ -35,7 +34,6 @@ export const CommentsSection = (props: CommentsSectionProps) => {
         date: new Date(),
       });
       toast({
-        ...TOAST_PRESET,
         title: "Success",
         description: "Comment posted successfully",
         status: "success",
@@ -45,7 +43,6 @@ export const CommentsSection = (props: CommentsSectionProps) => {
       const meteorError = error as Meteor.Error;
       console.error(error);
       toast({
-        ...TOAST_PRESET,
         title: "Error",
         description: meteorError.message,
         status: "error",

@@ -16,7 +16,6 @@ import { Accounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
 import { isValidPhoneNumber, parsePhoneNumber } from "libphonenumber-js";
 
-import { TOAST_PRESET } from "/imports/constants/toast";
 import {
   Color,
   MINIMUM_PASSWORD_LENGTH,
@@ -56,7 +55,6 @@ export const Register = () => {
 
     if (!isFormValid) {
       toast({
-        ...TOAST_PRESET,
         title: "Form not valid",
         description: "All fields need to be filled in correctly",
         status: "error",
@@ -79,14 +77,12 @@ export const Register = () => {
         if (error) {
           console.error(error);
           toast({
-            ...TOAST_PRESET,
             title: error.name,
             description: error.message,
             status: "error",
           });
         } else {
           toast({
-            ...TOAST_PRESET,
             title: "Success",
             description: `${username} registered`,
             status: "success",

@@ -26,7 +26,6 @@ import {
 } from "/imports/ui/components/modals";
 import { useMeteorAuth } from "/imports/ui/providers";
 import { meteorMethodPromise } from "/imports/utils";
-import { TOAST_PRESET } from "/imports/constants/toast";
 import { uploadToImgBB } from "/imports/api/imgbb";
 import { Color } from "/imports/constants";
 
@@ -69,7 +68,6 @@ export const Settings = () => {
     try {
       await meteorMethodPromise("changePhoneNumber", newPhoneNumberInput);
       toast({
-        ...TOAST_PRESET,
         title: "Success",
         description: `Phone number updated successfully to ${parsePhoneNumber(
           newPhoneNumberInput
@@ -91,7 +89,6 @@ export const Settings = () => {
         if (response.data) {
           await meteorMethodPromise("changeProfilePicture", response.data?.url);
           toast({
-            ...TOAST_PRESET,
             title: "Success",
             description: "Profile picture successfully updated",
             status: "success",
@@ -101,7 +98,6 @@ export const Settings = () => {
         const meteorError = error as Meteor.Error;
         console.error(meteorError);
         toast({
-          ...TOAST_PRESET,
           title: meteorError.name,
           description: meteorError.message,
           status: "error",
@@ -114,7 +110,6 @@ export const Settings = () => {
     try {
       await meteorMethodPromise("changeUsername", newUsernameInput);
       toast({
-        ...TOAST_PRESET,
         title: "Success",
         description: `Username successfully changed to ${newUsernameInput}`,
         status: "success",
@@ -124,7 +119,6 @@ export const Settings = () => {
         const meteorError = error as Meteor.Error;
         console.error(meteorError);
         toast({
-          ...TOAST_PRESET,
           title: meteorError.name,
           description: meteorError.message,
           status: "error",
@@ -137,7 +131,6 @@ export const Settings = () => {
     try {
       await meteorMethodPromise("changeEmail", newEmailInput);
       toast({
-        ...TOAST_PRESET,
         title: "Success",
         description: `Successfully changed email to ${newEmailInput}`,
         status: "success",
@@ -147,7 +140,6 @@ export const Settings = () => {
         const meteorError = error as Meteor.Error;
         console.error(meteorError);
         toast({
-          ...TOAST_PRESET,
           title: meteorError.name,
           description: meteorError.message,
           status: "error",
@@ -164,14 +156,12 @@ export const Settings = () => {
         if (error) {
           console.error(error);
           toast({
-            ...TOAST_PRESET,
             title: error.name,
             description: error.message,
             status: "error",
           });
         } else {
           toast({
-            ...TOAST_PRESET,
             title: "Success",
             description: "Password successfully changed",
             status: "success",

@@ -19,7 +19,6 @@ import { useParams } from "react-router-dom";
 import { useAdventureRoute } from "/imports/ui/providers";
 import { AdventureRouteInfo, LoadingScreen } from "/imports/ui/components";
 import { Color, MUTCDFont, ROUTE_COLORS } from "/imports/constants";
-import { TOAST_PRESET } from "/imports/constants/toast";
 
 const MAP_CONTAINER_STYLE: CSSProperties = {
   width: "100%",
@@ -116,7 +115,6 @@ export const Map = () => {
           switch (status) {
             case google.maps.DirectionsStatus.INVALID_REQUEST:
               toast({
-                ...TOAST_PRESET,
                 title: "Invalid request",
                 description: "Route cannot be rendered",
                 status: "error",
@@ -124,7 +122,6 @@ export const Map = () => {
               break;
             case google.maps.DirectionsStatus.NOT_FOUND:
               toast({
-                ...TOAST_PRESET,
                 title: "Not found",
                 description: "At least one waypoint is not found",
                 status: "error",
@@ -132,7 +129,6 @@ export const Map = () => {
               break;
             case google.maps.DirectionsStatus.ZERO_RESULTS:
               toast({
-                ...TOAST_PRESET,
                 title: "No valid route",
                 description:
                   "There are no possible routes between the given locations",
@@ -144,7 +140,6 @@ export const Map = () => {
             case "MAX_ROUTE_LENGTH_EXCEEDED":
               if (result?.routes?.length ?? 0 <= 1) {
                 toast({
-                  ...TOAST_PRESET,
                   title: "Route length exceeded",
                   description:
                     "Total length of combined routes is too long for the map to render",

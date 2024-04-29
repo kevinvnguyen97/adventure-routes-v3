@@ -24,7 +24,6 @@ import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { useMeteorAuth } from "../providers/Auth";
 import { Meteor } from "meteor/meteor";
 import { useNavigate } from "react-router-dom";
-import { TOAST_PRESET } from "/imports/constants/toast";
 import { Color } from "/imports/constants";
 
 const LINKS = ["Dashboard", "Other Users"];
@@ -74,14 +73,12 @@ export const NavigationBar = () => {
         const meteorError = error as Meteor.Error;
         console.error(meteorError);
         toast({
-          ...TOAST_PRESET,
           title: meteorError.name,
           description: meteorError.message,
           status: "error",
         });
       } else {
         toast({
-          ...TOAST_PRESET,
           title: "Success",
           description: `${user?.username} logged out`,
           status: "success",
