@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useRef, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { Meteor } from "meteor/meteor";
 import {
   Button,
@@ -56,6 +56,14 @@ export const MapFormModal = (props: MapFormModalProps) => {
   const [origin, setOrigin] = useState("");
   const [waypoints, setWaypoints] = useState<string[]>([""]);
   const [destination, setDestination] = useState("");
+
+  const [originAutoComplete, setOriginAutoComplete] =
+    useState<google.maps.places.Autocomplete>();
+  const [destinationAutoComplete, setDestinationAutoComplete] =
+    useState<google.maps.places.Autocomplete>();
+  const [waypointsAutoComplete, setWaypointsAutoComplete] = useState<
+    google.maps.places.Autocomplete[]
+  >([]);
 
   const isEditing = !!adventureRoute;
 
@@ -130,51 +138,40 @@ export const MapFormModal = (props: MapFormModalProps) => {
     }
   };
 
-  const originAutoCompleteRef = useRef<
-    google.maps.places.Autocomplete | undefined
-  >(undefined);
-  const destinationAutoCompleteRef = useRef<
-    google.maps.places.Autocomplete | undefined
-  >(undefined);
-  const waypointsAutoCompleteRef = useRef<google.maps.places.Autocomplete[]>(
-    []
-  );
   const onAutoCompleteLoad = (
     autocomplete: google.maps.places.Autocomplete,
     placeType: string
   ) => {
     switch (placeType) {
       case "origin":
-        originAutoCompleteRef.current = autocomplete;
+        setOriginAutoComplete(autocomplete);
         break;
       case "destination":
-        destinationAutoCompleteRef.current = autocomplete;
+        setDestinationAutoComplete(autocomplete);
         break;
       default:
-        waypointsAutoCompleteRef.current.push(autocomplete);
+        setWaypointsAutoComplete((prev) => [...prev, autocomplete]);
         break;
     }
   };
   const onPlaceChanged = (placeType: string, waypointIndex?: number) => {
     switch (placeType) {
       case "origin":
-        const originAddress =
-          originAutoCompleteRef.current?.getPlace().formatted_address;
+        const originAddress = originAutoComplete?.getPlace().formatted_address;
         if (originAddress) {
           setOrigin(originAddress);
         }
         break;
       case "destination":
         const destinationAddress =
-          destinationAutoCompleteRef.current?.getPlace().formatted_address;
+          destinationAutoComplete?.getPlace().formatted_address;
         if (destinationAddress) {
           setDestination(destinationAddress);
         }
         break;
       default:
         const waypointAddress =
-          waypointsAutoCompleteRef.current[waypointIndex!]?.getPlace()
-            .formatted_address;
+          waypointsAutoComplete?.[waypointIndex!]?.getPlace().formatted_address;
         if (waypointAddress) {
           const formattedWaypoints = waypoints.map((waypoint, i) =>
             i === waypointIndex ? waypointAddress : waypoint
@@ -358,12 +355,12 @@ export const MapFormModal = (props: MapFormModalProps) => {
                             (_, waypointIndexToRemove) =>
                               i !== waypointIndexToRemove
                           );
-                          const newRefs =
-                            waypointsAutoCompleteRef.current.filter(
+                          const newWaypointsAutoComplete =
+                            waypointsAutoComplete.filter(
                               (_, waypointIndexToRemove) =>
                                 i !== waypointIndexToRemove
                             );
-                          waypointsAutoCompleteRef.current = newRefs;
+                          setWaypointsAutoComplete(newWaypointsAutoComplete);
                           setWaypoints(updatedWaypoints);
                         }}
                         colorScheme="red"
