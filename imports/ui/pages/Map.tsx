@@ -103,12 +103,12 @@ export const Map = () => {
 
       if (isRouteRendered) {
         return;
-      }
-      if (result && status === google.maps.DirectionsStatus.OK) {
+      } else if (result && status === google.maps.DirectionsStatus.OK) {
         setDirections(result);
         const initialSelectedRoutes = result.routes.map(() => true);
         setSelectedRoutes(initialSelectedRoutes);
         setIsInfoButtonEnabled(true);
+        setIsRouteRendered(true);
       } else {
         switch (status) {
           case google.maps.DirectionsStatus.INVALID_REQUEST:
@@ -117,6 +117,7 @@ export const Map = () => {
               description: "Route cannot be rendered",
               status: "error",
             });
+            setIsRouteRendered(true);
             break;
           case google.maps.DirectionsStatus.NOT_FOUND:
             toast({
@@ -124,6 +125,7 @@ export const Map = () => {
               description: "At least one waypoint is not found",
               status: "error",
             });
+            setIsRouteRendered(true);
             break;
           case google.maps.DirectionsStatus.ZERO_RESULTS:
             toast({
@@ -132,6 +134,7 @@ export const Map = () => {
                 "There are no possible routes between the given locations",
               status: "error",
             });
+            setIsRouteRendered(true);
             break;
           /** google.maps.DirectionsStatus enum did not include this */
           /** @ts-ignore */
@@ -150,9 +153,8 @@ export const Map = () => {
             break;
         }
       }
-      setIsRouteRendered(true);
     },
-    [isRouteRendered, travelMode]
+    [isRouteRendered, setIsRouteRendered]
   );
   const directionsOnLoad = useCallback(
     (directionsService: google.maps.DirectionsService) => {
