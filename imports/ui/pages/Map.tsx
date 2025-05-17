@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  CSSProperties,
-  useCallback,
-  useRef,
-  useEffect,
-} from "react";
+import React, { useState, CSSProperties, useCallback, useEffect } from "react";
 import {
   GoogleMap,
   DirectionsService,
@@ -31,9 +25,6 @@ export const Map = () => {
   const { data: adventureRoute, isLoading: isAdventureRouteLoading } =
     useAdventureRoute(id);
 
-  const renderCount = useRef(0);
-  const map = useRef<GoogleMap | null>(null);
-
   const { route } = adventureRoute || {};
   const { origin = "", waypoints = [], destination = "" } = route || {};
 
@@ -41,6 +32,8 @@ export const Map = () => {
     (waypoint) => ({ location: waypoint, stopover: true })
   );
 
+  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [isRouteRendered, setIsRouteRendered] = useState(false);
   const [selectedRoutes, setSelectedRoutes] = useState<boolean[]>([]);
   const [directions, setDirections] =
     useState<google.maps.DirectionsResult | null>(null);
@@ -69,33 +62,36 @@ export const Map = () => {
   };
   const onUnitSystemChange = (newUnitSystem: google.maps.UnitSystem) => {
     setUnitSystem(newUnitSystem);
-    renderCount.current = 0;
+    setIsRouteRendered(false);
   };
   const onTravelModeChange = (newTravelMode: google.maps.TravelMode) => {
     setTravelMode(newTravelMode);
-    renderCount.current = 0;
+    setIsRouteRendered(false);
   };
   const onAvoidHighwayChange = () => {
     setIsAvoidHighwaysEnabled(!isAvoidHighwaysEnabled);
-    renderCount.current = 0;
+    setIsRouteRendered(false);
   };
   const onAvoidTollChange = () => {
     setIsAvoidTollsEnabled(!isAvoidTollsEnabled);
-    renderCount.current = 0;
+    setIsRouteRendered(false);
   };
   const fitBounds = (boundPoints: google.maps.LatLng[]) => {
     const bounds = new google.maps.LatLngBounds();
     boundPoints.forEach((boundPoint) => {
       bounds.extend(boundPoint);
     });
-    map.current?.state.map?.fitBounds(bounds);
+    if (map) {
+      map.fitBounds(bounds);
+    }
   };
 
   const onLoad = useCallback((map: google.maps.Map) => {
     console.log("MAP:", map);
+    setMap(map);
   }, []);
-  const onUnmount = useCallback((map: google.maps.Map) => {
-    console.log("MAP:", map);
+  const onUnmount = useCallback(() => {
+    setMap(null);
   }, []);
   const directionsCallback = useCallback(
     (
@@ -105,57 +101,58 @@ export const Map = () => {
       console.log("RESULT:", result);
       console.log("STATUS:", status);
 
-      if (renderCount.current === 0) {
-        if (result && status === google.maps.DirectionsStatus.OK) {
-          setDirections(result);
-          const initialSelectedRoutes = result.routes.map(() => true);
-          setSelectedRoutes(initialSelectedRoutes);
-          setIsInfoButtonEnabled(true);
-        } else {
-          switch (status) {
-            case google.maps.DirectionsStatus.INVALID_REQUEST:
-              toast({
-                title: "Invalid request",
-                description: "Route cannot be rendered",
-                status: "error",
-              });
-              break;
-            case google.maps.DirectionsStatus.NOT_FOUND:
-              toast({
-                title: "Not found",
-                description: "At least one waypoint is not found",
-                status: "error",
-              });
-              break;
-            case google.maps.DirectionsStatus.ZERO_RESULTS:
-              toast({
-                title: "No valid route",
-                description:
-                  "There are no possible routes between the given locations",
-                status: "error",
-              });
-              break;
-            /** google.maps.DirectionsStatus enum did not include this */
-            /** @ts-ignore */
-            case "MAX_ROUTE_LENGTH_EXCEEDED":
-              if (result?.routes?.length ?? 0 <= 1) {
-                toast({
-                  title: "Route length exceeded",
-                  description:
-                    "Total length of combined routes is too long for the map to render",
-                  status: "error",
-                });
-                break;
-              }
-              setAllowRouteAlternatives(false);
-              renderCount.current = -1;
-              break;
-          }
-        }
-        renderCount.current++;
+      if (isRouteRendered) {
+        return;
       }
+      if (result && status === google.maps.DirectionsStatus.OK) {
+        setDirections(result);
+        const initialSelectedRoutes = result.routes.map(() => true);
+        setSelectedRoutes(initialSelectedRoutes);
+        setIsInfoButtonEnabled(true);
+      } else {
+        switch (status) {
+          case google.maps.DirectionsStatus.INVALID_REQUEST:
+            toast({
+              title: "Invalid request",
+              description: "Route cannot be rendered",
+              status: "error",
+            });
+            break;
+          case google.maps.DirectionsStatus.NOT_FOUND:
+            toast({
+              title: "Not found",
+              description: "At least one waypoint is not found",
+              status: "error",
+            });
+            break;
+          case google.maps.DirectionsStatus.ZERO_RESULTS:
+            toast({
+              title: "No valid route",
+              description:
+                "There are no possible routes between the given locations",
+              status: "error",
+            });
+            break;
+          /** google.maps.DirectionsStatus enum did not include this */
+          /** @ts-ignore */
+          case "MAX_ROUTE_LENGTH_EXCEEDED":
+            if (result?.routes?.length ?? 0 <= 1) {
+              toast({
+                title: "Route length exceeded",
+                description:
+                  "Total length of combined routes is too long for the map to render",
+                status: "error",
+              });
+              break;
+            }
+            setAllowRouteAlternatives(false);
+            setIsRouteRendered(false);
+            break;
+        }
+      }
+      setIsRouteRendered(true);
     },
-    []
+    [isRouteRendered, travelMode]
   );
   const directionsOnLoad = useCallback(
     (directionsService: google.maps.DirectionsService) => {
@@ -199,7 +196,6 @@ export const Map = () => {
       mapContainerStyle={MAP_CONTAINER_STYLE}
       onLoad={onLoad}
       onUnmount={onUnmount}
-      ref={(mapRef) => (map.current = mapRef)}
     >
       {!directions && <LoadingScreen spinnerColor={Color.BLACK} />}
       <Box position="absolute" left="179px" top="10px">
