@@ -34,7 +34,7 @@ Meteor.methods({
   },
   deleteAdventureRoute: async (adventureRouteId: string) => {
     const userId = Meteor.userId();
-    const adventureRoute = AdventureRoutesCollection.findOne({
+    const adventureRoute = await AdventureRoutesCollection.findOneAsync({
       _id: adventureRouteId,
     });
     if (userId !== adventureRoute?.userId) {

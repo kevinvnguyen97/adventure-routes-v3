@@ -8,7 +8,7 @@ import { isValidEmail } from "/imports/utils";
 Meteor.startup(async () => {
   await Promise.all([
     AdventureRoutesCollection.createIndexAsync({ userId: -1 }),
-    CommentsCollection.createIndexAsync({ _id: -1 }),
+    CommentsCollection.createIndexAsync({ _id: 1 }),
   ]);
 });
 
@@ -59,7 +59,7 @@ Meteor.methods({
     }
 
     if (emails.length > 0 && !!userId && Meteor.isServer) {
-      Accounts.addEmail(userId, newEmail);
+      Accounts.addEmail(userId, newEmail, true);
       Accounts.removeEmail(userId, emails[0].address);
     }
   },

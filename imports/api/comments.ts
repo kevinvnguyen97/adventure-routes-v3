@@ -24,7 +24,12 @@ Meteor.methods({
   },
   deleteComment: async (commentId: string) => {
     const userId = Meteor.userId();
-    const commentToRemove = CommentsCollection.findOne({ _id: commentId });
+    const commentToRemove = await CommentsCollection.findOneAsync({
+      _id: commentId,
+    });
+    if (!commentToRemove) {
+      throw new Meteor.Error("not-found", "Route not found to delete");
+    }
     if (!userId) {
       throw new Meteor.Error("not-logged-in");
     }
