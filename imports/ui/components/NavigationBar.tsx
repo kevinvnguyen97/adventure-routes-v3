@@ -91,7 +91,7 @@ export const NavigationBar = () => {
     <Box bg={Color.DARK_ORANGE} px={4} color={Color.WHITE}>
       <Flex h={16} alignItems="center" justifyContent="space-between">
         <IconButton
-          size="md"
+          size="lg"
           icon={isHamburgerMenuOpen ? <CloseIcon /> : <HamburgerIcon />}
           aria-label="Open Menu"
           display={{ md: "none" }}
