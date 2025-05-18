@@ -46,14 +46,13 @@ export async function meteorMethodPromise<TReturn, TArgs extends any[]>(
   name: string,
   ...args: TArgs
 ): Promise<TReturn> {
-  return new Promise((resolve, reject) => {
-    Meteor.call(name, ...args, (e: Meteor.Error | null, r: TReturn) => {
-      if (e) {
-        reject(e);
-      } else {
-        resolve(r);
-      }
-    });
+  return new Promise(async (resolve, reject) => {
+    try {
+      const results = await Meteor.callAsync(name, ...args);
+      resolve(results);
+    } catch (error) {
+      reject(error);
+    }
   });
 }
 
