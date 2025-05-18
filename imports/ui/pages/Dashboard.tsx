@@ -85,9 +85,9 @@ export const Dashboard = () => {
         </Button>
       )}
       <SimpleGrid
+        columns={[1, 1, 2, 3, 4, 5]}
         columnGap={3}
         rowGap={3}
-        minChildWidth={350}
         alignContent="center"
         autoColumns="max-content"
       >

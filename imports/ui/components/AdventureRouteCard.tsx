@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { AdventureRoute } from "/imports/api/adventureRoutes";
 import { meteorMethodPromise } from "/imports/utils";
 import { DeleteRouteModal, MapFormModal } from "/imports/ui/components/modals";
-import { EditIcon } from "@chakra-ui/icons";
+import { EditIcon, ViewIcon } from "@chakra-ui/icons";
 import { Color } from "/imports/constants";
 import { useMeteorAuth } from "/imports/ui/providers";
 
@@ -73,51 +73,20 @@ export const AdventureRouteCard = (props: AdventureRouteCardProps) => {
         width="100%"
         bgColor={Color.DARK_ORANGE}
         color={Color.WHITE}
-        _hover={{ cursor: "pointer", bgColor: "orange.500" }}
-        transition="0.25s"
         flexDirection="row"
         paddingTop={5}
+        paddingBottom={5}
       >
-        <Box>
-          <Image
-            src="/small_logo.png"
-            minWidth={100}
-            maxWidth={100}
-            height="auto"
-          />
-        </Box>
-        <Box>
-          <CardHeader fontWeight="bold" textAlign="start">
-            {adventureRoute.name}
+        <Box width="100%">
+          <CardHeader fontWeight="bold" textAlign="start" display="flex">
+            <Image
+              src="/small_logo.png"
+              minWidth={35}
+              maxWidth={35}
+              height="auto"
+            />
+            <Text>{adventureRoute.name}</Text>
           </CardHeader>
-          {userId === adventureRoute.userId && (
-            <>
-              <IconButton
-                aria-label="edit-adventure-route"
-                icon={<EditIcon />}
-                size="sm"
-                colorScheme="transparent"
-                _hover={{ bgColor: "orange.500" }}
-                position="absolute"
-                right={8}
-                top={0}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onEditMapModalOpen();
-                }}
-              />
-              <CloseButton
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onDeleteRouteModalOpen();
-                }}
-                position="absolute"
-                right={0}
-                top={0}
-                colorScheme="red"
-              />
-            </>
-          )}
           <CardBody textAlign="start">
             <Text>{adventureRoute.description}</Text>
             <Text>_</Text>
@@ -134,6 +103,52 @@ export const AdventureRouteCard = (props: AdventureRouteCardProps) => {
             <Text>End: {adventureRoute.route.destination}</Text>
           </CardBody>
         </Box>
+        {userId === adventureRoute.userId && (
+          <Box
+            alignItems="end"
+            display="flex"
+            flexDirection="column"
+            justifyContent="space-between"
+            justifyItems="center"
+            height="100%"
+          >
+            <CloseButton
+              onClick={(e) => {
+                e.stopPropagation();
+                onDeleteRouteModalOpen();
+              }}
+              colorScheme="orange"
+              variant="ghost"
+              _hover={{ bgColor: "orange.500" }}
+              width="100%"
+              height="48px"
+              size="lg"
+            />
+            <IconButton
+              aria-label="edit-adventure-route"
+              icon={<EditIcon />}
+              size="lg"
+              colorScheme="orange"
+              color="white"
+              variant="ghost"
+              _hover={{ bgColor: "orange.500" }}
+              onClick={(e) => {
+                e.stopPropagation();
+                onEditMapModalOpen();
+              }}
+            />
+            <IconButton
+              aria-label="map-button"
+              icon={<ViewIcon />}
+              size="lg"
+              colorScheme="orange"
+              color="white"
+              variant="ghost"
+              _hover={{ bgColor: "orange.500" }}
+              onClick={() => navigate(`/map/${adventureRoute._id}`)}
+            />
+          </Box>
+        )}
       </Card>
       <MapFormModal
         isOpen={isEditMapModalOpen}
