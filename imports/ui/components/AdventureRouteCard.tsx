@@ -68,14 +68,11 @@ export const AdventureRouteCard = (props: AdventureRouteCardProps) => {
   return (
     <>
       <Card
-        onClick={() => navigate(`/map/${adventureRoute._id}`)}
         key={adventureRoute._id}
         width="100%"
         bgColor={Color.DARK_ORANGE}
         color={Color.WHITE}
         flexDirection="row"
-        paddingTop={5}
-        paddingBottom={5}
       >
         <Box width="100%">
           <CardHeader fontWeight="bold" textAlign="start" display="flex">
