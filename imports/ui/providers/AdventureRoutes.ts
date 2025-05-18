@@ -4,20 +4,20 @@ import { AdventureRoutesCollection } from "/imports/api/adventureRoutes";
 import { CommentsCollection } from "/imports/api/comments";
 
 export const useAdventureRoutesForUser = (userId: string) => {
-  return useTracker(async () => {
+  return useTracker(() => {
     const subscription = Meteor.subscribe("adventureRoutesForUser", userId);
     const adventureRoutes = userId
-      ? await AdventureRoutesCollection.find({ userId }).fetchAsync()
+      ? AdventureRoutesCollection.find({ userId }).fetch()
       : [];
     return { data: adventureRoutes, isLoading: !subscription.ready() };
   }, [userId]);
 };
 
-export const useAdventureRoute = async (id: string) => {
+export const useAdventureRoute = (id: string) => {
   const userId = Meteor.userId();
-  return useTracker(async () => {
+  return useTracker(() => {
     const subscription = Meteor.subscribe("adventureRouteById", id);
-    const adventureRoute = await AdventureRoutesCollection.findOneAsync({
+    const adventureRoute = AdventureRoutesCollection.findOne({
       _id: id,
     });
     return { data: adventureRoute, isLoading: !subscription.ready() };
@@ -25,29 +25,28 @@ export const useAdventureRoute = async (id: string) => {
 };
 
 export const useCommentsForAdventureRoute = (adventureRouteId: string) => {
-  return useTracker(async () => {
+  return useTracker(() => {
     const subscription = Meteor.subscribe(
       "commentsForAdventureRoute",
       adventureRouteId
     );
     const comments = adventureRouteId
-      ? await CommentsCollection.find(
+      ? CommentsCollection.find(
           { adventureRouteId },
           { sort: { date: -1 } }
-        ).fetchAsync()
+        ).fetch()
       : [];
     return { data: comments, isLoading: !subscription.ready() };
   }, [adventureRouteId]);
 };
 
 export const useUserInfo = (userId: string) => {
-  return useTracker(async () => {
+  return useTracker(() => {
     const subscription = Meteor.subscribe("getUserInfo", userId);
-    const user = await Meteor.users.findOneAsync(
+    const user = Meteor.users.findOne(
       { _id: userId },
       {
         fields: { userId: 1, username: 1, "profile.profilePictureUrl": 1 },
-        limit: 1,
       }
     );
     return { data: user, isLoading: !subscription.ready() };
@@ -55,10 +54,10 @@ export const useUserInfo = (userId: string) => {
 };
 
 export const useAllUsers = () => {
-  return useTracker(async () => {
+  return useTracker(() => {
     const userId = Meteor.userId() ?? "";
     const subscription = Meteor.subscribe("getAllUsers");
-    const users = await Meteor.users
+    const users = Meteor.users
       .find(
         { _id: { $not: { $eq: userId } } },
         {
@@ -66,7 +65,7 @@ export const useAllUsers = () => {
           sort: { username: 1 },
         }
       )
-      .fetchAsync();
+      .fetch();
     return { data: users, isLoading: !subscription.ready() };
   });
 };
