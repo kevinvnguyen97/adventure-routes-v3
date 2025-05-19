@@ -67,5 +67,5 @@ export const useAllUsers = () => {
       )
       .fetch();
     return { data: users, isLoading: !subscription.ready() };
-  });
+  }, []);
 };
