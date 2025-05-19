@@ -100,15 +100,14 @@ export const AdventureRouteCard = (props: AdventureRouteCardProps) => {
             <Text>End: {adventureRoute.route.destination}</Text>
           </CardBody>
         </Box>
-        {userId === adventureRoute.userId && (
-          <Box
-            alignItems="end"
-            display="flex"
-            flexDirection="column"
-            justifyContent="space-between"
-            justifyItems="center"
-            height="100%"
-          >
+        <Box
+          alignItems="stretch"
+          display="flex"
+          flexDirection="column"
+          justifyContent="space-between"
+          height="100%"
+        >
+          {adventureRoute.userId === userId && (
             <CloseButton
               onClick={(e) => {
                 e.stopPropagation();
@@ -120,7 +119,21 @@ export const AdventureRouteCard = (props: AdventureRouteCardProps) => {
               width="100%"
               height="48px"
               size="lg"
+              flex={1}
             />
+          )}
+          <IconButton
+            aria-label="map-button"
+            icon={<ViewIcon />}
+            size="lg"
+            colorScheme="orange"
+            color="white"
+            variant="ghost"
+            _hover={{ bgColor: "orange.500" }}
+            onClick={() => navigate(`/map/${adventureRoute._id}`)}
+            flex={1}
+          />
+          {adventureRoute.userId === userId && (
             <IconButton
               aria-label="edit-adventure-route"
               icon={<EditIcon />}
@@ -133,19 +146,10 @@ export const AdventureRouteCard = (props: AdventureRouteCardProps) => {
                 e.stopPropagation();
                 onEditMapModalOpen();
               }}
+              flex={1}
             />
-            <IconButton
-              aria-label="map-button"
-              icon={<ViewIcon />}
-              size="lg"
-              colorScheme="orange"
-              color="white"
-              variant="ghost"
-              _hover={{ bgColor: "orange.500" }}
-              onClick={() => navigate(`/map/${adventureRoute._id}`)}
-            />
-          </Box>
-        )}
+          )}
+        </Box>
       </Card>
       <MapFormModal
         isOpen={isEditMapModalOpen}

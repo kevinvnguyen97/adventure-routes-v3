@@ -25,7 +25,10 @@ import { CreatableSelect as MultiSelect, Options } from "chakra-react-select";
 import { Autocomplete } from "@react-google-maps/api";
 
 import { useMeteorAuth } from "/imports/ui/providers/Auth";
-import { AdventureRoute } from "/imports/api/adventureRoutes";
+import {
+  AdventureRoute,
+  AdventureRouteInput,
+} from "/imports/api/adventureRoutes";
 import { meteorMethodPromise } from "/imports/utils";
 import { Color } from "/imports/constants";
 
@@ -98,9 +101,8 @@ export const MapFormModal = (props: MapFormModalProps) => {
   const submitMapForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (userId) {
-      const adventureRouteInput: AdventureRoute = {
+      const adventureRouteInput: AdventureRouteInput = {
         _id: isEditing ? adventureRoute._id : undefined,
-        userId,
         name,
         priceCategory,
         activities,

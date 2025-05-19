@@ -1,5 +1,5 @@
 import { Meteor } from "meteor/meteor";
-import { AdventureRoute } from "/imports/api/adventureRoutes";
+import { AdventureRouteInput } from "/imports/api/adventureRoutes";
 import { Comment } from "/imports/api/comments";
 import { Color } from "/imports/constants";
 
@@ -8,7 +8,7 @@ const VALID_EMAIL_REGEX =
 
 export async function meteorMethodPromise(
   name: "upsertAdventureRoute",
-  adventureRoute: AdventureRoute
+  adventureRoute: AdventureRouteInput
 ): Promise<void>;
 export async function meteorMethodPromise(
   name: "deleteAdventureRoute",
