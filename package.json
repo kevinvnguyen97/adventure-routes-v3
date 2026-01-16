@@ -2,7 +2,7 @@
   "name": "adventure-routes-v3",
   "private": true,
   "scripts": {
-    "start": "start.sh && meteor run --settings .deploy/settings.json",
+    "start": "meteor run --settings .deploy/settings.json",
     "test": "meteor test --once --driver-package meteortesting:mocha",
     "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
     "visualize": "meteor --production --extra-packages bundle-visualizer"
