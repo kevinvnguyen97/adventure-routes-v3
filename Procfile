@@ -1,2 +1,2 @@
 # Procfile
-web: meteor npm start -- --production
+web: npm start -- --production
