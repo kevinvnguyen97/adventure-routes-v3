@@ -2,4 +2,4 @@
 
 Complete redesign from the older versions to utilize Typescript and Meteor.
 
-## UPDATE: This repo is deprecated. Check this repo instead: [Adventure Routes](https://github.com/kevinvnguyen/adventure-routes)
+## UPDATE: This repo is deprecated. Check this repo instead: [Adventure Routes](https://www.github.com/kevinvnguyen97/adventure-routes)
